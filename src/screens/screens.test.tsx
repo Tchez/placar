@@ -107,7 +107,7 @@ describe('canastra screens', () => {
     renderApp('/');
 
     expect(screen.getByLabelText('Versão do aplicativo')).toHaveTextContent(
-      'versão dev',
+      `versão ${__BUILD_VERSION__}`,
     );
     expect(screen.getByRole('link', { name: 'Canastra' })).toHaveAttribute(
       'href',
