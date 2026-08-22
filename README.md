@@ -48,9 +48,9 @@ and family feedback refined that concept; [SPEC 002](docs/specs/002-canastra.md)
 contract for the final shipped behaviour, while the image remains a visual reference.
 
 - **Team colour is identity, not standing.** *Nós* is always green and *Eles* always gold, whoever is
-  winning. Colours never swap and never follow the lead. This is deliberately the opposite of truco,
-  where the accent marks the leader — canastra shows two numbers that are read directly, so colour is
-  free to carry identity; truco has no numerals, so colour has to carry the lead. Do not unify them.
+  winning. Colours never swap and never follow the lead. Truco follows the same identity principle
+  with its own palette: *Nós* is green and *Eles* is red there, while the tally marks remain neutral.
+  The game themes must not share token values merely because both use stable team identities.
 - **The target seal never rounds.** An exact multiple of a thousand abbreviates (`4000` → `META: 4K`,
   `3000` → `META: 3K`); anything else shows in full with the pt-BR separator (`3500` → `META: 3.500`).
   Showing `4K` for a 3500-point match would be false information about the one number the match is
