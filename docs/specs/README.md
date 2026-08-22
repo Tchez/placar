@@ -39,9 +39,9 @@ comes before more features, not after.
 Canastra came first because it is what the family plays most, and because it is the game that exposes
 the real variability — different point limits, negatives allowed or not. Building the first screens
 against the messiest case avoids a contract that is too naive. The canastra redesign that arrived
-mid-implementation was folded into SPEC 002 rather than becoming its own SPEC; the concept image stays
-at `assets/004-canastra-concept.png` and the decisions it settled are recorded in `README.md` under
-*The canastra screen*.
+mid-implementation was folded into SPEC 002 rather than becoming its own SPEC, and the decisions it
+settled are recorded in `README.md` under *The canastra screen*. No reference images are kept in this
+repo: a SPEC that needs a picture to be understood is not finished.
 
 Padel comes late, but its shape is already accounted for in the SPEC 001 contract
 (`scoreboard(match)` derived from the entry log, `Standing.score` plus a free-text detail). If

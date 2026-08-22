@@ -29,10 +29,14 @@ Truco is deliberately **not** canastra with different numbers:
 - Gaúcho and mineiro are **separate games**, not a setting: their scoring differs. Only mineiro is in
   this SPEC — gaúcho's scoring is still unconfirmed and will not be guessed.
 
-The supplied visual direction is a warm, ornamental card-table interface: dark textured ground,
-cream controls, aged-gold details, stable green for *Nós* and stable red for *Eles*. It is a direction,
-not a request to reproduce phone chrome or decorative noise pixel for pixel. The hierarchy, screen
-composition, team identity and control placement defined below are the implementation contract.
+The visual direction for this SPEC is a warm, ornamental card-table interface: dark textured ground,
+cream controls, aged-gold details, stable green for *Nós* and stable red for *Eles*. It does not call
+for reproducing phone chrome or decorative noise pixel for pixel. The hierarchy, screen composition,
+team identity and control placement defined below are the implementation contract.
+
+No reference image is kept in the repo. The composition, the team identity and every control
+placement are written out below, which is the only form that survives — and a screenshot of somebody
+else's app invites copying its appearance rather than reading the contract.
 
 The UI is Portuguese, no i18n layer.
 
@@ -88,7 +92,7 @@ screen.
   recessive and is disabled at zero.
 - **Raised values**: tapping a team's score block or banner opens that team's raised-value sheet.
   `+3 / +6 / +9 / +12` are not permanently visible on the normal screen. The sheet does not open
-  while the match is in the mão de onze, mão de ferro or won state.
+  while the match is in the mão de onze or mão de ferro state.
 - **Desfazer último**: one quiet, full-width action below both columns removes the **last** entry of
   the match, whatever its value. It is disabled when there are no entries and remains available in
   every unfinished game state.
@@ -139,8 +143,8 @@ same route by a dedicated state view:
 
 - The header title becomes **Mão de onze** and keeps the back action.
 - A bordered hero panel uses the team-at-11 colour and announces **MÃO DE ONZE** plus
-  **“Nós está com 11”** or **“Eles está com 11”**. The team name is a label here; this phrasing is
-  intentionally neutral and avoids inventing player names.
+  **“Equipe Nós: 11 pontos”** or **“Equipe Eles: 11 pontos”**. This phrasing treats the fixed name as
+  a team label and does not invent player names.
 - Below it, three large cream outcome rows preserve the existing rule and make the recipient
   explicit:
   - **`VITÓRIA: <time em 11>`** → +3 to the team at 11
@@ -152,9 +156,6 @@ same route by a dedicated state view:
   every hand played while exactly one team sits at 11 is a mão de onze.
 - *Desfazer último* remains available at the bottom — it is the way out of a state entered by a
   mis-tap.
-
-The sentence intentionally uses **“Nós está com 11”** / **“Eles está com 11”** because *Nós* and
-*Eles* are proper team labels, not grammatical subjects standing in for the players.
 
 ### Onze a onze — mão de ferro
 
@@ -170,7 +171,9 @@ While **both** teams are at 11, the mão de onze view is replaced by the mão de
 
 As in canastra, the app **never finishes the match by itself**: it shows the winner state and the
 user finishes. Scores above 12 are normal and expected — a mão de onze win puts a team at 14 — so
-the score is never capped.
+the score is never capped. Until the user finishes, the normal scoreboard and all normal controls
+remain available; the winner announcement does not turn a live match into the read-only finished
+screen.
 
 ### Finished match
 
@@ -282,7 +285,7 @@ lines and simple CSS diamond shapes. No decorative asset is required.
 Use two locally hosted latin-subset `woff2` families and no font CDN:
 
 - **Roboto Slab** for the game title, team banners, raised-value labels, special-state headings and
-  the finished hero. It supplies the compact printed-card character of the reference.
+  the finished hero. It supplies a compact printed-card character.
 - **Archivo** (variable `wght` + `wdth`) for utility labels, explanatory copy and accessible action
   text. Digits use `tabular-nums`.
 
@@ -321,7 +324,7 @@ Losing the digit is an accepted trade, not an oversight: the two scores that mus
   paper sheets: no curled corners, stains or readability-reducing texture.
 - Team banners may use clipped or pseudo-element ends, but the team name remains centered and the
   accessible hit area stays rectangular.
-- The interface respects device safe areas. The mockup's phone status bar is not part of the app.
+- The interface respects device safe areas. A phone status bar is device chrome, not part of the app.
 - All interactive icons have visible focus styles and Portuguese accessible names.
 
 ### Motion
@@ -350,8 +353,8 @@ occur, while transforms and stroke-drawing animations are suppressed.
       team's score block; the raised values are labelled *truco / seis / nove / doze*
 - [ ] The raised-value sheet uses the selected team's contextual title bar, restores focus when
       closed, records nothing when dismissed, and has the four cream rows and explanatory note
-- [ ] The raised-value sheet does not open in the mão de onze, mão de ferro or won state, asserted by
-      a test
+- [ ] The raised-value sheet does not open in the mão de onze or mão de ferro state, asserted by a
+      test
 - [ ] `+1`, `−1` and every raised value add and subtract correctly; `−1` is disabled at zero, with
       tests
 - [ ] `+1` and `−1` are not styled as equal-weight peers; `−1` does not use a team colour
@@ -394,4 +397,3 @@ occur, while transforms and stroke-drawing animations are suppressed.
       keep the same shape and wording rules
 - [ ] Every user-visible string is pt-BR with standard spelling; no i18n library or locale file was
       added
-

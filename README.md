@@ -43,9 +43,10 @@ Cumulative score. Each round produces a balance per team and totals add up to a 
 
 ### The canastra screen
 
-The initial visual direction came from `docs/specs/assets/004-canastra-concept.png`. Phone testing
-and family feedback refined that concept; [SPEC 002](docs/specs/002-canastra.md) is the complete
-contract for the final shipped behaviour, while the image remains a visual reference.
+The visual direction started from a concept the owner drew, and phone testing with the family refined
+it from there. [SPEC 002](docs/specs/002-canastra.md) is the complete contract for the shipped
+behaviour. No concept image is kept in the repo, so the decisions below are the record — a layout can
+be re-drawn, a rounding rule cannot be re-derived.
 
 - **Team colour is identity, not standing.** *Nós* is always green and *Eles* always gold, whoever is
   winning. Colours never swap and never follow the lead. Truco follows the same identity principle
