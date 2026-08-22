@@ -7,18 +7,21 @@ import {
   renameTeam,
   reopenMatch,
   updateEntry,
+  validateEntryValue,
+  validateTarget,
   type CreateMatchInput,
 } from './match';
 import type { Entry, Match } from './types';
 
 const input: CreateMatchInput = {
   id: 'match-1',
-  gameId: 'game-1',
+  gameId: 'canastra',
   teams: [
     { id: 'team-1', name: 'Time A' },
     { id: 'team-2', name: 'Time B' },
   ],
   target: 12,
+  allowNegativeEntries: true,
   createdAt: '2026-08-22T12:00:00.000Z',
 };
 
@@ -95,6 +98,12 @@ describe('match domain', () => {
     assertInputUnchanged();
   });
 
+  it('keeps the previous team name when the replacement is blank', () => {
+    const match = createMatch(input);
+
+    expect(renameTeam(match, 'team-1', '   ').teams[0]?.name).toBe('Time A');
+  });
+
   it('finishes a match without mutating it', () => {
     const match = createMatch(input);
     const assertInputUnchanged = unchanged(match);
@@ -112,5 +121,50 @@ describe('match domain', () => {
 
     expect(result.finishedAt).toBeNull();
     assertInputUnchanged();
+  });
+
+  it('validates and parses integer entry values', () => {
+    expect(validateEntryValue('12,0', true)).toEqual({
+      valid: true,
+      value: 12,
+    });
+    expect(validateEntryValue('12.0', true)).toEqual({
+      valid: true,
+      value: 12,
+    });
+    expect(validateEntryValue('texto', true)).toEqual({
+      valid: false,
+      message: 'Informe um número inteiro.',
+    });
+    expect(validateEntryValue('0', true)).toEqual({
+      valid: false,
+      message: 'Informe um valor diferente de zero.',
+    });
+  });
+
+  it('accepts or rejects negative entry values from the match setting', () => {
+    expect(validateEntryValue('-100', true)).toEqual({
+      valid: true,
+      value: -100,
+    });
+    expect(validateEntryValue('-100', false)).toEqual({
+      valid: false,
+      message: 'Esta partida não permite pontos negativos.',
+    });
+  });
+
+  it('validates required positive integer targets', () => {
+    expect(validateTarget('3000', true)).toEqual({
+      valid: true,
+      value: 3000,
+    });
+    expect(validateTarget('', true)).toEqual({
+      valid: false,
+      message: 'Informe quantos pontos para vencer.',
+    });
+    expect(validateTarget('-1', true)).toEqual({
+      valid: false,
+      message: 'Informe quantos pontos para vencer.',
+    });
   });
 });

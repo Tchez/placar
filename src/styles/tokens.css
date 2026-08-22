@@ -1,12 +1,20 @@
 :root {
   color-scheme: dark;
-  --color-background: #10131a;
-  --color-surface: #191e29;
-  --color-text: #f5f7fb;
-  --color-text-muted: #aeb7c7;
-  --color-accent: #68e0a5;
-  --radius-small: 0.5rem;
-  --radius-medium: 1rem;
+  --color-background: #0b1016;
+  --color-surface: #131b24;
+  --color-surface-raised: #1a2531;
+  --color-border: #2b3948;
+  --color-text: #f4f7fa;
+  --color-text-muted: #95a4b5;
+  --color-accent: #63e6ac;
+  --color-accent-strong: #2fc98a;
+  --color-accent-soft: #17382d;
+  --color-accent-contrast: #071a12;
+  --color-danger: #ff9298;
+  --color-danger-soft: #3c2027;
+  --radius-small: 0.75rem;
+  --radius-medium: 1.125rem;
+  --radius-large: 1.5rem;
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -14,5 +22,7 @@
   --space-6: 1.5rem;
   --space-8: 2rem;
   --tap-target-min: 44px;
-  --content-max-width: 36rem;
+  --control-height: 52px;
+  --content-max-width: 34rem;
+  --shadow-card: 0 14px 36px rgb(0 0 0 / 18%);
 }

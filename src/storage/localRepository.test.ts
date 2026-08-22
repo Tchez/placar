@@ -1,18 +1,28 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { createMatch } from '../domain/match';
+import { addEntry, createMatch } from '../domain/match';
 import { createLocalRepository } from './localRepository';
 
 const key = 'placar:matches';
-const match = createMatch({
-  id: 'match-1',
-  gameId: 'game-1',
-  teams: [
-    { id: 'team-1', name: 'Time A' },
-    { id: 'team-2', name: 'Time B' },
-  ],
-  target: null,
-  createdAt: '2026-08-22T12:00:00.000Z',
-});
+const match = addEntry(
+  createMatch({
+    id: 'match-1',
+    gameId: 'canastra',
+    teams: [
+      { id: 'team-1', name: 'Time A' },
+      { id: 'team-2', name: 'Time B' },
+    ],
+    target: 3000,
+    allowNegativeEntries: true,
+    createdAt: '2026-08-22T12:00:00.000Z',
+  }),
+  {
+    id: 'entry-1',
+    teamId: 'team-1',
+    value: -100,
+    note: '',
+    createdAt: '2026-08-22T12:05:00.000Z',
+  },
+);
 
 describe('localRepository', () => {
   beforeEach(() => {
@@ -25,7 +35,7 @@ describe('localRepository', () => {
 
     await expect(repository.loadAll()).resolves.toEqual([match]);
     expect(JSON.parse(window.localStorage.getItem(key) ?? '')).toEqual({
-      version: 1,
+      version: 2,
       matches: [match],
     });
   });
@@ -40,7 +50,7 @@ describe('localRepository', () => {
   it('returns an empty list for a version mismatch', async () => {
     window.localStorage.setItem(
       key,
-      JSON.stringify({ version: 2, matches: [match] }),
+      JSON.stringify({ version: 999, matches: [match] }),
     );
     const repository = createLocalRepository(window.localStorage);
 
@@ -50,7 +60,7 @@ describe('localRepository', () => {
   it('returns an empty list for a payload of the wrong shape', async () => {
     window.localStorage.setItem(
       key,
-      JSON.stringify({ version: 1, matches: [{}] }),
+      JSON.stringify({ version: 2, matches: [{}] }),
     );
     const repository = createLocalRepository(window.localStorage);
 

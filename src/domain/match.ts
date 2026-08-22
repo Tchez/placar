@@ -5,7 +5,60 @@ export interface CreateMatchInput {
   gameId: GameId;
   teams: readonly Team[];
   target: number | null;
+  allowNegativeEntries: boolean;
   createdAt: string;
+}
+
+export type EntryValueValidation =
+  { valid: true; value: number } | { valid: false; message: string };
+
+export type TargetValidation =
+  { valid: true; value: number | null } | { valid: false; message: string };
+
+export function validateTarget(
+  rawValue: string,
+  required: boolean,
+): TargetValidation {
+  const normalized = rawValue.trim().replace(',', '.');
+
+  if (normalized === '' && !required) {
+    return { valid: true, value: null };
+  }
+
+  const value = normalized === '' ? Number.NaN : Number(normalized);
+  if (!Number.isFinite(value) || !Number.isInteger(value) || value <= 0) {
+    return {
+      valid: false,
+      message: 'Informe quantos pontos para vencer.',
+    };
+  }
+
+  return { valid: true, value };
+}
+
+export function validateEntryValue(
+  rawValue: string,
+  allowNegativeEntries: boolean,
+): EntryValueValidation {
+  const normalized = rawValue.trim().replace(',', '.');
+  const value = normalized === '' ? Number.NaN : Number(normalized);
+
+  if (!Number.isFinite(value) || !Number.isInteger(value)) {
+    return { valid: false, message: 'Informe um número inteiro.' };
+  }
+
+  if (value === 0) {
+    return { valid: false, message: 'Informe um valor diferente de zero.' };
+  }
+
+  if (value < 0 && !allowNegativeEntries) {
+    return {
+      valid: false,
+      message: 'Esta partida não permite pontos negativos.',
+    };
+  }
+
+  return { valid: true, value };
 }
 
 export function createMatch(input: CreateMatchInput): Match {
@@ -15,6 +68,7 @@ export function createMatch(input: CreateMatchInput): Match {
     teams: input.teams.map((team) => ({ ...team })),
     entries: [],
     target: input.target,
+    allowNegativeEntries: input.allowNegativeEntries,
     createdAt: input.createdAt,
     finishedAt: null,
   };
@@ -49,10 +103,13 @@ export function renameTeam(match: Match, teamId: string, name: string): Match {
     throw new Error(`Team not found: ${teamId}`);
   }
 
+  const previousName = match.teams.find(({ id }) => id === teamId)?.name ?? '';
+  const nextName = name.trim() || previousName;
+
   return {
     ...match,
     teams: match.teams.map((team) =>
-      team.id === teamId ? { ...team, name } : team,
+      team.id === teamId ? { ...team, name: nextName } : team,
     ),
   };
 }

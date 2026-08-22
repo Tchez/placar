@@ -1,8 +1,26 @@
-import type { GameDefinition, GameId } from '../domain/types';
+import type { ComponentType } from 'react';
+import type { Match } from '../domain/types';
+import type { GameDefinition } from '../domain/types';
+import { CANASTRA } from './canastra';
+import { CanastraMatchView } from './CanastraMatchView';
 
-export const GAMES: readonly GameDefinition[] = [];
+export interface GameMatchViewProps {
+  game: GameDefinition;
+  match: Match;
+}
 
-export function getGame(id: GameId): GameDefinition {
+export interface RegisteredGame extends GameDefinition {
+  MatchView: ComponentType<GameMatchViewProps>;
+}
+
+const CANASTRA_GAME: RegisteredGame = {
+  ...CANASTRA,
+  MatchView: CanastraMatchView,
+};
+
+export const GAMES: readonly RegisteredGame[] = [CANASTRA_GAME];
+
+export function getGame(id: string): RegisteredGame {
   const game = GAMES.find((candidate) => candidate.id === id);
 
   if (!game) {

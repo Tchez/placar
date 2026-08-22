@@ -38,12 +38,13 @@ describe('MatchStore', () => {
     await act(async () => {
       await result.current.createMatch({
         id: 'match-1',
-        gameId: 'game-1',
+        gameId: 'canastra',
         teams: [
           { id: 'team-1', name: 'Time A' },
           { id: 'team-2', name: 'Time B' },
         ],
         target: 12,
+        allowNegativeEntries: true,
         createdAt: '2026-08-22T12:00:00.000Z',
       });
     });

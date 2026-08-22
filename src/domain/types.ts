@@ -1,4 +1,4 @@
-export type GameId = string;
+export type GameId = 'canastra' | 'truco' | 'padel' | 'generico';
 
 export interface Team {
   id: string;
@@ -19,6 +19,7 @@ export interface Match {
   teams: readonly Team[];
   entries: readonly Entry[];
   target: number | null;
+  allowNegativeEntries: boolean;
   createdAt: string;
   finishedAt: string | null;
 }
@@ -31,6 +32,7 @@ export interface Standing {
 
 export interface Scoreboard {
   standings: readonly Standing[];
+  leaderTeamId: string | null;
   winnerTeamId: string | null;
   detail?: string;
 }
@@ -43,7 +45,10 @@ export interface GameDefinition {
   id: GameId;
   label: string;
   teamCount: number;
-  targetOptions: readonly number[];
+  defaultTeamNames: readonly string[];
+  targetSuggestions: readonly number[];
+  targetRequired: boolean;
+  supportsNegativeEntries: boolean;
   entryAffordance: EntryAffordance;
   scoreboard(match: Match): Scoreboard;
 }

@@ -2,7 +2,7 @@
 
 Score-keeping app for family card and racket games — canastra, truco, padel, and a generic fallback mode.
 
-**Status:** architectural skeleton complete. The first game is planned in `docs/specs/002-*`.
+**Status:** canastra is implemented end to end. The next games are planned in `docs/specs/`.
 
 ## The problem
 
@@ -20,9 +20,10 @@ These are settled. Do not relitigate them in a SPEC without saying so explicitly
 | **Persistence sits behind an interface** | Shared sync is a later phase and must not require rewriting screens | One module owns storage; screens never touch it directly |
 | **Mobile-first PWA** — installable via "add to home screen" | Distributes to the family without TestFlight/APK or store fees | Must work on iOS Safari and Android Chrome |
 | **Four games in the MVP** — canastra, truco, padel, generic | The generic mode keeps the app from ever being a dead end (dominó, buraco, whatever) | Game rules are data/config, not scattered conditionals |
-| **Match setup is per match, not per game** — team count, target and "negatives allowed" are chosen when creating a match | House rules vary inside the same family; freezing them into the game definition would force absurd variants like "canastra 3000" and "canastra 4000" as separate games | A game declares which setup options it offers; the match stores the resolved values |
+| **Only what varies between tables is asked at match creation** — the target and whether negatives are allowed. Team count and default team names are declared by the game | House rules vary inside the same family, so freezing the target would force absurd variants like "canastra 3000" and "canastra 4000" as separate games. Team count does not vary, so asking for it would be a screen nobody needs | A game declares its team count, default names and which setup options it offers; the match stores the resolved values |
 | **UI in Portuguese (pt-BR) only** | The family does not speak English | No i18n layer in v1 — strings live in the components. Internationalizing is a deliberate later decision, not a default to prepare for |
 | **Picking the game is the first step of the flow** | The counting rule changes everything downstream: targets, entry values, what "score" even means | Home screen is the game picker |
+| **Each game owns its match visual design** | The games have different identities and scoring rhythms; forcing them through one project-wide screen makes every game feel generic | The registry associates each definition with its own match view; shared domain and persistence contracts do not imply shared match UI |
 
 ## How each game counts
 
@@ -30,14 +31,47 @@ The reason this app is not a generic counter.
 
 ### Canastra
 Cumulative score. Each round produces a balance per team and totals add up to a target.
-- **Team count is chosen when the match is created** — the family plays in different formations.
-  Only team names exist; individual player names are not modelled
+- **Always 2 teams**, named **"Nós"** and **"Eles"** by default — that is literally what gets written
+  on paper. Renaming is deferred for now. Only team names exist; individual player names are not
+  modelled
 - **Target is typed in by the user**, not picked from a fixed list. The family plays to 3000 and to
   4000 depending on the table
 - **Whether negative entries are allowed is also a per-match choice** — some house rules let a team
   lose points, others only add
 - Entry is a **free number** (e.g. 385), not a fixed value — numeric input is required
 - If two or more teams cross the target, the app does **not** pick a winner — the table decides
+
+### The canastra screen
+
+The initial visual direction came from `docs/specs/assets/004-canastra-concept.png`. Phone testing
+and family feedback refined that concept; [SPEC 002](docs/specs/002-canastra.md) is the complete
+contract for the final shipped behaviour, while the image remains a visual reference.
+
+- **Team colour is identity, not standing.** *Nós* is always green and *Eles* always gold, whoever is
+  winning. Colours never swap and never follow the lead. This is deliberately the opposite of truco,
+  where the accent marks the leader — canastra shows two numbers that are read directly, so colour is
+  free to carry identity; truco has no numerals, so colour has to carry the lead. Do not unify them.
+- **The target seal never rounds.** An exact multiple of a thousand abbreviates (`4000` → `META: 4K`,
+  `3000` → `META: 3K`); anything else shows in full with the pt-BR separator (`3500` → `META: 3.500`).
+  Showing `4K` for a 3500-point match would be false information about the one number the match is
+  measured against.
+- **The score is the information hierarchy.** Each total is dominant; only the numeric distance to
+  target sits below it. The lower row shows the absolute difference between teams. Reaching half the
+  target emphasizes the team's score as being in the *obrigada*.
+- **Adding and removing are explicit actions.** The wide launcher uses labeled buttons and opens a
+  contextual amount modal. The modal changes nothing until confirmed, and removal is unavailable
+  when that match does not allow negative entries.
+- **The entry log lives behind the header icon.** It is open by default, can be hidden from that
+  toggle and is the inline block that expands the compact match page. Team renaming and a settings
+  action are not part of this version.
+- **One formatting helper.** Every displayed score, target distance, difference and log value goes
+  through a wrapper around `Intl.NumberFormat('pt-BR')`. No manual separators in components.
+- **Action grouping matters.** The finish/delete controls are one group, separated from score entry
+  by a deliberate gap; delete remains visually secondary and close to finish.
+- **Presentation only.** None of this touches the domain, the repository, the scoring derivation or the
+  validation messages. If it seems to, that is worth surfacing before changing them.
+- **Not built, on purpose:** a count badge on the log icon and scoring shortcut buttons (still
+  blocked on the family's point values).
 
 ### Truco
 Cumulative score with discrete values.
@@ -59,7 +93,7 @@ Free teams and a plain sum, optional target. Exists so any other game fits.
 ## MVP scope
 
 - Pick the game on the home screen
-- Create a match with two teams (editable names)
+- Create a match with the game's default teams
 - Set the point/set target according to the game
 - Add, edit and delete score entries
 - Live scoreboard using the correct counting rule per game

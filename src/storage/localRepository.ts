@@ -2,7 +2,7 @@ import type { Entry, Match, Team } from '../domain/types';
 import type { MatchRepository } from './repository';
 
 const STORAGE_KEY = 'placar:matches';
-const STORAGE_VERSION = 1;
+const STORAGE_VERSION = 2;
 
 interface StoredPayload {
   version: number;
@@ -43,6 +43,7 @@ function isMatch(value: unknown): value is Match {
     Array.isArray(value.entries) &&
     value.entries.every(isEntry) &&
     (typeof value.target === 'number' || value.target === null) &&
+    typeof value.allowNegativeEntries === 'boolean' &&
     typeof value.createdAt === 'string' &&
     (typeof value.finishedAt === 'string' || value.finishedAt === null)
   );
