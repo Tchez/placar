@@ -72,3 +72,15 @@ Derived from the game rules in `README.md` — these are not negotiable style pr
 - Don't commit or push unless asked
 - No `console.log` left in committed code
 - Small, focused changes over large refactors
+
+## Commands
+
+- `npm run dev` — start the Vite development server
+- `npm run local` — start Vite on the local network for testing on a phone
+- `npm run build` — typecheck and create the production build
+- `npm run typecheck` — run TypeScript project checks
+- `npm run lint` — run ESLint
+- `npm run format` — format repository files with Prettier
+- `npm run format:check` — verify formatting without changing files
+- `npm run test` — run the test suite once
+- `npm run check` — run typecheck, lint, format check and tests

@@ -9,7 +9,8 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 
 | # | Title | Status |
 |---|---|---|
-| [001](001-project-setup.md) | Project setup and architectural skeleton | ready |
+| [001](001-project-setup.md) | Project setup and architectural skeleton | done |
+| [002](002-canastra.md) | Canastra, first game end to end | ready |
 
 ## Planned
 
@@ -17,12 +18,17 @@ Order matters — each one is meant to be a purely additive change on top of the
 
 | # | Title | Why here |
 |---|---|---|
-| 002 | Truco: first game end to end | Simplest counting rule (fixed buttons, no negatives, target 12). Proves the whole flow — pick game → create match → add entries → live score — and the game-as-data contract, with the least surface area |
-| 003 | Canastra | Adds free numeric entry and negative round balances |
-| 004 | Padel | The hard one: score is not a sum. Sets derived from a log of games won. If 002–003 got the contract right, this needs no change to any screen |
-| 005 | Generic game + match history | Closes the MVP scope in `README.md` |
+| 003 | Truco | Fixed-value buttons and a required target. Blocked on which variant the family plays (gaúcho / mineiro) |
+| 004 | Padel | The hard one: score is not a sum. Sets derived from a log of games won. If 002 got the contract right, this needs no change to any screen |
+| 005 | Generic game + finished-match history | Closes the MVP scope in `README.md` |
 | 006 | PWA install, offline and deploy | How the family actually gets the app. Blocked on the hosting decision |
+| — | Round-based entry for canastra | One input per team saved as a round. Better fit for how canastra is actually scored; deferred out of SPEC 002 because it changes the entry log's shape |
 
-Ordering rationale: padel comes late but its shape is already accounted for in the SPEC 001
-contract (`scoreboard(match)` derived from the entry log). If implementing 004 requires editing a
-screen, the contract was wrong — that is the signal to fix the contract, not to special-case padel.
+Canastra comes first because it is what the family plays most, and because it is the game that
+exposes the real variability — different point limits, variable team count, negatives allowed or not.
+Building the first screens against the messiest case avoids a contract that is too naive.
+
+Padel comes late but its shape is already accounted for in the SPEC 001 contract
+(`scoreboard(match)` derived from the entry log, `Standing.score` plus a free-text detail). If
+implementing 004 requires editing a screen, the contract was wrong — that is the signal to fix the
+contract, not to special-case padel.

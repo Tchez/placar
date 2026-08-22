@@ -1,6 +1,6 @@
 # SPEC 001 — Project setup and architectural skeleton
 
-- **Status:** ready
+- **Status:** done
 - **Created:** 2026-08-22
 - **Depends on:** none
 
@@ -14,8 +14,9 @@ a test harness, one command that says pass/fail, and the architectural boundarie
 expressed as real files with real tests. What is not enforced by a test or a type here will drift
 later.
 
-At the end of this SPEC, `npm run dev` opens a styled, empty Portuguese app shell, and
-`npm run check` proves the domain and persistence layers work.
+At the end of this SPEC, `npm run dev` opens a styled, empty Portuguese app shell,
+`npm run local` exposes it to phones on the same local network, and `npm run check` proves the
+domain and persistence layers work.
 
 ## Context
 
@@ -42,6 +43,7 @@ Code, comments, tests and commits are in English.
 **In**
 
 - Toolchain: Vite + React + TypeScript (strict), formatter, linter, test runner
+- A local-network development command for testing on a phone
 - A single verification command that gates everything
 - Folder structure with a stated purpose per folder
 - Domain types and pure domain functions over the entry log, with tests
@@ -73,6 +75,9 @@ Running `npm run dev` on a phone-sized viewport shows:
 - No console errors and no console warnings.
 
 There is nothing to click. That is the correct outcome for this SPEC.
+
+Running `npm run local` starts the same development server on the local network and prints a
+network URL that a phone on the same Wi-Fi can open.
 
 ## Rules
 
@@ -176,25 +181,26 @@ It is the single command that answers "is this safe to commit". No `any`. No `co
 
 ## Acceptance criteria
 
-- [ ] `npm install && npm run dev` serves the app; the shell renders the empty state text from
+- [x] `npm install && npm run dev` serves the app; the shell renders the empty state text from
       **Behaviour** with no console errors or warnings
-- [ ] `npm run check` exists, runs typecheck + lint + format check + tests, and passes
-- [ ] `npm run build` produces a production build with no type errors
-- [ ] TypeScript runs in strict mode; the string `any` appears in no source file
-- [ ] The folder structure matches **Structure** exactly, and every listed test file exists
-- [ ] `grep -r localStorage src/` matches only `storage/localRepository.ts` (and its test)
-- [ ] `games/index.ts` exports an **empty** `GAMES` registry; `getGame` throws a descriptive error
+- [x] `npm run local` exposes the development server on the local network
+- [x] `npm run check` exists, runs typecheck + lint + format check + tests, and passes
+- [x] `npm run build` produces a production build with no type errors
+- [x] TypeScript runs in strict mode; the string `any` appears in no source file
+- [x] The folder structure matches **Structure** exactly, and every listed test file exists
+- [x] `grep -r localStorage src/` matches only `storage/localRepository.ts` (and its test)
+- [x] `games/index.ts` exports an **empty** `GAMES` registry; `getGame` throws a descriptive error
       for an unknown id, and a test asserts it
-- [ ] No file in `src/` other than `domain/types.ts` mentions a specific game's rules
-- [ ] Every function exported by `domain/match.ts` has at least one test asserting the returned
+- [x] No file in `src/` other than `domain/types.ts` mentions a specific game's rules
+- [x] Every function exported by `domain/match.ts` has at least one test asserting the returned
       value, and one asserting the input object was not mutated
-- [ ] The repository test covers: save/load round-trip, unparseable JSON, wrong `version`, and
+- [x] The repository test covers: save/load round-trip, unparseable JSON, wrong `version`, and
       `remove`
-- [ ] The store test injects a fake repository and never touches real browser storage
-- [ ] `useMatches()` outside the provider throws, asserted by a test
-- [ ] No score total is stored anywhere: `Match`, `Team` and `Entry` have no total/points field
-- [ ] All user-visible strings are in Portuguese; the repo contains no i18n library or locale file
-- [ ] `CLAUDE.md` gains a **Commands** section listing the npm scripts this SPEC creates
+- [x] The store test injects a fake repository and never touches real browser storage
+- [x] `useMatches()` outside the provider throws, asserted by a test
+- [x] No score total is stored anywhere: `Match`, `Team` and `Entry` have no total/points field
+- [x] All user-visible strings are in Portuguese; the repo contains no i18n library or locale file
+- [x] `CLAUDE.md` gains a **Commands** section listing the npm scripts this SPEC creates
 
 ## Open questions
 

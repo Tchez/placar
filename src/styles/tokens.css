@@ -1,0 +1,18 @@
+:root {
+  color-scheme: dark;
+  --color-background: #10131a;
+  --color-surface: #191e29;
+  --color-text: #f5f7fb;
+  --color-text-muted: #aeb7c7;
+  --color-accent: #68e0a5;
+  --radius-small: 0.5rem;
+  --radius-medium: 1rem;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --tap-target-min: 44px;
+  --content-max-width: 36rem;
+}

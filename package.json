@@ -1,0 +1,41 @@
+{
+  "name": "placar",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "local": "vite --host",
+    "build": "tsc -b && vite build",
+    "typecheck": "tsc -b --pretty false",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "check": "npm run typecheck && npm run lint && npm run format:check && npm run test"
+  },
+  "dependencies": {
+    "react": "latest",
+    "react-dom": "latest",
+    "react-router-dom": "latest"
+  },
+  "devDependencies": {
+    "@eslint/js": "latest",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@vitejs/plugin-react": "^6.1.0",
+    "eslint": "latest",
+    "eslint-plugin-react-hooks": "latest",
+    "eslint-plugin-react-refresh": "latest",
+    "globals": "latest",
+    "jsdom": "^26.1.0",
+    "prettier": "latest",
+    "typescript": "latest",
+    "typescript-eslint": "latest",
+    "vite": "^8.2.2",
+    "vitest": "latest"
+  }
+}

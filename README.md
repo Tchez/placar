@@ -2,7 +2,7 @@
 
 Score-keeping app for family card and racket games — canastra, truco, padel, and a generic fallback mode.
 
-**Status:** documentation only. No code yet. The first implementation happens from `docs/specs/001-*`.
+**Status:** architectural skeleton complete. The first game is planned in `docs/specs/002-*`.
 
 ## The problem
 
@@ -20,6 +20,7 @@ These are settled. Do not relitigate them in a SPEC without saying so explicitly
 | **Persistence sits behind an interface** | Shared sync is a later phase and must not require rewriting screens | One module owns storage; screens never touch it directly |
 | **Mobile-first PWA** — installable via "add to home screen" | Distributes to the family without TestFlight/APK or store fees | Must work on iOS Safari and Android Chrome |
 | **Four games in the MVP** — canastra, truco, padel, generic | The generic mode keeps the app from ever being a dead end (dominó, buraco, whatever) | Game rules are data/config, not scattered conditionals |
+| **Match setup is per match, not per game** — team count, target and "negatives allowed" are chosen when creating a match | House rules vary inside the same family; freezing them into the game definition would force absurd variants like "canastra 3000" and "canastra 4000" as separate games | A game declares which setup options it offers; the match stores the resolved values |
 | **UI in Portuguese (pt-BR) only** | The family does not speak English | No i18n layer in v1 — strings live in the components. Internationalizing is a deliberate later decision, not a default to prepare for |
 | **Picking the game is the first step of the flow** | The counting rule changes everything downstream: targets, entry values, what "score" even means | Home screen is the game picker |
 
@@ -28,12 +29,15 @@ These are settled. Do not relitigate them in a SPEC without saying so explicitly
 The reason this app is not a generic counter.
 
 ### Canastra
-Cumulative score. Each round produces a balance per pair and totals add up to a target.
-- 2 pairs · default target **3000** (options 1500 / 3000 / 5000)
-- Round balance **can be negative** (pair that failed to go out)
-- Entry is a **free number** (e.g. 385), not a fixed value — numeric input is required, buttons alone are not enough
-- Useful shortcuts: `+200` clean canastra, `+100` dirty canastra, `−100` failed to go out
-- If both pairs cross the target in the same round, the app does **not** pick a winner — the table decides
+Cumulative score. Each round produces a balance per team and totals add up to a target.
+- **Team count is chosen when the match is created** — the family plays in different formations.
+  Only team names exist; individual player names are not modelled
+- **Target is typed in by the user**, not picked from a fixed list. The family plays to 3000 and to
+  4000 depending on the table
+- **Whether negative entries are allowed is also a per-match choice** — some house rules let a team
+  lose points, others only add
+- Entry is a **free number** (e.g. 385), not a fixed value — numeric input is required
+- If two or more teams cross the target, the app does **not** pick a winner — the table decides
 
 ### Truco
 Cumulative score with discrete values.
@@ -73,9 +77,10 @@ Free teams and a plain sum, optional target. Exists so any other game fits.
 ## Repository layout
 
 ```
+src/                 React application, domain, persistence and tests
 docs/specs/          SPECs — one per unit of work, the input to implementation
 docs/specs/000-template.md   SPEC template
-CLAUDE.md            Working agreement for AI agents in this repo
+CLAUDE.md            Working agreement and development commands
 ```
 
 ## Where the product docs live
