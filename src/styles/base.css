@@ -199,11 +199,17 @@ a:focus-visible {
 
 .game-card {
   display: grid;
+  width: 100%;
   min-height: 6.5rem;
   place-items: center;
   padding: var(--space-4);
   border-radius: var(--radius-large);
   text-align: center;
+}
+
+button.game-card {
+  color: inherit;
+  font: inherit;
 }
 
 .game-card strong {

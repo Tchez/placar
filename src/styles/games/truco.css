@@ -1,0 +1,767 @@
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  src: url('../../assets/fonts/archivo-latin-variable.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('../../assets/fonts/roboto-slab-latin-variable.woff2')
+    format('woff2');
+}
+
+body.truco-theme {
+  background: #0d0f0d;
+}
+
+body.truco-sheet-open {
+  overflow: hidden;
+}
+
+body.truco-theme .app-shell {
+  width: min(100%, 46rem);
+  min-height: 100dvh;
+  padding: 0;
+}
+
+body.truco-theme .app-content {
+  min-height: 100dvh;
+  padding: 0;
+}
+
+.game-match[data-game='truco'] {
+  --truco-noite: #0d0f0d;
+  --truco-madeira: #1b1813;
+  --truco-papel: #e7d0aa;
+  --truco-papel-claro: #f0dfc0;
+  --truco-tinta: #17130f;
+  --truco-giz: #dcc8a3;
+  --truco-giz-fraco: rgb(220 200 163 / 48%);
+  --truco-ouro: #b78639;
+  --truco-ouro-fraco: rgb(183 134 57 / 34%);
+  --truco-nos: #35451f;
+  --truco-nos-claro: #53672e;
+  --truco-eles: #8e2b1e;
+  --truco-eles-claro: #b24130;
+  --truco-erro: #f0a18e;
+  min-height: 100dvh;
+  background: var(--truco-noite);
+  color: var(--truco-giz);
+  font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+}
+
+.game-match[data-game='truco'] button:focus-visible {
+  outline-color: var(--truco-ouro);
+}
+
+.truco-match {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  flex-direction: column;
+  gap: clamp(1rem, 2.5vh, 1.5rem);
+  padding: max(0.7rem, env(safe-area-inset-top))
+    max(0.9rem, env(safe-area-inset-right))
+    max(1rem, env(safe-area-inset-bottom))
+    max(0.9rem, env(safe-area-inset-left));
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 72% 18%, rgb(97 73 38 / 12%), transparent 22rem),
+    radial-gradient(circle at 18% 78%, rgb(75 53 28 / 10%), transparent 24rem),
+    repeating-linear-gradient(
+      7deg,
+      transparent 0,
+      transparent 8px,
+      rgb(255 255 255 / 1.4%) 9px,
+      transparent 10px
+    ),
+    linear-gradient(
+      115deg,
+      var(--truco-noite),
+      var(--truco-madeira) 52%,
+      #11120f
+    );
+}
+
+.truco-match::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      92deg,
+      transparent 0,
+      transparent 34px,
+      rgb(231 208 170 / 1.2%) 35px,
+      transparent 37px
+    ),
+    linear-gradient(rgb(0 0 0 / 8%), transparent 18%, rgb(0 0 0 / 18%));
+  content: '';
+}
+
+.truco-header {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  min-height: 3.25rem;
+  grid-template-columns: 3.25rem minmax(0, 1fr) 3.25rem;
+  align-items: center;
+  gap: 0.5rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--truco-ouro-fraco);
+}
+
+.truco-header h1 {
+  overflow: hidden;
+  margin: 0;
+  color: var(--truco-giz);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: clamp(1.3rem, 6vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: 0.015em;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-shadow: 0 0.25rem 0.7rem rgb(0 0 0 / 60%);
+  white-space: nowrap;
+}
+
+.truco-icon-button,
+.truco-sheet__header button {
+  display: grid;
+  width: 3.25rem;
+  min-width: 3.25rem;
+  height: 3.25rem;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 0.65rem;
+  background: transparent;
+  color: var(--truco-giz);
+}
+
+.truco-icon-button svg,
+.truco-sheet__header button svg,
+.truco-finished__secondary svg,
+.truco-undo svg {
+  width: 1.45rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.truco-icon-button:active,
+.truco-sheet__header button:active {
+  background: rgb(231 208 170 / 7%);
+}
+
+.truco-header__spacer {
+  width: 3.25rem;
+  height: 3.25rem;
+}
+
+.truco-options {
+  position: relative;
+}
+
+.truco-options__menu {
+  position: absolute;
+  top: calc(100% + 0.4rem);
+  right: 0;
+  display: grid;
+  width: min(15rem, calc(100vw - 2rem));
+  padding: 0.4rem;
+  border: 1px solid var(--truco-ouro-fraco);
+  border-radius: 0.75rem;
+  background: #201c16;
+  box-shadow: 0 1.2rem 2.5rem rgb(0 0 0 / 55%);
+}
+
+.truco-options__menu button {
+  min-height: 3rem;
+  padding: 0.6rem 0.75rem;
+  border: 0;
+  background: transparent;
+  color: var(--truco-giz);
+  font-size: 0.86rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.truco-options__menu button + button {
+  border-top: 1px solid var(--truco-ouro-fraco);
+}
+
+.truco-options__menu .truco-options__delete {
+  color: var(--truco-erro);
+}
+
+.truco-winner-status {
+  margin: -0.45rem auto -0.3rem;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid var(--truco-ouro-fraco);
+  border-radius: 999px;
+  color: var(--truco-papel);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-weight: 700;
+  text-align: center;
+}
+
+.truco-scoreboard {
+  position: relative;
+  display: grid;
+  min-height: clamp(25rem, 66vh, 34rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.85rem, 4vw, 1.5rem);
+}
+
+.truco-scoreboard::before,
+.truco-final-score::before {
+  position: absolute;
+  z-index: 0;
+  top: 1.8rem;
+  bottom: 0.35rem;
+  left: 50%;
+  width: 1px;
+  background: linear-gradient(
+    transparent,
+    var(--truco-ouro) 8%,
+    var(--truco-ouro) 92%,
+    transparent
+  );
+  content: '';
+  opacity: 0.8;
+}
+
+.truco-scoreboard::after,
+.truco-final-score::after {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  width: 0.6rem;
+  height: 0.6rem;
+  border: 1px solid var(--truco-ouro);
+  background: var(--truco-madeira);
+  content: '';
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.truco-side {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-width: 0;
+  grid-template-rows: minmax(13.5rem, 1fr) auto auto;
+  align-items: end;
+  justify-items: center;
+  gap: 0.75rem;
+}
+
+.truco-score-block {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 13.5rem;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.2rem, 5vh, 2.5rem);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--truco-giz);
+}
+
+button.truco-score-block {
+  cursor: pointer;
+}
+
+.truco-team-banner {
+  display: grid;
+  width: 100%;
+  min-height: 3rem;
+  place-items: center;
+  padding: 0.45rem 1rem;
+  clip-path: polygon(8% 0, 92% 0, 100% 50%, 92% 100%, 8% 100%, 0 50%);
+  color: var(--truco-papel);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: clamp(1.05rem, 5vw, 1.45rem);
+  font-weight: 700;
+  letter-spacing: 0.055em;
+  line-height: 1;
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 1px var(--truco-ouro-fraco);
+}
+
+.truco-side--us .truco-team-banner,
+.truco-score-block.truco-side--us .truco-team-banner {
+  background: linear-gradient(135deg, var(--truco-nos-claro), var(--truco-nos));
+}
+
+.truco-side--them .truco-team-banner,
+.truco-score-block.truco-side--them .truco-team-banner {
+  background: linear-gradient(
+    135deg,
+    var(--truco-eles-claro),
+    var(--truco-eles)
+  );
+}
+
+.truco-tally {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 0.85rem 0.65rem;
+}
+
+.truco-tally__group {
+  width: clamp(3.35rem, 18vw, 4.8rem);
+  max-width: calc(50% - 0.35rem);
+  overflow: visible;
+}
+
+.truco-tally__mark {
+  fill: none;
+  stroke: var(--truco-giz);
+  stroke-linecap: round;
+  stroke-width: 5;
+  filter: drop-shadow(0 0.18rem 0.12rem rgb(0 0 0 / 45%));
+}
+
+.truco-tally__mark--new {
+  stroke-dasharray: 64;
+  animation: truco-draw-mark 240ms ease-out both;
+}
+
+.truco-add-one,
+.truco-subtract-one {
+  width: min(100%, 10rem);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  box-shadow: 0 0.8rem 1.4rem rgb(0 0 0 / 25%);
+}
+
+.truco-add-one {
+  min-width: 7rem;
+  min-height: 5.5rem;
+  border-color: var(--truco-ouro-fraco);
+  border-radius: 0.85rem;
+  color: var(--truco-papel);
+  font-size: clamp(2rem, 9vw, 2.75rem);
+  text-shadow: 0 0.15rem 0.2rem rgb(0 0 0 / 55%);
+}
+
+.truco-side--us .truco-add-one {
+  background: linear-gradient(145deg, var(--truco-nos-claro), var(--truco-nos));
+}
+
+.truco-side--them .truco-add-one {
+  background: linear-gradient(
+    145deg,
+    var(--truco-eles-claro),
+    var(--truco-eles)
+  );
+}
+
+.truco-subtract-one {
+  min-height: 3.4rem;
+  border-color: var(--truco-ouro-fraco);
+  border-radius: 0.75rem;
+  background: rgb(13 15 13 / 48%);
+  color: var(--truco-giz);
+  font-size: 1.25rem;
+}
+
+.truco-undo {
+  display: inline-flex;
+  width: min(100%, 27rem);
+  min-height: 4.7rem;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: auto;
+  padding: 0.8rem 1rem;
+  border-color: var(--truco-ouro-fraco);
+  border-radius: 0.85rem;
+  background: rgb(23 20 16 / 78%);
+  color: var(--truco-papel);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: 0.95rem;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  box-shadow: 0 0.8rem 1.6rem rgb(0 0 0 / 22%);
+}
+
+.truco-error {
+  margin: -0.5rem 0 0;
+  color: var(--truco-erro);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.truco-sheet-backdrop {
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  display: grid;
+  justify-items: center;
+  background: rgb(4 5 4 / 72%);
+  backdrop-filter: blur(5px);
+}
+
+.truco-sheet {
+  display: flex;
+  width: min(100%, 34rem);
+  min-height: 100vh;
+  min-height: 100dvh;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: max(0.65rem, env(safe-area-inset-top))
+    max(0.8rem, env(safe-area-inset-right))
+    max(0.9rem, env(safe-area-inset-bottom))
+    max(0.8rem, env(safe-area-inset-left));
+  border: 1px solid var(--truco-ouro-fraco);
+  background:
+    repeating-linear-gradient(
+      8deg,
+      transparent 0,
+      transparent 9px,
+      rgb(255 255 255 / 1.2%) 10px,
+      transparent 11px
+    ),
+    linear-gradient(135deg, #211d16, var(--truco-madeira));
+  box-shadow: 0 0 3rem rgb(0 0 0 / 72%);
+  animation: truco-sheet-in 180ms ease-out both;
+}
+
+.truco-sheet__header {
+  display: grid;
+  min-height: 3.4rem;
+  grid-template-columns: 3.25rem minmax(0, 1fr) 3.25rem;
+  align-items: center;
+  border: 1px solid var(--truco-ouro-fraco);
+  border-radius: 0.85rem 0.85rem 0 0;
+}
+
+.truco-sheet--us .truco-sheet__header {
+  background: linear-gradient(135deg, var(--truco-nos-claro), var(--truco-nos));
+}
+
+.truco-sheet--them .truco-sheet__header {
+  background: linear-gradient(
+    135deg,
+    var(--truco-eles-claro),
+    var(--truco-eles)
+  );
+}
+
+.truco-sheet__header h2 {
+  overflow: hidden;
+  color: var(--truco-papel);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.truco-sheet__values,
+.truco-outcomes {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.truco-sheet__values {
+  margin-top: 0.25rem;
+}
+
+.truco-paper-button {
+  display: flex;
+  width: 100%;
+  min-height: 4.65rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.3rem;
+  border-color: rgb(23 19 15 / 62%);
+  border-radius: 0.7rem;
+  background: linear-gradient(
+    135deg,
+    var(--truco-papel-claro),
+    var(--truco-papel)
+  );
+  color: var(--truco-tinta);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: clamp(1.05rem, 5vw, 1.4rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 750;
+  letter-spacing: 0.015em;
+  text-align: left;
+  text-transform: uppercase;
+  box-shadow:
+    0 0.55rem 1rem rgb(0 0 0 / 20%),
+    inset 0 1px rgb(255 255 255 / 28%);
+}
+
+.truco-paper-button span {
+  flex: 0 0 auto;
+  font-size: 1.25em;
+}
+
+.truco-paper-button:active {
+  transform: translateY(1px);
+  filter: brightness(0.94);
+}
+
+.truco-sheet__note {
+  display: flex;
+  min-height: 4rem;
+  align-items: center;
+  gap: 0.8rem;
+  margin: auto 0 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--truco-ouro-fraco);
+  border-radius: 0.65rem;
+  color: var(--truco-giz);
+  font-size: 0.82rem;
+}
+
+.truco-sheet__note span {
+  color: var(--truco-ouro);
+  font-size: 1.25rem;
+}
+
+.truco-special {
+  justify-content: flex-start;
+}
+
+.truco-special__hero,
+.truco-finished__hero {
+  display: grid;
+  justify-items: center;
+  gap: 0.35rem;
+  padding: clamp(1rem, 5vw, 1.65rem);
+  border: 1px solid var(--truco-ouro-fraco);
+  border-radius: 0.85rem;
+  text-align: center;
+  box-shadow: 0 1rem 2rem rgb(0 0 0 / 25%);
+  animation: truco-special-in 260ms ease-out both;
+}
+
+.truco-special__hero--us,
+.truco-finished__hero--us {
+  background: linear-gradient(135deg, var(--truco-nos-claro), var(--truco-nos));
+}
+
+.truco-special__hero--them,
+.truco-finished__hero--them {
+  background: linear-gradient(
+    135deg,
+    var(--truco-eles-claro),
+    var(--truco-eles)
+  );
+}
+
+.truco-special__hero--iron,
+.truco-finished__hero:not(
+  .truco-finished__hero--us,
+  .truco-finished__hero--them
+) {
+  background: linear-gradient(135deg, #3c3323, #201d17);
+}
+
+.truco-special__hero h2,
+.truco-finished__hero h2 {
+  margin: 0;
+  color: var(--truco-papel);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: clamp(1.65rem, 8vw, 2.6rem);
+  font-weight: 750;
+  letter-spacing: 0.025em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 42%);
+}
+
+.truco-special__hero p {
+  margin: 0;
+  color: var(--truco-papel);
+  font-size: 0.95rem;
+}
+
+.truco-outcomes {
+  width: min(100%, 29rem);
+  align-self: center;
+  margin-top: 0.2rem;
+}
+
+.truco-outcomes .truco-paper-button {
+  min-height: 4.35rem;
+  font-size: clamp(0.9rem, 4.5vw, 1.2rem);
+}
+
+.truco-outcomes .truco-paper-button span {
+  font-family: 'Archivo', ui-sans-serif, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 750;
+  text-align: right;
+  text-transform: none;
+}
+
+.truco-finished {
+  gap: 0.9rem;
+}
+
+.truco-finished__hero {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.truco-finished__hero > span {
+  color: var(--truco-ouro);
+}
+
+.truco-final-score {
+  position: relative;
+  display: grid;
+  min-height: 14rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  padding-block: 0.5rem;
+}
+
+.truco-score-block--compact {
+  position: relative;
+  z-index: 1;
+  min-height: 12rem;
+  gap: 1.2rem;
+}
+
+.truco-score-block--compact .truco-team-banner {
+  min-height: 2.5rem;
+  font-size: 1rem;
+}
+
+.truco-score-block--compact .truco-tally__group {
+  width: clamp(2.8rem, 15vw, 4rem);
+}
+
+.truco-finished__actions {
+  display: grid;
+  width: min(100%, 29rem);
+  align-self: center;
+  gap: 0.65rem;
+  margin-top: auto;
+}
+
+.truco-new-match {
+  justify-content: center;
+  text-align: center;
+}
+
+.truco-finished__secondary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.truco-finished__secondary button {
+  display: inline-flex;
+  min-height: 3.75rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.65rem;
+  border-color: var(--truco-ouro-fraco);
+  background: rgb(23 20 16 / 78%);
+  color: var(--truco-papel);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
+
+@keyframes truco-draw-mark {
+  from {
+    stroke-dashoffset: 64;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes truco-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes truco-special-in {
+  from {
+    border-color: var(--truco-ouro);
+    box-shadow: 0 0 2rem var(--truco-ouro-fraco);
+    opacity: 0;
+    transform: translateY(0.6rem);
+  }
+  to {
+    border-color: var(--truco-ouro-fraco);
+    box-shadow: 0 1rem 2rem rgb(0 0 0 / 25%);
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 23rem) {
+  .truco-match {
+    padding-inline: max(0.65rem, env(safe-area-inset-left));
+  }
+
+  .truco-scoreboard {
+    gap: 0.65rem;
+  }
+
+  .truco-team-banner {
+    padding-inline: 0.65rem;
+  }
+}
+
+@media (min-width: 36rem) {
+  .truco-match {
+    border-inline: 1px solid var(--truco-ouro-fraco);
+  }
+
+  .truco-paper-button:hover:not(:disabled) {
+    filter: brightness(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .truco-tally__mark--new,
+  .truco-sheet,
+  .truco-special__hero,
+  .truco-finished__hero {
+    animation: none;
+  }
+}

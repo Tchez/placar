@@ -1,11 +1,23 @@
-import { Link, useParams } from 'react-router-dom';
-import { ROUTES } from '../app/routes';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { matchPath, ROUTES } from '../app/routes';
 import { GAMES } from '../games';
+import { createDefaultMatchInput } from '../games/createDefaultMatchInput';
 import { useMatches } from '../store/MatchStore';
 
 export function MatchScreen() {
   const { matchId } = useParams();
-  const { isLoading, matches } = useMatches();
+  const navigate = useNavigate();
+  const {
+    addEntry,
+    createMatch,
+    finishMatch,
+    isLoading,
+    matches,
+    removeEntry,
+    removeMatch,
+    reopenMatch,
+    updateEntry,
+  } = useMatches();
   const match = matches.find(({ id }) => id === matchId);
   const game = GAMES.find(({ id }) => id === match?.gameId);
 
@@ -23,5 +35,34 @@ export function MatchScreen() {
   }
 
   const GameMatchView = game.MatchView;
-  return <GameMatchView game={game} match={match} />;
+  const actions = {
+    addEntry: (entry: Parameters<typeof addEntry>[1]) =>
+      addEntry(match.id, entry),
+    updateEntry: (entry: Parameters<typeof updateEntry>[1]) =>
+      updateEntry(match.id, entry),
+    removeEntry: (entryId: string) => removeEntry(match.id, entryId),
+    finish: () => finishMatch(match.id, new Date().toISOString()),
+    reopen: () => reopenMatch(match.id),
+    async remove() {
+      if (
+        !window.confirm('Apagar esta partida? Esta ação não pode ser desfeita.')
+      ) {
+        return;
+      }
+      await removeMatch(match.id);
+      navigate(ROUTES.home);
+    },
+    async createNew() {
+      const created = await createMatch(createDefaultMatchInput(game));
+      navigate(matchPath(created.id));
+      return created;
+    },
+    goHome: () => navigate(ROUTES.home),
+  };
+
+  return (
+    <div className="game-match" data-game={game.id}>
+      <GameMatchView actions={actions} game={game} match={match} />
+    </div>
+  );
 }

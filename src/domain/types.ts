@@ -46,6 +46,8 @@ export interface GameDefinition {
   label: string;
   teamCount: number;
   defaultTeamNames: readonly string[];
+  needsSetup: boolean;
+  defaultTarget: number | null;
   targetSuggestions: readonly number[];
   targetRequired: boolean;
   supportsNegativeEntries: boolean;

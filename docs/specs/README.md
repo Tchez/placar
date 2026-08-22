@@ -11,7 +11,7 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 |---|---|---|
 | [001](001-project-setup.md) | Project setup and architectural skeleton | done |
 | [002](002-canastra.md) | Canastra, first game end to end | done |
-| [003](003-truco-mineiro.md) | Truco mineiro | ready |
+| [003](003-truco-mineiro.md) | Truco mineiro | done |
 | [004](004-deploy-and-install.md) | Deploy and installable PWA | ready — **do this next** |
 
 ## Planned
@@ -28,13 +28,13 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 
 ## Ordering
 
-**Implementation order is 002 → 004 → 003 → 005 …** Numbers are identity, not priority, and are never
-reused or renumbered.
+**The implemented order is 002 → 003; 004 is next, then 005 …** Numbers are identity, not priority,
+and are never reused or renumbered.
 
-**004 jumps the queue, ahead of every remaining game.** `localStorage` is scoped per origin, so every
-score recorded against the dev server is orphaned the moment the app moves to a real URL. Until the
-app is installed and works offline, nothing recorded in it can be trusted to survive — so the deploy
-comes before more features, not after.
+**004 remains ahead of every game after truco.** `localStorage` is scoped per origin, so every score
+recorded against the dev server is orphaned the moment the app moves to a real URL. Until the app is
+installed and works offline, nothing recorded in it can be trusted to survive — so the deploy comes
+before more features, not after.
 
 Canastra came first because it is what the family plays most, and because it is the game that exposes
 the real variability — different point limits, negatives allowed or not. Building the first screens

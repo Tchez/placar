@@ -1,4 +1,4 @@
-body.canastra-theme {
+.game-match[data-game='canastra'] {
   --canastra-bg: #001c15;
   --canastra-bg-deep: #00110d;
   --canastra-panel: rgba(3, 37, 28, 0.72);
@@ -10,8 +10,11 @@ body.canastra-theme {
   --canastra-muted: #b9a983;
   --canastra-line: rgba(220, 186, 107, 0.26);
   --canastra-danger: #d36b4c;
-  background: var(--canastra-bg-deep);
-  color: var(--canastra-text);
+}
+
+body.canastra-theme {
+  background: #00110d;
+  color: #f4e6c8;
 }
 
 body.canastra-modal-open {

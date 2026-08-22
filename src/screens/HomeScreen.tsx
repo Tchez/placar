@@ -1,6 +1,8 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { matchPath, newMatchPath } from '../app/routes';
-import { GAMES } from '../games';
+import { GAMES, type RegisteredGame } from '../games';
+import { createDefaultMatchInput } from '../games/createDefaultMatchInput';
 import { useMatches } from '../store/MatchStore';
 
 function formatStartedAt(value: string): string {
@@ -13,8 +15,28 @@ function formatStartedAt(value: string): string {
 }
 
 export function HomeScreen() {
-  const { isLoading, matches } = useMatches();
+  const navigate = useNavigate();
+  const { createMatch, isLoading, matches } = useMatches();
+  const [creatingGameId, setCreatingGameId] = useState<string | null>(null);
+  const [creationError, setCreationError] = useState('');
   const activeMatches = matches.filter((match) => match.finishedAt === null);
+
+  async function startGame(game: RegisteredGame) {
+    if (game.needsSetup) {
+      navigate(newMatchPath(game.id));
+      return;
+    }
+
+    setCreationError('');
+    setCreatingGameId(game.id);
+    try {
+      const match = await createMatch(createDefaultMatchInput(game));
+      navigate(matchPath(match.id));
+    } catch {
+      setCreationError('Não foi possível começar a partida. Tente novamente.');
+      setCreatingGameId(null);
+    }
+  }
 
   return (
     <div className="screen home-screen">
@@ -25,15 +47,31 @@ export function HomeScreen() {
         </header>
         <div className="game-grid">
           {GAMES.map((game) => (
-            <Link
-              className="game-card"
-              key={game.id}
-              to={newMatchPath(game.id)}
-            >
-              <strong>{game.label}</strong>
-            </Link>
+            <div key={game.id}>
+              {game.needsSetup ? (
+                <Link className="game-card" to={newMatchPath(game.id)}>
+                  <strong>{game.label}</strong>
+                </Link>
+              ) : (
+                <button
+                  className="game-card"
+                  disabled={creatingGameId !== null}
+                  type="button"
+                  onClick={() => void startGame(game)}
+                >
+                  <strong>
+                    {creatingGameId === game.id ? 'Começando…' : game.label}
+                  </strong>
+                </button>
+              )}
+            </div>
           ))}
         </div>
+        {creationError ? (
+          <p className="field-error" role="alert">
+            {creationError}
+          </p>
+        ) : null}
       </section>
 
       {!isLoading && activeMatches.length > 0 ? (

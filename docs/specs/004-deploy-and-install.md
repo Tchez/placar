@@ -6,7 +6,7 @@
 
 ## Goal
 
-The family installs the app from **`https://tchez.dev/placar`** onto their phones and uses it with no
+The family installs the app from **`https://placar.tchez.dev`** onto their phones and uses it with no
 network at all. After this SPEC, scores kept in the app are safe to keep for real.
 
 Today the app only exists on a dev server on the owner's machine. What is saved on the home screen is
@@ -19,12 +19,18 @@ and on the same Wi-Fi.
 on `main`, and neither contains the canastra work. **No git remote.** No manifest, no service worker,
 no icons, no `base` in `vite.config.ts`.
 
-**The domain is already solved.** `tchez.dev` runs on GitHub Pages: its A records point at the Pages
-IPs, `www` is a CNAME to `tchez.github.io`, and `tchez.dev/CNAME` returns `tchez.dev` — the custom
-domain is configured on the user site repo. Project Pages sites on the same account are therefore
-served under that domain automatically, so **`tchez.dev/placar` needs no DNS change**. `tchez.dev/placar/`
-was verified to be 404 today, so the path is free, and publishing there does not affect the existing
-site at the apex.
+**The domain, corrected.** An earlier draft of this SPEC claimed `tchez.dev/placar` would work with no
+DNS change. That was wrong. `tchez.dev` is the custom domain of the **`brain-blog` project repo**
+(`build_type: legacy`), and the account has **no user site** — there is no `tchez.github.io` repo.
+GitHub only serves project sites under a custom domain when the *user site* owns that domain, so with
+the apex held by a project repo, `tchez.dev/<anything>` is routed by the blog and returns the blog's
+own 404. Verified in the browser.
+
+The app therefore gets its own subdomain: **`placar.tchez.dev`**, which serves at the **root** of that
+host. That removes the whole class of subpath bugs, and because it is a separate origin from
+`tchez.dev`, the app's service worker cannot reach the blog even in principle.
+
+DNS for `tchez.dev` is managed by **Cloudflare**.
 
 **Why this SPEC comes before every remaining game.** `localStorage` is scoped per origin. Scores saved
 against `http://<lan-ip>:5173` do not travel to `https://tchez.dev/placar`. Until this ships, any real
@@ -39,8 +45,8 @@ transfer removed — see **Deliberately not built** for what was dropped and why
 
 1. Get the code into a remote: commit the outstanding work, create the **public** GitHub repo `placar`,
    push `main`
-2. `base: '/placar/'` in the Vite config, and a `preview` script for verifying a production build
-   locally
+2. The custom domain `placar.tchez.dev`, and a `preview` script for verifying a production build
+   locally. `base` stays at the default `/` — the app is served from a host root, not a subpath
 3. Web app manifest and the full icon set, generated from a single master image
 4. Service worker via `vite-plugin-pwa`, precaching the whole app shell, updating itself silently
 5. iOS install support: `apple-touch-icon`, standalone meta tags, status bar style
@@ -104,18 +110,21 @@ build is on their phone rather than guessing.
 
 ### Base path and router
 
-`base: '/placar/'`. Because the app uses `HashRouter`, every navigation resolves inside
-`/placar/index.html` and no server-side rewrite or `404.html` trick is needed — the SPEC 001 routing
-decision is what makes this deploy trivial, and switching to a history router later would break it.
+The app is served from the root of `placar.tchez.dev`, so **`base` stays `/`** — do not set a subpath.
+`HashRouter` means every navigation resolves inside `index.html`, so no server-side rewrite or
+`404.html` trick is needed either way.
 
-Manifest `start_url` and `scope`, and the service worker registration, all resolve **relative to the
-base**. Hardcoding `/` anywhere breaks the deploy.
+Still write asset, manifest and service-worker paths as base-relative rather than hardcoded, so a
+future move to a subpath is a config change and not a hunt.
 
-### Service worker scope — a safety rule
+### Service worker scope
 
-The service worker must be served from and scoped to `/placar/` and must never claim `/`. A worker at
-the root would intercept requests for `tchez.dev` itself and could serve a cached Placar shell in place
-of the owner's own site. Verify the registered scope, do not assume the plugin gets it right.
+Scope is `/` on `placar.tchez.dev`, which is correct and safe: a subdomain is a **separate origin**, so
+this worker can never see, intercept or cache anything on `tchez.dev`. Choosing the subdomain is what
+makes this a non-issue — under a subpath on the shared apex it would have been a real risk.
+
+Verify the registered scope anyway, and verify it is `placar.tchez.dev` and not something inherited
+from a stale registration during local testing.
 
 ### Update strategy
 
@@ -124,7 +133,13 @@ next launch. No update prompt, no user-facing choice.
 
 ### Icons
 
-- One master at `public/icon-master.png`: **1024×1024, fully opaque**, provided by the owner.
+- One master at `public/icon-master.png`: **1024×1024, fully opaque, and full-bleed** — the artwork
+  reaches all four edges of the square.
+- **It must not be an app-icon mockup.** No baked-in rounded corners, no drop shadow, no background
+  margin around a floating tile. Every OS applies its own mask, so a pre-rounded tile on a contrasting
+  background renders as a dark frame around the icon on iOS and gets cropped into that margin by
+  Android's maskable crop. This is the failure mode that actually happens — check the four corners of
+  the master are the icon's own background colour, not black.
 - Every other size is **derived from it at build time or by a committed script** — never hand-edited.
   Replacing the master and rebuilding must regenerate every size with **no code change**. The icon is
   data, not a task.
@@ -172,10 +187,18 @@ One workflow, jobs independent the way `apilyzer` structures them:
 
 The SPEC cannot do these, and CI fails in a confusing way if they are missing:
 
-1. Create the **public** GitHub repo named `placar` — the name determines the URL path.
-2. Add it as the `origin` remote and push `main`.
-3. In the repo settings, set **Pages → Source = GitHub Actions**. Not "Deploy from a branch".
-4. Provide `public/icon-master.png`.
+1. Create the **public** GitHub repo named `placar`, add it as `origin`, push `main`. *(Done.)*
+2. Set **Pages → Source = GitHub Actions**, not "Deploy from a branch". *(Done, `build_type: workflow`.)*
+3. In **Cloudflare** DNS for `tchez.dev`, add `CNAME  placar → tchez.github.io` with proxy status
+   **DNS only**. Proxied (orange cloud) prevents GitHub from issuing the Let's Encrypt certificate and
+   produces a certificate error or a redirect loop — this is the classic Cloudflare + Pages failure.
+4. Set the custom domain on the repo:
+   `gh api --method PUT /repos/Tchez/placar/pages -f cname=placar.tchez.dev`, then wait for the
+   certificate and confirm `https_enforced` is true.
+5. Provide `public/icon-master.png`.
+
+Also commit `public/CNAME` containing `placar.tchez.dev`, so the domain travels with the deploy
+artifact and cannot be lost by a publish.
 
 These belong in the README so they are not rediscovered later.
 
@@ -183,14 +206,15 @@ These belong in the README so they are not rediscovered later.
 
 - [ ] `npm run check` and `npm run build` pass
 - [ ] All outstanding work is committed; `main` has a remote and is pushed
-- [ ] `base` is `/placar/`, and `grep` finds no absolute `/`-rooted asset or manifest path in `src/`
-      or `index.html`
+- [ ] `base` is the default `/`; no subpath is configured anywhere
+- [ ] `public/CNAME` contains `placar.tchez.dev`, and the deployed site reports that custom domain
+- [ ] `https://placar.tchez.dev` serves over HTTPS with a valid certificate and `https_enforced` true
 - [ ] `npm run preview` serves the production build and the app works from it
-- [ ] Installing from `https://tchez.dev/placar` on Android gives a standalone app with the real icon
+- [ ] Installing from `https://placar.tchez.dev` on Android gives a standalone app with the real icon
 - [ ] *Adicionar à Tela de Início* on iOS gives a standalone app with the real icon and no Safari bars
 - [ ] With the device offline, launching from the home screen loads the app and every saved match
-- [ ] The registered service worker scope is `/placar/` and **not** `/` — asserted by inspection and
-      recorded in the PR
+- [ ] The registered service worker origin is `placar.tchez.dev` with scope `/`, and no stale
+      registration from local testing survives — asserted by inspection and recorded in the PR
 - [ ] Publishing a new build results in that build being live on next launch, with no prompt, and with
       existing matches intact
 - [ ] The home screen shows a build identifier; the match screens do not
@@ -205,8 +229,8 @@ These belong in the README so they are not rediscovered later.
 - [ ] Coverage is printed in the CI log and uploaded nowhere; no Codecov token or badge exists
 - [ ] No `commitlint`, no `husky`, no Node version matrix in the workflow
 - [ ] Dependabot is configured against `main`
-- [ ] `README.md` documents the live URL, how to run locally, how a deploy happens, and the four manual
-      steps above
+- [ ] `README.md` documents the live URL, how to run locally, how a deploy happens, and the manual
+      steps above — including the Cloudflare DNS-only requirement
 - [ ] No screen, game rule or domain file was changed by this SPEC
 
 ## Open questions

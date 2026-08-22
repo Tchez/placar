@@ -41,6 +41,8 @@ export const CANASTRA: GameDefinition = {
   label: 'Canastra',
   teamCount: 2,
   defaultTeamNames: ['Nós', 'Eles'],
+  needsSetup: true,
+  defaultTarget: null,
   targetSuggestions: [3000, 4000],
   targetRequired: true,
   supportsNegativeEntries: true,

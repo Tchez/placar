@@ -2,7 +2,8 @@
 
 Score-keeping app for family card and racket games — canastra, truco, padel, and a generic fallback mode.
 
-**Status:** canastra is implemented end to end. The next games are planned in `docs/specs/`.
+**Status:** canastra and truco mineiro are implemented end to end. The next deliveries are planned in
+`docs/specs/`.
 
 ## The problem
 

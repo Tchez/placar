@@ -1,6 +1,6 @@
 # SPEC 003 — Truco mineiro
 
-- **Status:** ready
+- **Status:** done
 - **Created:** 2026-08-22
 - **Revised:** 2026-08-22
 - **Depends on:** SPEC 002
@@ -338,62 +338,62 @@ occur, while transforms and stroke-drawing animations are suppressed.
 
 ## Acceptance criteria
 
-- [ ] `npm run check` and `npm run build` pass
-- [ ] Home renders both games from the registry; no game card is hardcoded
-- [ ] Tapping truco creates a match with teams `Nós` and `Eles` and lands on the match screen with no
+- [x] `npm run check` and `npm run build` pass
+- [x] Home renders both games from the registry; no game card is hardcoded
+- [x] Tapping truco creates a match with teams `Nós` and `Eles` and lands on the match screen with no
       intermediate screen, asserted by a test
-- [ ] Canastra still goes through its setup screen — `needsSetup` drives both, and a test covers each
-- [ ] The truco header provides back and match-options actions; team names are read-only and no rename
+- [x] Canastra still goes through its setup screen — `needsSetup` drives both, and a test covers each
+- [x] The truco header provides back and match-options actions; team names are read-only and no rename
       control is rendered
-- [ ] The normal screen follows the specified order: header, team banners, tallies, `+1`, `−1`, then
+- [x] The normal screen follows the specified order: header, team banners, tallies, `+1`, `−1`, then
       *Desfazer último*, with two equal columns and the central divider
-- [ ] *Nós* stays green on the left and *Eles* stays red on the right regardless of score; the tally
+- [x] *Nós* stays green on the left and *Eles* stays red on the right regardless of score; the tally
       colour does not follow the lead
-- [ ] `+1` and `−1` are on the main screen and `+3 +6 +9 +12` are only in the sheet opened from a
+- [x] `+1` and `−1` are on the main screen and `+3 +6 +9 +12` are only in the sheet opened from a
       team's score block; the raised values are labelled *truco / seis / nove / doze*
-- [ ] The raised-value sheet uses the selected team's contextual title bar, restores focus when
+- [x] The raised-value sheet uses the selected team's contextual title bar, restores focus when
       closed, records nothing when dismissed, and has the four cream rows and explanatory note
-- [ ] The raised-value sheet does not open in the mão de onze or mão de ferro state, asserted by a
+- [x] The raised-value sheet does not open in the mão de onze or mão de ferro state, asserted by a
       test
-- [ ] `+1`, `−1` and every raised value add and subtract correctly; `−1` is disabled at zero, with
+- [x] `+1`, `−1` and every raised value add and subtract correctly; `−1` is disabled at zero, with
       tests
-- [ ] `+1` and `−1` are not styled as equal-weight peers; `−1` does not use a team colour
-- [ ] *Desfazer* removes the last entry regardless of its value, is disabled with no entries, and has
+- [x] `+1` and `−1` are not styled as equal-weight peers; `−1` does not use a team colour
+- [x] *Desfazer* removes the last entry regardless of its value, is disabled with no entries, and has
       a test proving a `+9` is undone in one action
-- [ ] Truco's match screen renders no entry log
-- [ ] State derivation is a pure tested function covering all four cases in **Game state**, including
+- [x] Truco's match screen renders no entry log
+- [x] State derivation is a pure tested function covering all four cases in **Game state**, including
       both teams at 11, one team at 11, and a team at 14
-- [ ] Mão de onze replaces normal scoring, shows the team at 11, and offers exactly three explicit
+- [x] Mão de onze replaces normal scoring, shows the team at 11, and offers exactly three explicit
       outcomes with values +3 / +3 / +1; tests assert each resulting score
-- [ ] Mão de onze reappears when exactly one team remains at 11 after an outcome, asserted by a test
-- [ ] Mão de ferro replaces the mão de onze view, offers exactly two outcomes worth +3 and no run
+- [x] Mão de onze reappears when exactly one team remains at 11 after an outcome, asserted by a test
+- [x] Mão de ferro replaces the mão de onze view, offers exactly two outcomes worth +3 and no run
       option, asserted by a test
-- [ ] Undoing a mão de onze outcome returns the match to the derived mão de onze state, asserted by a
+- [x] Undoing a mão de onze outcome returns the match to the derived mão de onze state, asserted by a
       test
-- [ ] Outcome entries carry a `note`; the note is not rendered
-- [ ] No score is capped: a test asserts a team can reach 14
-- [ ] The match never auto-finishes; reaching 12 only changes the derived live state
-- [ ] Finishing presents the truco-owned conclusion screen; it shows the correct winner or the neutral
+- [x] Outcome entries carry a `note`; the note is not rendered
+- [x] No score is capped: a test asserts a team can reach 14
+- [x] The match never auto-finishes; reaching 12 only changes the derived live state
+- [x] Finishing presents the truco-owned conclusion screen; it shows the correct winner or the neutral
       **Partida encerrada** fallback and exposes no scoring action
-- [ ] **Nova partida** creates and opens a fresh truco match without deleting or reopening the
+- [x] **Nova partida** creates and opens a fresh truco match without deleting or reopening the
       finished one; **Reabrir** and confirmed **Apagar** keep their domain behaviour
-- [ ] `data-game` drives styling; game-specific colours occur only in `styles/games/`
-- [ ] The texture and ornaments use CSS only; truco adds no raster decoration or network request
-- [ ] Roboto Slab and Archivo are self-hosted `woff2` files in the repo;
+- [x] `data-game` drives styling; game-specific colours occur only in `styles/games/`
+- [x] The texture and ornaments use CSS only; truco adds no raster decoration or network request
+- [x] Roboto Slab and Archivo are self-hosted `woff2` files in the repo;
       `grep -rn "fonts.googleapis\|fonts.gstatic" .` finds nothing outside `node_modules`
-- [ ] No numeral is rendered for either score anywhere on the live or finished scoreboard
-- [ ] The tally renders one mark per point, grouped in fives, with tests at 4, 5, 11, 12 and 14
-- [ ] Each interactive and read-only score block exposes the specified accessible numeric label,
+- [x] No numeral is rendered for either score anywhere on the live or finished scoreboard
+- [x] The tally renders one mark per point, grouped in fives, with tests at 4, 5, 11, 12 and 14
+- [x] Each interactive and read-only score block exposes the specified accessible numeric label,
       asserted by a test; decorative strokes are hidden from the accessibility tree
-- [ ] A newly added mark animates in, and the animation is suppressed under `prefers-reduced-motion`
+- [x] A newly added mark animates in, and the animation is suppressed under `prefers-reduced-motion`
       while the mark still appears
-- [ ] The mão de onze and sheet animations are suppressed under `prefers-reduced-motion` while state
+- [x] The mão de onze and sheet animations are suppressed under `prefers-reduced-motion` while state
       and focus behaviour remain correct
-- [ ] Every interactive target is at least `48 × 48px`, and the primary `+1` targets are at least
+- [x] Every interactive target is at least `48 × 48px`, and the primary `+1` targets are at least
       `112 × 88px`
-- [ ] Canastra's behaviour is unchanged after the theming retrofit — its SPEC 002 tests still pass
+- [x] Canastra's behaviour is unchanged after the theming retrofit — its SPEC 002 tests still pass
       untouched
-- [ ] **Apagar partida** keeps the same confirmation wording in both games, and validation messages
+- [x] **Apagar partida** keeps the same confirmation wording in both games, and validation messages
       keep the same shape and wording rules
-- [ ] Every user-visible string is pt-BR with standard spelling; no i18n library or locale file was
+- [x] Every user-visible string is pt-BR with standard spelling; no i18n library or locale file was
       added

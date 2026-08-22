@@ -1,16 +1,9 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { createId } from '../app/createId';
-import { ROUTES } from '../app/routes';
 import { validateEntryValue } from '../domain/match';
-import type { Entry, GameDefinition, Match, Team } from '../domain/types';
-import { useMatches } from '../store/MatchStore';
-import './canastra.css';
-
-interface CanastraMatchViewProps {
-  game: GameDefinition;
-  match: Match;
-}
+import type { Entry, Team } from '../domain/types';
+import type { GameMatchViewProps } from '.';
+import '../styles/games/canastra.css';
 
 interface EntryRowProps {
   allowNegativeEntries: boolean;
@@ -186,16 +179,20 @@ function EntryRow({
   );
 }
 
-export function CanastraMatchView({ game, match }: CanastraMatchViewProps) {
-  const navigate = useNavigate();
+export function CanastraMatchView({
+  actions,
+  game,
+  match,
+}: GameMatchViewProps) {
   const {
     addEntry,
-    finishMatch,
+    finish,
+    goHome,
     removeEntry,
-    removeMatch,
-    reopenMatch,
+    remove: removeMatch,
+    reopen,
     updateEntry,
-  } = useMatches();
+  } = actions;
   const [selectedTeamId, setSelectedTeamId] = useState(
     match.teams[0]?.id ?? '',
   );
@@ -275,7 +272,7 @@ export function CanastraMatchView({ game, match }: CanastraMatchViewProps) {
 
     setIsSaving(true);
     try {
-      await addEntry(match.id, {
+      await addEntry({
         id: createId('entry'),
         teamId: selectedTeamId,
         value: validation.value,
@@ -308,19 +305,14 @@ export function CanastraMatchView({ game, match }: CanastraMatchViewProps) {
 
   async function toggleFinished() {
     if (isFinished) {
-      await reopenMatch(match.id);
+      await reopen();
     } else {
-      await finishMatch(match.id, new Date().toISOString());
+      await finish();
     }
   }
 
   async function deleteMatch() {
-    if (
-      !window.confirm('Apagar esta partida? Esta ação não pode ser desfeita.')
-    )
-      return;
-    await removeMatch(match.id);
-    navigate(ROUTES.home);
+    await removeMatch();
   }
 
   return (
@@ -330,7 +322,7 @@ export function CanastraMatchView({ game, match }: CanastraMatchViewProps) {
           className="canastra-icon-button"
           type="button"
           aria-label="Voltar ao início"
-          onClick={() => navigate(ROUTES.home)}
+          onClick={goHome}
         >
           <ArrowLeftIcon />
         </button>
@@ -550,10 +542,8 @@ export function CanastraMatchView({ game, match }: CanastraMatchViewProps) {
                   isFinished={isFinished}
                   key={entry.id}
                   team={match.teams.find(({ id }) => id === entry.teamId)}
-                  onRemove={(entryId) => removeEntry(match.id, entryId)}
-                  onUpdate={(updatedEntry) =>
-                    updateEntry(match.id, updatedEntry)
-                  }
+                  onRemove={removeEntry}
+                  onUpdate={updateEntry}
                 />
               ))}
             </ol>

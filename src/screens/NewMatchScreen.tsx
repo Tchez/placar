@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { createId } from '../app/createId';
 import { matchPath, ROUTES } from '../app/routes';
 import { validateTarget } from '../domain/match';
 import { GAMES } from '../games';
+import { createDefaultMatchInput } from '../games/createDefaultMatchInput';
 import { useMatches } from '../store/MatchStore';
 
 export function NewMatchScreen() {
@@ -15,13 +16,45 @@ export function NewMatchScreen() {
   const [targetTouched, setTargetTouched] = useState(false);
   const [allowNegativeEntries, setAllowNegativeEntries] = useState(false);
   const [creationError, setCreationError] = useState('');
-  const [isCreating, setIsCreating] = useState(false);
+  const [isCreating, setIsCreating] = useState(game?.needsSetup === false);
+  const directStartAttempted = useRef(false);
+
+  useEffect(() => {
+    if (!game || game.needsSetup || directStartAttempted.current) return;
+    directStartAttempted.current = true;
+    void createMatch(createDefaultMatchInput(game))
+      .then((match) => navigate(matchPath(match.id), { replace: true }))
+      .catch(() => {
+        setCreationError(
+          'Não foi possível começar a partida. Tente novamente.',
+        );
+        setIsCreating(false);
+      });
+  }, [createMatch, game, navigate]);
 
   if (!game) {
     return (
       <section className="message-screen">
         <h1>Jogo não encontrado.</h1>
         <Link to={ROUTES.home}>Voltar ao início</Link>
+      </section>
+    );
+  }
+
+  if (!game.needsSetup) {
+    return (
+      <section className="message-screen">
+        {creationError ? (
+          <>
+            <h1>Não foi possível começar a partida.</h1>
+            <p className="field-error" role="alert">
+              Tente novamente pelo início.
+            </p>
+            <Link to={ROUTES.home}>Voltar ao início</Link>
+          </>
+        ) : (
+          <h1>{isCreating ? 'Começando partida…' : 'Preparando partida…'}</h1>
+        )}
       </section>
     );
   }
