@@ -27,8 +27,3 @@ dist-ssr
 .env
 .env.*
 coverage
-
-# ambiente e cobertura
-.env
-.env.*
-coverage
