@@ -106,6 +106,9 @@ describe('canastra screens', () => {
   it('renders the home picker from the registry without an empty matches section', async () => {
     renderApp('/');
 
+    expect(screen.getByLabelText('Versão do aplicativo')).toHaveTextContent(
+      'versão dev',
+    );
     expect(screen.getByRole('link', { name: 'Canastra' })).toHaveAttribute(
       'href',
       '/nova/canastra',
@@ -226,6 +229,9 @@ describe('canastra screens', () => {
     renderApp('/partida/match-1', repository);
 
     await screen.findByRole('heading', { name: 'Canastra' });
+    expect(
+      screen.queryByLabelText('Versão do aplicativo'),
+    ).not.toBeInTheDocument();
     expect(screen.queryByRole('link')).not.toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: 'Voltar ao início' }),

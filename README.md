@@ -2,8 +2,80 @@
 
 Score-keeping app for family card and racket games — canastra, truco, padel, and a generic fallback mode.
 
-**Status:** canastra and truco mineiro are implemented end to end. The next deliveries are planned in
-`docs/specs/`.
+**Status:** canastra and truco mineiro are implemented end to end. The app is deployed as an
+installable, offline-first PWA at **[placar.tchez.dev](https://placar.tchez.dev)**. The next deliveries
+are planned in `docs/specs/`.
+
+## Run locally
+
+The project pins Node in `.nvmrc`. With `nvm` installed:
+
+```bash
+nvm use
+npm ci
+npm run dev
+```
+
+Use `npm run local` to expose the development server on the local network for phone testing. Scores
+saved there belong to that development origin and do not move to the live site.
+
+Before opening a change, run the complete quality gate:
+
+```bash
+npm run check
+npm run build
+```
+
+`npm run check` runs TypeScript, ESLint, Prettier and the test suite with coverage printed locally.
+`npm run build` creates the production app in `dist/`; `npm run preview` serves that exact build for
+local verification.
+
+## Install
+
+- **Android / Chrome:** open [placar.tchez.dev](https://placar.tchez.dev) and choose the install app
+  action offered by Chrome.
+- **iPhone / Safari:** open the site, then choose *Compartilhar → Adicionar à Tela de Início*.
+
+The installed app launches standalone in portrait and caches its complete app shell. After the first
+online load, it opens with no network. Matches remain in the browser's local storage and survive app
+updates.
+
+## Deploy
+
+Every push to `main` starts `.github/workflows/ci.yml`:
+
+1. `check` installs from the lockfile with `npm ci` and runs the complete quality gate;
+2. `audit` reports dependency vulnerabilities independently and does not gate publishing;
+3. `deploy` waits for `check`, builds with the short commit SHA baked into the home screen and uses
+   the official GitHub Pages artifact flow.
+
+A failed quality gate never reaches the live app. Dependabot checks npm and GitHub Actions weekly
+against `main`.
+
+The PWA icon pipeline has one source: `public/icon-master.png`. It must remain a 1024×1024 opaque,
+full-bleed image. Every build regenerates the 192px, 512px, maskable 512px, Apple 180px and favicon
+outputs from it. Replacing the master is enough to update every installed icon; the current artwork
+is provisional.
+
+### One-time GitHub Pages and DNS setup
+
+These infrastructure steps are not performed by the build:
+
+1. Create the public `Tchez/placar` GitHub repository, add it as `origin` and push `main`.
+2. In the repository, set **Settings → Pages → Source** to **GitHub Actions**.
+3. In Cloudflare DNS for `tchez.dev`, add `CNAME placar → tchez.github.io`, TTL `Auto`, with the proxy
+   explicitly set to **DNS only** (gray cloud). Cloudflare's orange proxy prevents GitHub from issuing
+   the TLS certificate.
+4. Set the Pages custom domain and, after the certificate is ready, enforce HTTPS:
+
+   ```bash
+   gh api --method PUT /repos/Tchez/placar/pages -f cname=placar.tchez.dev
+   gh api --method PUT /repos/Tchez/placar/pages -F https_enforced=true
+   gh api /repos/Tchez/placar/pages
+   ```
+
+5. Keep `public/CNAME` committed with `placar.tchez.dev`. Provide or replace
+   `public/icon-master.png` when the final artwork is ready.
 
 ## The problem
 

@@ -1,6 +1,6 @@
 # SPEC 004 — Deploy and installable PWA
 
-- **Status:** ready
+- **Status:** implemented — live and device verification pending
 - **Created:** 2026-08-22
 - **Depends on:** SPEC 002 — the canastra work must be committed before any of this can be published
 
@@ -33,7 +33,7 @@ host. That removes the whole class of subpath bugs, and because it is a separate
 DNS for `tchez.dev` is managed by **Cloudflare**.
 
 **Why this SPEC comes before every remaining game.** `localStorage` is scoped per origin. Scores saved
-against `http://<lan-ip>:5173` do not travel to `https://tchez.dev/placar`. Until this ships, any real
+against `http://<lan-ip>:5173` do not travel to `https://placar.tchez.dev`. Until this ships, any real
 match recorded in the app is orphaned data. This is what makes the app safe to actually use.
 
 **The pipeline is modelled on `apilyzer`**, the owner's own project, with the ceremony that does not
@@ -76,7 +76,7 @@ transfer removed — see **Deliberately not built** for what was dropped and why
 
 ### Installing
 
-- **Android / Chrome:** opening `https://tchez.dev/placar` offers to install the app. Installed, it
+- **Android / Chrome:** opening `https://placar.tchez.dev` offers to install the app. Installed, it
   launches with no browser chrome, in portrait.
 - **iOS / Safari:** *Compartilhar → Adicionar à Tela de Início* adds it, and it launches standalone
   with no Safari bars.
@@ -204,12 +204,12 @@ These belong in the README so they are not rediscovered later.
 
 ## Acceptance criteria
 
-- [ ] `npm run check` and `npm run build` pass
+- [x] `npm run check` and `npm run build` pass
 - [ ] All outstanding work is committed; `main` has a remote and is pushed
-- [ ] `base` is the default `/`; no subpath is configured anywhere
-- [ ] `public/CNAME` contains `placar.tchez.dev`, and the deployed site reports that custom domain
+- [x] `base` is the default `/`; no subpath is configured anywhere
+- [x] `public/CNAME` contains `placar.tchez.dev`, and the deployed site reports that custom domain
 - [ ] `https://placar.tchez.dev` serves over HTTPS with a valid certificate and `https_enforced` true
-- [ ] `npm run preview` serves the production build and the app works from it
+- [x] `npm run preview` serves the production build and the app works from it
 - [ ] Installing from `https://placar.tchez.dev` on Android gives a standalone app with the real icon
 - [ ] *Adicionar à Tela de Início* on iOS gives a standalone app with the real icon and no Safari bars
 - [ ] With the device offline, launching from the home screen loads the app and every saved match
@@ -217,21 +217,22 @@ These belong in the README so they are not rediscovered later.
       registration from local testing survives — asserted by inspection and recorded in the PR
 - [ ] Publishing a new build results in that build being live on next launch, with no prompt, and with
       existing matches intact
-- [ ] The home screen shows a build identifier; the match screens do not
-- [ ] The build identifier is baked in at build time and never fetched at runtime
-- [ ] Every icon size is generated from `public/icon-master.png`; replacing that file and rebuilding
+- [x] The home screen shows a build identifier; the match screens do not
+- [x] The build identifier is baked in at build time and never fetched at runtime
+- [x] Every icon size is generated from `public/icon-master.png`; replacing that file and rebuilding
       changes every icon with no code edit
-- [ ] The maskable icon keeps all content within the central 80% of the canvas
+- [x] The maskable icon keeps all content within the central 80% of the canvas
 - [ ] `deploy` runs only on `main` and declares `needs: check`; a failing gate blocks it — verified by
       pushing a deliberately failing branch to a PR
-- [ ] `audit` failing does not block `deploy`
-- [ ] `.nvmrc` exists and CI reads Node from it
-- [ ] Coverage is printed in the CI log and uploaded nowhere; no Codecov token or badge exists
-- [ ] No `commitlint`, no `husky`, no Node version matrix in the workflow
-- [ ] Dependabot is configured against `main`
-- [ ] `README.md` documents the live URL, how to run locally, how a deploy happens, and the manual
+- [x] `audit` failing does not block `deploy`
+- [x] `.nvmrc` exists and CI reads Node from it
+- [x] Coverage is printed in the CI log and uploaded nowhere; no Codecov token or badge exists
+- [x] No `commitlint`, no `husky`, no Node version matrix in the workflow
+- [x] Dependabot is configured against `main`
+- [x] `README.md` documents the live URL, how to run locally, how a deploy happens, and the manual
       steps above — including the Cloudflare DNS-only requirement
-- [ ] No screen, game rule or domain file was changed by this SPEC
+- [x] No match screen, game rule or domain file was changed by this SPEC; the home screen changed only
+      for the build indicator explicitly required above
 
 ## Open questions
 

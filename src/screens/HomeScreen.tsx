@@ -111,6 +111,10 @@ export function HomeScreen() {
           </div>
         </section>
       ) : null}
+
+      <footer className="build-version" aria-label="Versão do aplicativo">
+        versão {__BUILD_VERSION__}
+      </footer>
     </div>
   );
 }
