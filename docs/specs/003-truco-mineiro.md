@@ -2,7 +2,7 @@
 
 - **Status:** done
 - **Created:** 2026-08-22
-- **Revised:** 2026-08-22
+- **Revised:** 2026-08-23
 - **Depends on:** SPEC 002
 
 ## Goal
@@ -51,6 +51,7 @@ The UI is Portuguese, no i18n layer.
 - The mão de onze flow and the onze-a-onze (mão de ferro) flow
 - A truco-owned finished-match presentation
 - Per-game visual identity: the theming mechanism, plus retrofitting canastra onto it
+- App-level sharing metadata for rich link previews
 - Tests per `CLAUDE.md`'s testing policy
 
 **Out** — explicitly, so it does not get built by accident
@@ -66,6 +67,23 @@ The UI is Portuguese, no i18n layer.
 - Changing canastra's behaviour. Only its **styling** is touched by the theming retrofit
 - Reproducing the status bar, hardware frame, shadows around a phone, or other device mockup chrome
 - Raster textures or network-fetched decoration; the table texture and ornament are made with CSS
+- Per-match social previews. The static PWA has no server-rendered match pages for link crawlers, so
+  every route shares the app-level preview
+
+### Link sharing metadata
+
+The static HTML head exposes an app-level rich preview without relying on JavaScript, because social
+crawlers may not execute the React application:
+
+- The document description, Open Graph description and Twitter/X description all use the existing
+  product copy **“Placar para os jogos da família.”**
+- Open Graph declares the title **Placar**, type `website`, locale `pt_BR`, canonical production URL
+  `https://placar.tchez.dev/` and the app icon as its image.
+- The Open Graph image URL is absolute and includes its PNG type, dimensions and Portuguese alt text.
+- Twitter/X declares a `summary` card with the same title, description, image and alt text. The square
+  card matches the square app icon and avoids promising a separate wide social asset.
+- The page also declares the standard HTML description and canonical URL. Metadata is static and
+  therefore identical on every client-side route.
 
 ## Behaviour
 
@@ -339,6 +357,9 @@ occur, while transforms and stroke-drawing animations are suppressed.
 ## Acceptance criteria
 
 - [x] `npm run check` and `npm run build` pass
+- [x] The static HTML exposes the standard description and canonical URL plus complete Open Graph
+      and Twitter/X app-level metadata; all image and page URLs are absolute, and the metadata is
+      present in the production build without requiring JavaScript
 - [x] Home renders both games from the registry; no game card is hardcoded
 - [x] Tapping truco creates a match with teams `Nós` and `Eles` and lands on the match screen with no
       intermediate screen, asserted by a test

@@ -192,10 +192,14 @@ The SPEC cannot do these, and CI fails in a confusing way if they are missing:
 3. In **Cloudflare** DNS for `tchez.dev`, add `CNAME  placar → tchez.github.io` with proxy status
    **DNS only**. Proxied (orange cloud) prevents GitHub from issuing the Let's Encrypt certificate and
    produces a certificate error or a redirect loop — this is the classic Cloudflare + Pages failure.
-4. Set the custom domain on the repo:
-   `gh api --method PUT /repos/Tchez/placar/pages -f cname=placar.tchez.dev`, then wait for the
-   certificate and confirm `https_enforced` is true.
-5. Provide `public/icon-master.png`.
+   *(Done — `dig` returns `tchez.github.io` plus the Pages IPs, no proxy addresses.)*
+4. Set the custom domain on the repo and enforce HTTPS. *(Done — `cname: placar.tchez.dev`,
+   `https_enforced: true`, valid certificate, `http://` redirects to `https://`.)*
+5. Provide `public/icon-master.png`. **Still open** — the first render was an app-icon mockup with a
+   black margin and baked-in rounded corners; it needs a full-bleed re-render per **Icons** above.
+
+**All the infrastructure is in place.** What remains in this SPEC is code: the manifest, the service
+worker, the icon set, the version indicator, the workflow, `.nvmrc`, Dependabot and the README.
 
 Also commit `public/CNAME` containing `placar.tchez.dev`, so the domain travels with the deploy
 artifact and cannot be lost by a publish.
