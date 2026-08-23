@@ -215,7 +215,7 @@ These belong in the README so they are not rediscovered later.
 - [x] With the device offline, launching from the home screen loads the app and every saved match
 - [x] The registered service worker origin is `placar.tchez.dev` with scope `/`, and no stale
       registration from local testing survives — asserted by inspection and recorded in the PR
-- [ ] Publishing a new build results in that build being live on next launch, with no prompt, and with
+- [x] Publishing a new build results in that build being live on next launch, with no prompt, and with
       existing matches intact
 - [x] The home screen shows a build identifier; the match screens do not
 - [x] The build identifier is baked in at build time and never fetched at runtime
@@ -244,9 +244,12 @@ These belong in the README so they are not rediscovered later.
   385–0 match from `cache-storage`; the worker controlled the page with scope `/`. The isolated
   browser profile was removed afterward, so no local test registration remains.
 - Chromium reported no installability errors on the live HTTPS site. It loaded the manifest from
-  `https://placar.tchez.dev/manifest.webmanifest`, showed build `c3e0361`, and registered
+  `https://placar.tchez.dev/manifest.webmanifest`, showed the expected build at inspection time, and registered
   `https://placar.tchez.dev/sw.js` with scope `https://placar.tchez.dev/`. The isolated live-site
   profile was removed after inspection.
+- The update test stored a 0–420 match on build `c3e0361`, published `f520826`, and reopened the same
+  isolated profile once. The page reloaded automatically to `f520826`, retained the match and showed
+  no dialog. The profile was removed after verification.
 
 ## Open questions
 
