@@ -18,9 +18,8 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 
 | # | Title | Why here |
 |---|---|---|
-| 005 | Padel | The hard one: score is not a sum. Sets derived from a log of games won. If 002 got the contract right, this needs no change to any screen |
-| 006 | Generic game + finished-match history | Closes the MVP scope in `README.md` |
-| 007 | The home hub | The home screen keeps one neutral identity while each game owns its own screens. Only needed if the hub outgrows what SPEC 002 built |
+| 006 | Padel | The hard one: score is not a sum. Sets derived from a log of games won. If 002 got the contract right, this needs no change to any screen |
+| 007 | Generic game | Closes the MVP game scope in `README.md`. The history screen ships in SPEC 005 |
 | 008 | Truco gaúcho | A separate game from mineiro — the scoring differs. Blocked on how the family counts it |
 | — | Round-based entry for canastra | One input per team saved as a round. Better fit for how canastra is actually scored; deferred out of SPEC 002 because it changes the entry log's shape |
 | — | Two-finger undo gesture | Deferred from SPEC 003: decide after the family has used the button |
