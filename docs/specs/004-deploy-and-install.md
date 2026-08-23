@@ -244,7 +244,7 @@ These belong in the README so they are not rediscovered later.
   385–0 match from `cache-storage`; the worker controlled the page with scope `/`. The isolated
   browser profile was removed afterward, so no local test registration remains.
 - Chromium reported no installability errors on the live HTTPS site. It loaded the manifest from
-  `https://placar.tchez.dev/manifest.webmanifest`, showed build `64cd92f`, and registered
+  `https://placar.tchez.dev/manifest.webmanifest`, showed build `c3e0361`, and registered
   `https://placar.tchez.dev/sw.js` with scope `https://placar.tchez.dev/`. The isolated live-site
   profile was removed after inspection.
 
