@@ -28,9 +28,18 @@ export function MatchRow({ game, match, showOutcome = false }: MatchRowProps) {
     showOutcome && match.finishedAt !== null
       ? getFinishedOutcome(game, match)
       : null;
+  const teamNames = match.teams.map(({ name }) => name).join(' × ');
+  const target =
+    match.target === null ? '' : ` · Meta: ${formatNumber(match.target)}`;
+  const startedAt = formatStartedAt(match.createdAt);
+  const score = scoreboard.standings
+    .map(({ score: standingScore }) => formatNumber(standingScore))
+    .join(' × ');
+  const accessibleName = `${teamNames} ${game.label}${target} Iniciada em ${startedAt}${outcome ? ` ${outcome}` : ''} ${score}`;
 
   return (
     <Link
+      aria-label={accessibleName}
       className="hub-match-row"
       style={gameAccentStyle(game)}
       to={matchPath(match.id)}
@@ -38,21 +47,15 @@ export function MatchRow({ game, match, showOutcome = false }: MatchRowProps) {
       <span className="hub-match-row__dot" aria-hidden="true" />
       <GameBadge game={game} />
       <span className="hub-match-row__copy">
-        <strong>{match.teams.map(({ name }) => name).join(' × ')}</strong>
+        <strong>{teamNames}</strong>
         <span>
           {game.label}
-          {match.target === null
-            ? null
-            : ` · Meta: ${formatNumber(match.target)}`}
+          {target}
         </span>
-        <small>Iniciada em {formatStartedAt(match.createdAt)}</small>
+        <small>Iniciada em {startedAt}</small>
         {outcome ? <em>{outcome}</em> : null}
       </span>
-      <strong className="hub-match-row__score">
-        {scoreboard.standings
-          .map(({ score }) => formatNumber(score))
-          .join(' × ')}
-      </strong>
+      <strong className="hub-match-row__score">{score}</strong>
       <ChevronRightIcon className="hub-match-row__chevron" />
     </Link>
   );

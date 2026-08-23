@@ -463,6 +463,7 @@ export function TrucoMatchView({ actions, game, match }: GameMatchViewProps) {
           </section>
           <div className="truco-outcomes">
             <button
+              aria-label={`Vitória: ${teamAtEleven.name} +3`}
               className="truco-paper-button"
               disabled={isSaving}
               type="button"
@@ -474,6 +475,7 @@ export function TrucoMatchView({ actions, game, match }: GameMatchViewProps) {
               <span>+3</span>
             </button>
             <button
+              aria-label={`Vitória: ${opponent.name} +3`}
               className="truco-paper-button"
               disabled={isSaving}
               type="button"
@@ -483,6 +485,7 @@ export function TrucoMatchView({ actions, game, match }: GameMatchViewProps) {
               <span>+3</span>
             </button>
             <button
+              aria-label={`Correu: ${teamAtEleven.name} +1 para ${opponent.name}`}
               className="truco-paper-button"
               disabled={isSaving}
               type="button"
@@ -517,6 +520,7 @@ export function TrucoMatchView({ actions, game, match }: GameMatchViewProps) {
         <div className="truco-outcomes">
           {match.teams.map((team) => (
             <button
+              aria-label={`Vitória: ${team.name} +3`}
               className="truco-paper-button"
               disabled={isSaving}
               key={team.id}
@@ -648,6 +652,7 @@ export function TrucoMatchView({ actions, game, match }: GameMatchViewProps) {
             <div className="truco-sheet__values">
               {RAISED_VALUES.map(({ label, value }, index) => (
                 <button
+                  aria-label={`${label} +${value}`}
                   autoFocus={index === 0}
                   className="truco-paper-button"
                   disabled={isSaving}
