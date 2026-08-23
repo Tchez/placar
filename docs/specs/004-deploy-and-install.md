@@ -205,15 +205,15 @@ These belong in the README so they are not rediscovered later.
 ## Acceptance criteria
 
 - [x] `npm run check` and `npm run build` pass
-- [ ] All outstanding work is committed; `main` has a remote and is pushed
+- [x] All outstanding work is committed; `main` has a remote and is pushed
 - [x] `base` is the default `/`; no subpath is configured anywhere
 - [x] `public/CNAME` contains `placar.tchez.dev`, and the deployed site reports that custom domain
-- [ ] `https://placar.tchez.dev` serves over HTTPS with a valid certificate and `https_enforced` true
+- [x] `https://placar.tchez.dev` serves over HTTPS with a valid certificate and `https_enforced` true
 - [x] `npm run preview` serves the production build and the app works from it
 - [ ] Installing from `https://placar.tchez.dev` on Android gives a standalone app with the real icon
 - [ ] *Adicionar à Tela de Início* on iOS gives a standalone app with the real icon and no Safari bars
-- [ ] With the device offline, launching from the home screen loads the app and every saved match
-- [ ] The registered service worker origin is `placar.tchez.dev` with scope `/`, and no stale
+- [x] With the device offline, launching from the home screen loads the app and every saved match
+- [x] The registered service worker origin is `placar.tchez.dev` with scope `/`, and no stale
       registration from local testing survives — asserted by inspection and recorded in the PR
 - [ ] Publishing a new build results in that build being live on next launch, with no prompt, and with
       existing matches intact
@@ -222,7 +222,7 @@ These belong in the README so they are not rediscovered later.
 - [x] Every icon size is generated from `public/icon-master.png`; replacing that file and rebuilding
       changes every icon with no code edit
 - [x] The maskable icon keeps all content within the central 80% of the canvas
-- [ ] `deploy` runs only on `main` and declares `needs: check`; a failing gate blocks it — verified by
+- [x] `deploy` runs only on `main` and declares `needs: check`; a failing gate blocks it — verified by
       pushing a deliberately failing branch to a PR
 - [x] `audit` failing does not block `deploy`
 - [x] `.nvmrc` exists and CI reads Node from it
@@ -233,6 +233,20 @@ These belong in the README so they are not rediscovered later.
       steps above — including the Cloudflare DNS-only requirement
 - [x] No match screen, game rule or domain file was changed by this SPEC; the home screen changed only
       for the build indicator explicitly required above
+
+## Verification record
+
+- [Main workflow run](https://github.com/Tchez/placar/actions/runs/32604476654): `check` and `deploy`
+  passed; `audit` failed independently on the upstream `sharp` advisories and did not block deploy.
+- [Temporary gate PR #4](https://github.com/Tchez/placar/pull/4): a deliberately failing test made
+  `CI/check` fail and `CI/deploy` skip. The PR was closed without merge and its branch was removed.
+- A cold Chromium launch with the preview server stopped loaded the home screen and a persisted
+  385–0 match from `cache-storage`; the worker controlled the page with scope `/`. The isolated
+  browser profile was removed afterward, so no local test registration remains.
+- Chromium reported no installability errors on the live HTTPS site. It loaded the manifest from
+  `https://placar.tchez.dev/manifest.webmanifest`, showed build `64cd92f`, and registered
+  `https://placar.tchez.dev/sw.js` with scope `https://placar.tchez.dev/`. The isolated live-site
+  profile was removed after inspection.
 
 ## Open questions
 
