@@ -1,0 +1,1024 @@
+body.gauderio-options-open {
+  overflow: hidden;
+}
+
+body.gauderio-theme .app-shell {
+  width: min(100%, 46rem);
+  min-height: 100dvh;
+  padding: 0;
+}
+
+body.gauderio-theme .app-content {
+  min-height: 100dvh;
+  padding: 0;
+}
+
+.game-match[data-game='truco-gauderio'] {
+  --gauderio-ground: #090806;
+  --gauderio-ground-raised: #14100b;
+  --gauderio-plank: #4a2b16;
+  --gauderio-plank-dark: #22120a;
+  --gauderio-leather: #291509;
+  --gauderio-leather-raised: #48220e;
+  --gauderio-bone: #d7bd8b;
+  --gauderio-bone-muted: #9e8155;
+  --gauderio-ember: #a82f1c;
+  --gauderio-stick: #bd914d;
+  --gauderio-stick-light: #e4c47f;
+  --gauderio-rope: #70431e;
+  --gauderio-rope-muted: rgb(112 67 30 / 62%);
+  --gauderio-us: #24350f;
+  --gauderio-us-light: #4a6524;
+  --gauderio-them: #6d2016;
+  --gauderio-them-light: #a03428;
+  --gauderio-stitch: rgb(215 190 145 / 32%);
+  --gauderio-error: #ffb09d;
+  min-height: 100dvh;
+  background: var(--gauderio-ground);
+  color: var(--gauderio-bone);
+  font-family: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+}
+
+.game-match[data-game='truco-gauderio'] button:focus-visible {
+  outline-color: var(--gauderio-rope);
+}
+
+.gauderio-match {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100dvh;
+  flex-direction: column;
+  gap: clamp(0.9rem, 2.4vh, 1.35rem);
+  padding: max(0.55rem, env(safe-area-inset-top))
+    max(0.75rem, env(safe-area-inset-right))
+    max(0.8rem, env(safe-area-inset-bottom))
+    max(0.75rem, env(safe-area-inset-left));
+  isolation: isolate;
+  overflow-x: hidden;
+  background-color: var(--gauderio-ground);
+  background-image:
+    radial-gradient(ellipse at 50% 8%, rgb(96 56 26 / 15%), transparent 24rem),
+    linear-gradient(rgb(10 8 6 / 60%), rgb(8 6 5 / 76%)),
+    url('../../assets/textures/ground.webp');
+  background-repeat: no-repeat, no-repeat, repeat;
+  background-size:
+    auto,
+    auto,
+    9rem 9rem;
+}
+
+.gauderio-match::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 44%, transparent 32%, rgb(0 0 0 / 54%)),
+    linear-gradient(rgb(0 0 0 / 24%), transparent 20%, rgb(0 0 0 / 40%));
+  content: '';
+}
+
+.gauderio-header {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  min-height: clamp(8.5rem, 20vh, 10.5rem);
+  grid-template-columns: 3.15rem minmax(0, 1fr) 3.15rem;
+  align-items: center;
+  gap: 0.3rem;
+  margin: -0.55rem -0.75rem 0;
+  padding: max(0.6rem, env(safe-area-inset-top)) 0.75rem 0.55rem;
+  background: url('../../assets/textures/plank.webp') 50% 100% / cover no-repeat;
+}
+
+.gauderio-header::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    92deg,
+    rgb(0 0 0 / 40%) 0,
+    transparent 24% 76%,
+    rgb(0 0 0 / 32%) 100%
+  );
+  content: '';
+}
+
+.gauderio-header > :not(svg) {
+  position: relative;
+  z-index: 1;
+}
+
+.gauderio-header__title {
+  display: grid;
+  min-width: 0;
+  justify-items: center;
+  gap: 0.02rem;
+}
+
+.gauderio-header h1 {
+  overflow: hidden;
+  max-width: 100%;
+  margin: 0;
+  background: linear-gradient(180deg, #f7e8c4 0%, #ead2a0 46%, #c69f61 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: var(--gauderio-bone);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: clamp(1.55rem, 7.6vw, 2.6rem);
+  font-weight: 580;
+  letter-spacing: 0.005em;
+  line-height: 1.05;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-shadow:
+    0 1px rgb(255 240 200 / 26%),
+    0 2px 1px #40230f,
+    0 3px 2px #24130a,
+    0 0.4rem 0.6rem rgb(0 0 0 / 82%);
+  -webkit-text-fill-color: transparent;
+  white-space: nowrap;
+}
+
+.gauderio-header-ornament {
+  width: clamp(4.4rem, 21vw, 6.2rem);
+  height: clamp(1.9rem, 6.2vh, 2.7rem);
+  margin-bottom: -0.25rem;
+  overflow: visible;
+  filter: drop-shadow(0 0.2rem 0.18rem rgb(0 0 0 / 82%));
+}
+
+.gauderio-header-ornament__hat {
+  fill: #b0905f;
+  stroke: #3d2110;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.gauderio-header-ornament__band {
+  fill: none;
+  stroke: #4d2c14;
+  stroke-linecap: round;
+  stroke-width: 2.4;
+}
+
+.gauderio-header-ornament__scarf,
+.gauderio-header-ornament__sprigs {
+  fill: none;
+  stroke: var(--gauderio-rope);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.gauderio-header-ornament__scarf {
+  fill: rgb(112 67 30 / 22%);
+}
+
+.gauderio-header-ornament__sprigs {
+  opacity: 0.72;
+  stroke-width: 1.5;
+}
+
+.gauderio-header-flourish {
+  width: min(9.5rem, 68%);
+  height: 1.05rem;
+  overflow: visible;
+  fill: none;
+  stroke: var(--gauderio-rope);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.4;
+  filter: drop-shadow(0 1px rgb(0 0 0 / 72%));
+}
+
+.gauderio-icon-button {
+  display: grid;
+  position: relative;
+  width: 3.15rem;
+  min-width: 3.15rem;
+  height: 3.15rem;
+  place-items: center;
+  padding: 0;
+  border: 2px solid #170c06;
+  border-radius: 0.75rem;
+  background-image:
+    url('../../assets/textures/leather.webp'),
+    linear-gradient(168deg, #3d2313, #1b0e07);
+  background-blend-mode: overlay, normal;
+  background-size:
+    4rem 4rem,
+    auto;
+  color: var(--gauderio-bone);
+  box-shadow:
+    0 0.5rem 0.8rem rgb(0 0 0 / 68%),
+    0 0 0 1px rgb(96 55 24 / 78%),
+    inset 0 1px rgb(226 190 134 / 14%),
+    inset 0 -0.24rem 0.34rem rgb(0 0 0 / 52%);
+}
+
+.gauderio-icon-button::before {
+  position: absolute;
+  pointer-events: none;
+  border: 1px dashed var(--gauderio-stitch);
+  border-radius: 0.48rem;
+  content: '';
+  inset: 0.3rem;
+}
+
+.gauderio-icon-button svg,
+.gauderio-undo svg,
+.gauderio-finished__secondary svg,
+.gauderio-options-sheet__rows svg {
+  position: relative;
+  z-index: 1;
+  width: 1.8rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.85;
+}
+
+.gauderio-icon-button:active:not(:disabled) {
+  background: rgb(241 223 184 / 9%);
+  transform: translateY(1px);
+}
+
+.gauderio-header__spacer {
+  width: 3.15rem;
+  height: 3.15rem;
+}
+
+.gauderio-scoreboard,
+.gauderio-final-board {
+  position: relative;
+  display: grid;
+  min-height: clamp(24rem, 58vh, 34rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1rem, 4.5vw, 1.65rem);
+}
+
+.gauderio-scoreboard::before,
+.gauderio-final-board::before {
+  position: absolute;
+  z-index: 0;
+  top: -0.35rem;
+  bottom: -0.35rem;
+  left: 50%;
+  width: 0.68rem;
+  border-inline: 1px solid #1a0c05;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(
+      116deg,
+      rgb(24 12 6 / 92%) 0 2px,
+      rgb(122 74 34 / 72%) 4px,
+      rgb(163 105 52 / 68%) 5px,
+      rgb(48 26 12 / 88%) 8px,
+      rgb(24 12 6 / 92%) 10px
+    ),
+    linear-gradient(
+      90deg,
+      #150a06 0%,
+      #4a2812 22%,
+      #8a5628 46%,
+      #3a1e0d 62%,
+      #150a06 100%
+    );
+  content: '';
+  box-shadow:
+    0.14rem 0 0.22rem rgb(0 0 0 / 88%),
+    -0.14rem 0 0.22rem rgb(0 0 0 / 88%);
+  opacity: 0.95;
+  transform: translateX(-50%);
+}
+
+.gauderio-scoreboard::after,
+.gauderio-final-board::after {
+  position: absolute;
+  z-index: 2;
+  top: 48%;
+  left: 50%;
+  width: 1.05rem;
+  height: 1.05rem;
+  border: 2px solid #8c592c;
+  background: radial-gradient(circle, #5b3317, #160b06 68%);
+  content: '';
+  box-shadow:
+    inset 0 0 0 2px #281408,
+    0 0 0 3px var(--gauderio-ground),
+    0 0.28rem 0.34rem rgb(0 0 0 / 82%);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.gauderio-side {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-width: 0;
+  grid-template-rows: auto minmax(12.5rem, 1fr) auto auto;
+  align-items: start;
+  justify-items: center;
+  gap: 0.75rem;
+}
+
+.gauderio-team-banner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: calc(100% - 2.7rem);
+  min-height: 3.9rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.58rem;
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border: 2px solid #170b06;
+  border-radius: 0.2rem 0.3rem 0.22rem 0.16rem;
+  outline: 1px dashed var(--gauderio-stitch);
+  outline-offset: -0.4rem;
+  color: var(--gauderio-bone);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: clamp(1.38rem, 6.8vw, 1.95rem);
+  font-weight: 650;
+  letter-spacing: 0.025em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow:
+    0 1px rgb(255 238 190 / 26%),
+    1px 2px #4a290f,
+    0 0.25rem 0.32rem rgb(0 0 0 / 84%);
+  box-shadow:
+    0 0.55rem 0.8rem rgb(0 0 0 / 68%),
+    inset 0 0.16rem 0.28rem rgb(232 202 142 / 12%),
+    inset 0 -0.3rem 0.4rem rgb(0 0 0 / 46%);
+  transform: rotate(-0.7deg);
+  -webkit-text-stroke: 0.45px rgb(62 34 14 / 78%);
+}
+
+.gauderio-team-banner::before,
+.gauderio-team-banner::after {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  width: 1.15rem;
+  height: 3.1rem;
+  border: 2px solid #170b06;
+  content: '';
+  filter: brightness(0.62);
+  clip-path: polygon(0 8%, 100% 0, 78% 50%, 100% 100%, 0 88%);
+}
+
+.gauderio-team-banner::before {
+  right: calc(100% - 0.15rem);
+  transform: translateY(-50%);
+}
+
+.gauderio-team-banner::after {
+  left: calc(100% - 0.15rem);
+  transform: translateY(-50%) scaleX(-1);
+}
+
+.gauderio-team-banner span {
+  color: rgb(226 196 140 / 62%);
+  font-size: 0.52em;
+  text-shadow:
+    1px 2px #2b1609,
+    0 0 0.22rem rgb(0 0 0 / 84%);
+}
+
+.gauderio-side--us .gauderio-team-banner {
+  background-image:
+    url('../../assets/textures/crackle.webp'),
+    linear-gradient(172deg, var(--gauderio-us-light), var(--gauderio-us) 78%);
+  background-blend-mode: overlay, normal;
+  background-size:
+    3.5rem 3.5rem,
+    auto;
+}
+
+.gauderio-side--us .gauderio-team-banner::before,
+.gauderio-side--us .gauderio-team-banner::after {
+  background: var(--gauderio-us);
+}
+
+.gauderio-side--them .gauderio-team-banner {
+  background-image:
+    url('../../assets/textures/crackle.webp'),
+    linear-gradient(
+      172deg,
+      var(--gauderio-them-light),
+      var(--gauderio-them) 78%
+    );
+  background-blend-mode: overlay, normal;
+  background-size:
+    3.5rem 3.5rem,
+    auto;
+  transform: rotate(0.7deg);
+}
+
+.gauderio-side--them .gauderio-team-banner::before,
+.gauderio-side--them .gauderio-team-banner::after {
+  background: var(--gauderio-them);
+}
+
+.gauderio-matchsticks {
+  display: flex;
+  width: 100%;
+  min-height: 12.5rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.25rem;
+  padding: 1.35rem 0.1rem 0.55rem;
+}
+
+.gauderio-boxes {
+  display: flex;
+  width: 100%;
+  min-height: 4.4rem;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: center;
+  gap: 1.1rem 0.8rem;
+}
+
+.gauderio-box {
+  position: relative;
+  width: 4rem;
+  height: 4rem;
+  flex: 0 0 4rem;
+}
+
+/* Hand-laid sticks are never perfectly square. */
+.gauderio-box:nth-child(2n) {
+  transform: rotate(1.4deg);
+}
+
+.gauderio-box:nth-child(3n) {
+  transform: rotate(-1.8deg);
+}
+
+.gauderio-loose-sticks {
+  display: flex;
+  min-height: 4rem;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.95rem;
+}
+
+.gauderio-loose-sticks > span {
+  position: relative;
+  width: 0.46rem;
+  height: 4rem;
+}
+
+.gauderio-stick {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: 0.44rem;
+  height: 3.5rem;
+  border-radius: 999px;
+  border: 1px solid rgb(66 35 13 / 52%);
+  background:
+    repeating-linear-gradient(
+      7deg,
+      transparent 0 4px,
+      rgb(80 43 16 / 18%) 5px,
+      transparent 7px
+    ),
+    linear-gradient(
+      90deg,
+      var(--gauderio-stick),
+      var(--gauderio-stick-light) 52%,
+      #93652d
+    );
+  box-shadow:
+    0.08rem 0.16rem 0.13rem rgb(0 0 0 / 72%),
+    inset 1px 0 rgb(255 239 193 / 38%);
+  transform-origin: center;
+}
+
+.gauderio-stick::after {
+  position: absolute;
+  top: -0.22rem;
+  left: 50%;
+  width: 0.74rem;
+  height: 0.74rem;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 35% 28%,
+    #cf5a2c,
+    var(--gauderio-ember) 46%,
+    #48120b
+  );
+  border: 1px solid rgb(52 18 9 / 62%);
+  box-shadow:
+    inset 0.08rem 0.08rem rgb(255 166 103 / 18%),
+    0.08rem 0.14rem 0.13rem rgb(0 0 0 / 72%);
+  content: '';
+  transform: translateX(-50%);
+}
+
+.gauderio-stick--top,
+.gauderio-stick--bottom {
+  width: 3.5rem;
+  height: 0.44rem;
+  background:
+    repeating-linear-gradient(
+      83deg,
+      transparent 0 4px,
+      rgb(80 43 16 / 18%) 5px,
+      transparent 7px
+    ),
+    linear-gradient(
+      var(--gauderio-stick),
+      var(--gauderio-stick-light) 52%,
+      #93652d
+    );
+}
+
+.gauderio-stick--top::after,
+.gauderio-stick--bottom::after {
+  top: 50%;
+  right: -0.32rem;
+  left: auto;
+  transform: translateY(-50%);
+}
+
+.gauderio-stick--top {
+  top: 0.2rem;
+  left: 0.28rem;
+}
+
+.gauderio-stick--right {
+  top: 0.28rem;
+  right: 0.2rem;
+}
+
+.gauderio-stick--bottom {
+  bottom: 0.2rem;
+  left: 0.28rem;
+  transform: rotate(180deg);
+}
+
+.gauderio-stick--left {
+  bottom: 0.28rem;
+  left: 0.2rem;
+  transform: rotate(180deg);
+}
+
+/* Corner to corner across the box, so a five reads as a crossed square. */
+.gauderio-stick--diagonal {
+  top: -0.1rem;
+  left: 1.78rem;
+  height: 4.2rem;
+  transform: rotate(-45deg);
+}
+
+.gauderio-stick--upright {
+  inset: 0 auto auto 0;
+  height: 4rem;
+  transform: rotate(2deg);
+}
+
+.gauderio-loose-sticks > span:nth-child(even) .gauderio-stick--upright {
+  transform: rotate(-2.6deg);
+}
+
+.gauderio-loose-sticks > span:nth-child(3n) .gauderio-stick--upright {
+  transform: rotate(3.4deg);
+}
+
+.gauderio-add-one,
+.gauderio-subtract-one {
+  position: relative;
+  width: min(calc(100% - 0.35rem), 10.5rem);
+  color: var(--gauderio-bone);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  text-shadow:
+    0 1px rgb(255 238 190 / 30%),
+    1px 2px #4a290f,
+    2px 3px #1c0d06,
+    0 0.28rem 0.34rem rgb(0 0 0 / 84%);
+  box-shadow:
+    0 0.7rem 1rem rgb(0 0 0 / 68%),
+    inset 0 0.18rem 0.3rem rgb(235 202 138 / 12%),
+    inset 0 -0.45rem 0.55rem rgb(0 0 0 / 46%);
+}
+
+.gauderio-add-one::after,
+.gauderio-subtract-one::after,
+.gauderio-leather-button::after {
+  position: absolute;
+  pointer-events: none;
+  border: 1px dashed var(--gauderio-stitch);
+  border-radius: 0.42rem;
+  content: '';
+  inset: 0.34rem;
+}
+
+.gauderio-add-one {
+  min-width: 7rem;
+  min-height: 5.5rem;
+  border: 2px solid #150a05;
+  border-radius: 0.66rem;
+  font-size: clamp(2.45rem, 12vw, 3.25rem);
+  -webkit-text-stroke: 0.5px rgb(61 33 13 / 82%);
+}
+
+.gauderio-side--us .gauderio-add-one {
+  background-image:
+    url('../../assets/textures/leather.webp'),
+    linear-gradient(172deg, var(--gauderio-us-light), var(--gauderio-us) 74%);
+  background-blend-mode: overlay, normal;
+  background-size:
+    3.5rem 3.5rem,
+    auto;
+}
+
+.gauderio-side--them .gauderio-add-one {
+  background-image:
+    url('../../assets/textures/leather.webp'),
+    linear-gradient(
+      172deg,
+      var(--gauderio-them-light),
+      var(--gauderio-them) 74%
+    );
+  background-blend-mode: overlay, normal;
+  background-size:
+    3.5rem 3.5rem,
+    auto;
+}
+
+.gauderio-subtract-one {
+  width: min(calc(100% - 2.4rem), 8rem);
+  min-height: 3.35rem;
+  border: 2px solid #120906;
+  border-radius: 0.52rem;
+  background-image:
+    url('../../assets/textures/leather.webp'),
+    linear-gradient(172deg, #2c1a0d, #100a06);
+  background-blend-mode: overlay, normal;
+  background-size:
+    3.5rem 3.5rem,
+    auto;
+  font-size: 1.45rem;
+}
+
+.gauderio-add-one:active:not(:disabled),
+.gauderio-subtract-one:active:not(:disabled),
+.gauderio-leather-button:active:not(:disabled) {
+  filter: brightness(0.92);
+  transform: translateY(1px);
+}
+
+.gauderio-add-one:disabled {
+  filter: grayscale(0.65);
+  opacity: 0.38;
+}
+
+.gauderio-undo {
+  position: relative;
+  display: inline-flex;
+  width: min(calc(100% - 0.5rem), 31rem);
+  min-height: 4.75rem;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  gap: 0.85rem;
+  margin-top: auto;
+  padding: 0.8rem 1rem;
+  border: 2px solid #130905;
+  border-radius: 0.62rem;
+  background-image:
+    url('../../assets/textures/leather.webp'),
+    linear-gradient(172deg, #5c3317, #2a1509 78%);
+  background-blend-mode: overlay, normal;
+  background-size:
+    5rem 5rem,
+    auto;
+  color: var(--gauderio-bone);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: clamp(0.9rem, 4.3vw, 1.15rem);
+  font-weight: 650;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+  text-shadow:
+    0 1px rgb(255 238 190 / 24%),
+    1px 2px #351a0a,
+    0 0.22rem 0.26rem rgb(0 0 0 / 88%);
+  box-shadow:
+    0 0.7rem 1.1rem rgb(0 0 0 / 68%),
+    inset 0 0.2rem 0.3rem rgb(230 196 138 / 12%),
+    inset 0 -0.42rem 0.5rem rgb(0 0 0 / 48%);
+}
+
+.gauderio-undo::after {
+  position: absolute;
+  pointer-events: none;
+  border: 1px dashed var(--gauderio-stitch);
+  border-radius: 0.4rem;
+  content: '';
+  inset: 0.34rem;
+}
+
+.gauderio-error {
+  margin: -0.35rem 0 0;
+  color: var(--gauderio-error);
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.gauderio-options-backdrop {
+  position: fixed;
+  z-index: 30;
+  inset: 0;
+  display: grid;
+  align-items: end;
+  justify-items: center;
+  background: rgb(5 4 3 / 76%);
+  backdrop-filter: blur(4px);
+}
+
+.gauderio-options-sheet {
+  width: min(100%, 34rem);
+  padding: 0 max(0.75rem, env(safe-area-inset-right))
+    max(0.85rem, env(safe-area-inset-bottom))
+    max(0.75rem, env(safe-area-inset-left));
+  border: 1px solid var(--gauderio-rope-muted);
+  border-radius: 1.1rem 1.1rem 0 0;
+  background:
+    repeating-linear-gradient(
+      8deg,
+      transparent 0 9px,
+      rgb(241 223 184 / 1.5%) 10px,
+      transparent 12px
+    ),
+    linear-gradient(145deg, var(--gauderio-leather), var(--gauderio-plank-dark));
+  box-shadow: 0 -1rem 2.5rem rgb(0 0 0 / 58%);
+  animation: gauderio-sheet-in 180ms ease-out both;
+}
+
+.gauderio-options-sheet > header {
+  display: grid;
+  min-height: 4.65rem;
+  grid-template-columns: 3.65rem minmax(0, 1fr) 3.65rem;
+  align-items: center;
+  gap: 0.4rem;
+  border-bottom: 1px solid var(--gauderio-rope-muted);
+}
+
+.gauderio-options-sheet h2 {
+  color: var(--gauderio-bone);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 650;
+  text-align: center;
+}
+
+.gauderio-options-sheet__rows {
+  display: grid;
+  gap: 0.55rem;
+  padding-top: 0.75rem;
+}
+
+.gauderio-options-sheet__rows > button {
+  display: grid;
+  min-height: 4.25rem;
+  grid-template-columns: 2.2rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--gauderio-rope-muted);
+  border-radius: 0.7rem;
+  background: rgb(17 16 13 / 48%);
+  color: var(--gauderio-bone);
+  text-align: left;
+}
+
+.gauderio-options-sheet__rows > button:nth-child(2) {
+  background: var(--gauderio-leather-raised);
+}
+
+.gauderio-options-sheet__rows > button:nth-child(3) {
+  border-style: dashed;
+  color: var(--gauderio-error);
+}
+
+.gauderio-options-sheet__rows span {
+  display: grid;
+  gap: 0.05rem;
+}
+
+.gauderio-options-sheet__rows strong {
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: 1rem;
+}
+
+.gauderio-options-sheet__rows small {
+  color: var(--gauderio-bone-muted);
+  font-size: 0.72rem;
+}
+
+.gauderio-finished {
+  gap: 0.8rem;
+}
+
+.gauderio-finished__hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 1rem;
+  border: 2px solid #170b06;
+  border-radius: 0.4rem;
+  background: linear-gradient(
+    145deg,
+    var(--gauderio-leather),
+    var(--gauderio-plank-dark)
+  );
+  text-align: center;
+}
+
+.gauderio-finished__hero--us {
+  background-image:
+    url('../../assets/textures/crackle.webp'),
+    linear-gradient(172deg, var(--gauderio-us-light), var(--gauderio-us) 78%);
+  background-blend-mode: overlay, normal;
+  background-size:
+    3.5rem 3.5rem,
+    auto;
+}
+
+.gauderio-finished__hero--them {
+  background-image:
+    url('../../assets/textures/crackle.webp'),
+    linear-gradient(
+      172deg,
+      var(--gauderio-them-light),
+      var(--gauderio-them) 78%
+    );
+  background-blend-mode: overlay, normal;
+  background-size:
+    3.5rem 3.5rem,
+    auto;
+}
+
+.gauderio-finished__hero::after {
+  position: absolute;
+  pointer-events: none;
+  border: 1px dashed var(--gauderio-stitch);
+  border-radius: 0.24rem;
+  content: '';
+  inset: 0.34rem;
+}
+
+.gauderio-finished__hero span {
+  color: rgb(226 196 140 / 62%);
+}
+
+.gauderio-finished__hero h2 {
+  margin: 0;
+  color: var(--gauderio-bone);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: clamp(1.35rem, 7vw, 2.15rem);
+  font-weight: 800;
+  line-height: 1.05;
+  text-shadow: 0 0.18rem 0.25rem rgb(0 0 0 / 55%);
+}
+
+.gauderio-final-board {
+  min-height: 15.5rem;
+  gap: 1rem;
+  padding-block: 0.1rem;
+}
+
+.gauderio-final-side {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.gauderio-matchsticks--compact {
+  min-height: 10.5rem;
+  gap: 0.8rem;
+  transform: scale(0.88);
+}
+
+.gauderio-finished__actions {
+  display: grid;
+  width: min(100%, 28rem);
+  align-self: center;
+  gap: 0.6rem;
+  margin-top: auto;
+}
+
+.gauderio-leather-button {
+  position: relative;
+  min-height: 4.5rem;
+  border: 2px solid #130905;
+  border-radius: 0.6rem;
+  background-image:
+    url('../../assets/textures/leather.webp'),
+    linear-gradient(172deg, #5c3317, #2a1509 78%);
+  background-blend-mode: overlay, normal;
+  background-size:
+    5rem 5rem,
+    auto;
+  color: var(--gauderio-bone);
+  font-family: 'Roboto Slab', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+  box-shadow: 0 0.65rem 1.25rem rgb(0 0 0 / 28%);
+}
+
+.gauderio-finished__secondary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.gauderio-finished__secondary button {
+  display: inline-flex;
+  min-height: 3.25rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 2px solid #120906;
+  border-radius: 0.5rem;
+  background-image:
+    url('../../assets/textures/leather.webp'),
+    linear-gradient(172deg, #2c1a0d, #100a06);
+  background-blend-mode: overlay, normal;
+  background-size:
+    3.5rem 3.5rem,
+    auto;
+  color: var(--gauderio-bone-muted);
+  font-weight: 750;
+  text-transform: uppercase;
+}
+
+@keyframes gauderio-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 23rem) {
+  .gauderio-match {
+    padding-inline: max(0.55rem, env(safe-area-inset-left));
+  }
+
+  .gauderio-header {
+    margin-inline: -0.55rem;
+    padding-inline: 0.55rem;
+  }
+
+  .gauderio-scoreboard {
+    gap: 0.65rem;
+  }
+
+  .gauderio-boxes {
+    gap-inline: 0.4rem;
+  }
+
+  .gauderio-team-banner {
+    padding-inline: 0.45rem;
+  }
+}
+
+@media (min-width: 36rem) {
+  .gauderio-match {
+    border-inline: 1px solid var(--gauderio-rope-muted);
+  }
+
+  .gauderio-add-one:hover:not(:disabled),
+  .gauderio-leather-button:hover:not(:disabled),
+  .gauderio-options-sheet__rows > button:hover:not(:disabled) {
+    filter: brightness(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gauderio-options-sheet {
+    animation: none;
+  }
+}

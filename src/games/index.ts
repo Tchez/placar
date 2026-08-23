@@ -1,11 +1,17 @@
 import type { ComponentType } from 'react';
-import { ClubIcon, PlayingCardsIcon } from '../components/HubIcons';
+import {
+  ClubIcon,
+  MateGourdIcon,
+  PlayingCardsIcon,
+} from '../components/HubIcons';
 import type { Entry, Match } from '../domain/types';
 import type { GameDefinition } from '../domain/types';
 import { CANASTRA } from './canastra';
 import { CanastraMatchView } from './CanastraMatchView';
 import { TRUCO } from './truco';
 import { TrucoMatchView } from './TrucoMatchView';
+import { TRUCO_GAUDERIO } from './trucoGauderio';
+import { TrucoGauderioMatchView } from './TrucoGauderioMatchView';
 
 export interface GameMatchViewProps {
   game: GameDefinition;
@@ -17,6 +23,7 @@ export interface GameMatchActions {
   addEntry(entry: Entry): Promise<Match>;
   updateEntry(entry: Entry): Promise<Match>;
   removeEntry(entryId: string): Promise<Match>;
+  clearEntries(): Promise<Match>;
   finish(): Promise<Match>;
   reopen(): Promise<Match>;
   remove(): Promise<void>;
@@ -53,7 +60,23 @@ const TRUCO_GAME: RegisteredGame = {
   },
 };
 
-export const GAMES: readonly RegisteredGame[] = [CANASTRA_GAME, TRUCO_GAME];
+const TRUCO_GAUDERIO_GAME: RegisteredGame = {
+  ...TRUCO_GAUDERIO,
+  MatchView: TrucoGauderioMatchView,
+  hub: {
+    // Its own accent: sharing mineiro's gold made the two trucos
+    // indistinguishable in the listing.
+    accent: 'var(--hub-copper)',
+    description: 'Um ponto por vez, até 24.',
+    Icon: MateGourdIcon,
+  },
+};
+
+export const GAMES: readonly RegisteredGame[] = [
+  CANASTRA_GAME,
+  TRUCO_GAME,
+  TRUCO_GAUDERIO_GAME,
+];
 
 export function getGame(id: string): RegisteredGame {
   const game = GAMES.find((candidate) => candidate.id === id);

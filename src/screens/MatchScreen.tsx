@@ -9,6 +9,7 @@ export function MatchScreen() {
   const navigate = useNavigate();
   const {
     addEntry,
+    clearEntries,
     createMatch,
     finishMatch,
     isLoading,
@@ -41,6 +42,16 @@ export function MatchScreen() {
     updateEntry: (entry: Parameters<typeof updateEntry>[1]) =>
       updateEntry(match.id, entry),
     removeEntry: (entryId: string) => removeEntry(match.id, entryId),
+    async clearEntries() {
+      if (
+        !window.confirm(
+          'Resetar os pontos desta partida? Esta ação não pode ser desfeita.',
+        )
+      ) {
+        return match;
+      }
+      return clearEntries(match.id);
+    },
     finish: () => finishMatch(match.id, new Date().toISOString()),
     reopen: () => reopenMatch(match.id),
     async remove() {

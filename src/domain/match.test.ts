@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   addEntry,
+  clearEntries,
   createMatch,
   finishMatch,
   removeEntry,
@@ -83,6 +84,18 @@ describe('match domain', () => {
     const result = removeEntry(match, entry.id);
 
     expect(result.entries).toEqual([]);
+    assertInputUnchanged();
+  });
+
+  it('clears every entry without changing the match identity or metadata', () => {
+    const match = finishMatch(matchWithEntry(), '2026-08-22T13:00:00.000Z');
+    const assertInputUnchanged = unchanged(match);
+    const result = clearEntries(match);
+
+    expect(result).toEqual({ ...match, entries: [] });
+    expect(result.id).toBe(match.id);
+    expect(result.teams).toBe(match.teams);
+    expect(result.finishedAt).toBe(match.finishedAt);
     assertInputUnchanged();
   });
 

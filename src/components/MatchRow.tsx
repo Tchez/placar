@@ -24,8 +24,6 @@ function getFinishedOutcome(game: RegisteredGame, match: Match): string {
 
 export function MatchRow({ game, match, showOutcome = false }: MatchRowProps) {
   const scoreboard = game.scoreboard(match);
-  const target =
-    match.target === null ? 'sem meta' : formatNumber(match.target);
   const outcome =
     showOutcome && match.finishedAt !== null
       ? getFinishedOutcome(game, match)
@@ -42,7 +40,10 @@ export function MatchRow({ game, match, showOutcome = false }: MatchRowProps) {
       <span className="hub-match-row__copy">
         <strong>{match.teams.map(({ name }) => name).join(' × ')}</strong>
         <span>
-          {game.label} · Meta: {target}
+          {game.label}
+          {match.target === null
+            ? null
+            : ` · Meta: ${formatNumber(match.target)}`}
         </span>
         <small>Iniciada em {formatStartedAt(match.createdAt)}</small>
         {outcome ? <em>{outcome}</em> : null}

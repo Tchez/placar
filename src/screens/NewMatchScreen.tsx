@@ -19,7 +19,7 @@ export function NewMatchScreen() {
   const { createMatch } = useMatches();
   const game = GAMES.find(({ id }) => id === gameId);
   const [targetInput, setTargetInput] = useState(
-    game?.needsSetup ? String(game.targetSuggestions[0] ?? '') : '',
+    game?.needsSetup ? String(game.targetSuggestions?.[0] ?? '') : '',
   );
   const [targetTouched, setTargetTouched] = useState(false);
   const [allowNegativeEntries, setAllowNegativeEntries] = useState(
@@ -78,7 +78,7 @@ export function NewMatchScreen() {
   const selectedGame = game;
   const targetValidation = validateTarget(
     targetInput,
-    selectedGame.targetRequired,
+    selectedGame.targetRequired ?? false,
   );
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -159,7 +159,7 @@ export function NewMatchScreen() {
             className="canastra-setup__suggestions"
             aria-label="Sugestões de pontuação"
           >
-            {selectedGame.targetSuggestions.map((suggestion) => (
+            {(selectedGame.targetSuggestions ?? []).map((suggestion) => (
               <button
                 aria-pressed={targetInput === String(suggestion)}
                 key={suggestion}

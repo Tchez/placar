@@ -98,6 +98,10 @@ export function removeEntry(match: Match, entryId: string): Match {
   };
 }
 
+export function clearEntries(match: Match): Match {
+  return { ...match, entries: [] };
+}
+
 export function renameTeam(match: Match, teamId: string, name: string): Match {
   if (!match.teams.some(({ id }) => id === teamId)) {
     throw new Error(`Team not found: ${teamId}`);

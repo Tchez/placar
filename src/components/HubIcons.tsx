@@ -21,6 +21,17 @@ export function ClubIcon({ className }: IconProps) {
   );
 }
 
+/** A chimarrão: gourd, rim and bomba. */
+export function MateGourdIcon({ className }: IconProps) {
+  return (
+    <svg aria-hidden="true" className={className} viewBox="0 0 32 32">
+      <path d="M7.6 14.4c-1 3.6-.2 6.8 2.2 9.6 1.4 1.7 3 3.1 4.6 4.2 1.6-1.1 3.2-2.5 4.6-4.2 2.4-2.8 3.2-6 2.2-9.6" />
+      <path d="M7.6 14.2c0-1.3 2.9-2.3 6.6-2.3s6.6 1 6.6 2.3-2.9 2.4-6.6 2.4-6.6-1.1-6.6-2.4Z" />
+      <path d="m18.4 12.4 6.9-7.3M23.6 3.3l3.3 3.4" />
+    </svg>
+  );
+}
+
 export function DieIcon({ className }: IconProps) {
   return (
     <svg aria-hidden="true" className={className} viewBox="0 0 32 32">

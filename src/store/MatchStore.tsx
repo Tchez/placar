@@ -11,6 +11,7 @@ import {
 } from 'react';
 import {
   addEntry as addEntryToMatch,
+  clearEntries as clearMatchEntries,
   createMatch as createDomainMatch,
   finishMatch as finishDomainMatch,
   type CreateMatchInput,
@@ -30,6 +31,7 @@ interface MatchStoreValue {
   addEntry(matchId: string, entry: Entry): Promise<Match>;
   updateEntry(matchId: string, entry: Entry): Promise<Match>;
   removeEntry(matchId: string, entryId: string): Promise<Match>;
+  clearEntries(matchId: string): Promise<Match>;
   renameTeam(matchId: string, teamId: string, name: string): Promise<Match>;
   finishMatch(matchId: string, finishedAt: string): Promise<Match>;
   reopenMatch(matchId: string): Promise<Match>;
@@ -104,6 +106,7 @@ export function MatchProvider({
         persistChange(matchId, (match) => updateMatchEntry(match, entry)),
       removeEntry: (matchId, entryId) =>
         persistChange(matchId, (match) => removeEntryFromMatch(match, entryId)),
+      clearEntries: (matchId) => persistChange(matchId, clearMatchEntries),
       renameTeam: (matchId, teamId, name) =>
         persistChange(matchId, (match) =>
           renameDomainTeam(match, teamId, name),

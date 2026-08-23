@@ -13,6 +13,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run --coverage",
+    "textures": "node scripts/generate-textures.mjs",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm run test"
   },
   "dependencies": {

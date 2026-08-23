@@ -1,10 +1,11 @@
 # Placar
 
-Score-keeping app for family card and racket games — canastra, truco, padel, and a generic fallback mode.
+Score-keeping app for family card and court games — canastra, truco, vôlei, and a generic fallback mode.
 
-**Status:** canastra and truco mineiro are implemented end to end, with a game hub, local match
-history and an in-app installation guide. The app is deployed as an installable, offline-first PWA at
-**[placar.tchez.dev](https://placar.tchez.dev)**. The next deliveries are planned in `docs/specs/`.
+**Status:** canastra, truco mineiro and truco gaudério are implemented end to end, with a game hub,
+local match history and an in-app installation guide. The app is deployed as an installable,
+offline-first PWA at **[placar.tchez.dev](https://placar.tchez.dev)**. The next deliveries are planned
+in `docs/specs/`.
 
 ## Run locally
 
@@ -95,11 +96,12 @@ These are settled. Do not relitigate them in a SPEC without saying so explicitly
 | **Data stays on the device** — no backend, offline-first local persistence | Works with no internet (backyard, countryside), zero cost, no auth | Each device has its own history; whoever enters the points is the table's scorekeeper |
 | **Persistence sits behind an interface** | Shared sync is a later phase and must not require rewriting screens | One module owns storage; screens never touch it directly |
 | **Mobile-first PWA** — installable via "add to home screen" | Distributes to the family without TestFlight/APK or store fees | Must work on iOS Safari and Android Chrome |
-| **Four games in the MVP** — canastra, truco, padel, generic | The generic mode keeps the app from ever being a dead end (dominó, buraco, whatever) | Game rules are data/config, not scattered conditionals |
+| **Four games in the MVP** — canastra, truco, vôlei, generic (padel dropped 2026-08-23) | The generic mode keeps the app from ever being a dead end (dominó, buraco, whatever) | Game rules are data/config, not scattered conditionals |
 | **Only what varies between tables is asked at match creation** — the target and whether negatives are allowed. Team count and default team names are declared by the game | House rules vary inside the same family, so freezing the target would force absurd variants like "canastra 3000" and "canastra 4000" as separate games. Team count does not vary, so asking for it would be a screen nobody needs | A game declares its team count, default names and which setup options it offers; the match stores the resolved values |
 | **UI in Portuguese (pt-BR) only** | The family does not speak English | No i18n layer in v1 — strings live in the components. Internationalizing is a deliberate later decision, not a default to prepare for |
 | **Picking the game is the first step of the flow** | The counting rule changes everything downstream: targets, entry values, what "score" even means | Home screen is the game picker |
 | **Each game owns its match visual design** | The games have different identities and scoring rhythms; forcing them through one project-wide screen makes every game feel generic | The registry associates each definition with its own match view; shared domain and persistence contracts do not imply shared match UI |
+| **Looking good is a requirement, not decoration** | This app competes with pen and paper at a family table; if it feels cheap nobody reaches for it. The owner supplies a visual reference per game and the screen is expected to match it | Whatever it takes to get there is allowed — texture assets, a CSS library, a dependency — inside the boundaries in `CLAUDE.md`. A SPEC that forbids a technique gets amended by the owner, not worked around |
 
 ## How each game counts
 
@@ -150,19 +152,30 @@ be re-drawn, a rounding rule cannot be re-derived.
 - **Not built, on purpose:** a count badge on the log icon and scoring shortcut buttons (still
   blocked on the family's point values).
 
-### Truco
+### Truco mineiro
 Cumulative score with discrete values.
 - 2 pairs ("Nós" / "Eles") · default target **12**
 - Hand values: **1, 3, 6, 9, 12** · never negative
 - Buttons only — free numeric entry makes no sense here
+- Knows one rule beyond adding: the **mão de onze**, and mão de ferro at 11-11
 
-### Padel
-**Not cumulative.** Hierarchical: points → games → sets. This is the game that breaks the "sum of points" model and therefore shapes the architecture.
-- 2 pairs · best of 3 sets (2 sets win)
-- A set is won at 6 games with a 2-game margin; 5-5 goes to 7-5; 6-6 is decided by a tie-break
-- Displayed score: **sets won** as the headline number, games set-by-set as detail (e.g. `6-4, 3-2`)
-- **MVP granularity: games, not individual points.** Nobody taps a phone every rally in a family match; what gets lost is the game score, and that is what needs remembering. Point-by-point (15/30/40) is a later phase
-- Sets and winner are **derived** from the log of "pair X won a game", so editing or deleting an entry recomputes the whole match consistently
+### Truco gaudério
+A **separate game**, not a variant of mineiro. By the project's criterion, a difference in *rule* is a
+different game, while a difference in *table agreement* is match configuration.
+- 2 pairs ("Nós" / "Eles"), fixed and not renameable · **no target at all**
+- **Unit increments only: `+1` and `−1`.** No hand ladder
+- **Knows no rule of the game** in v1 — no flor, no envido, nothing equivalent to mão de onze
+- Played to 12 or to 24 depending on the table. The app neither knows nor asks; it counts.
+  **24 is the ceiling**, and a ceiling of 24 covers a 12-point game too
+- Teaching it the rules later is **conditional, not debt**: counting alone may be the finished product
+
+### Vôlei
+**Not cumulative.** Hierarchical: points → sets. This is the game that breaks the "sum of points" model and therefore shapes the architecture. It inherits that role from padel, which was dropped on 2026-08-23.
+- 2 teams · point-by-point entry
+- Displayed score: **sets won as the small number, points in the current set as the large number** — the layout of a courtside counter
+- **The app is the counter, not the referee.** The family plays indoor and beach, sometimes serious and sometimes casual, so the set target varies (25, 21, or whatever was agreed). A counter does not need to know the target; it counts
+- Sets are **derived** from the entry log, so editing or deleting an entry recomputes the whole match consistently
+- ⚠️ **Not yet specified.** How a set closes is an open product question — see `docs/specs/README.md`
 
 ### Generic
 Free teams and a plain sum, optional target. Exists so any other game fits.
@@ -183,16 +196,22 @@ Free teams and a plain sum, optional target. Exists so any other game fits.
 | 1 | MVP above |
 | 2 | Named players and stats (who wins most) |
 | 3 | Sync between family devices |
-| 4 | Point-by-point padel and tournaments |
+| 4 | *Empty.* Held phase 4 (point-by-point padel and tournaments) until padel was dropped on 2026-08-23. The only declared candidate is teaching truco gaudério its rules, which the owner has left conditional |
 
 ## Repository layout
 
 ```
 src/                 React application, domain, persistence and tests
+src/assets/textures/ Generated surface textures — see scripts/, never hand-edited
+scripts/             Build-time generators (`npm run textures`)
 docs/specs/          SPECs — one per unit of work, the input to implementation
 docs/specs/000-template.md   SPEC template
 CLAUDE.md            Working agreement and development commands
 ```
+
+Decoration is **generated in this repo, never downloaded**: the truco gaudério leather, craquelure
+and wood plank come from `scripts/generate-textures.mjs`, which is seeded and deterministic. The repo
+is public, so no third-party image is vendored into it.
 
 ## Where the product docs live
 

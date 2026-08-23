@@ -1,4 +1,4 @@
-export type GameId = 'canastra' | 'truco' | 'padel' | 'generico';
+export type GameId = 'canastra' | 'truco' | 'truco-gauderio' | 'generico';
 
 export interface Team {
   id: string;
@@ -47,9 +47,10 @@ export interface GameDefinition {
   teamCount: number;
   defaultTeamNames: readonly string[];
   needsSetup: boolean;
-  defaultTarget: number | null;
-  targetSuggestions: readonly number[];
-  targetRequired: boolean;
+  defaultTarget?: number | null;
+  targetSuggestions?: readonly number[];
+  targetRequired?: boolean;
+  scoreCeiling?: number;
   supportsNegativeEntries: boolean;
   entryAffordance: EntryAffordance;
   scoreboard(match: Match): Scoreboard;

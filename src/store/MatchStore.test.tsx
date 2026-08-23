@@ -79,6 +79,7 @@ describe('MatchStore', () => {
 
     await act(async () => {
       await result.current.reopenMatch('match-1');
+      await result.current.clearEntries('match-1');
       await result.current.removeEntry('match-1', 'entry-1');
     });
     expect(result.current.matches[0]?.finishedAt).toBeNull();
@@ -88,7 +89,7 @@ describe('MatchStore', () => {
       await result.current.removeMatch('match-1');
     });
     expect(result.current.matches).toEqual([]);
-    expect(repository.save).toHaveBeenCalledTimes(7);
+    expect(repository.save).toHaveBeenCalledTimes(8);
     expect(repository.remove).toHaveBeenCalledWith('match-1');
   });
 

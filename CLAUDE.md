@@ -42,7 +42,7 @@ Decided, not yet scaffolded — the first SPEC sets it up:
 ## Design constraints
 
 - **Mobile-first, thumb-first.** Generous tap targets; the app is used standing at a card table
-  or a padel court, one-handed, sometimes in the dark.
+  or courtside, one-handed, sometimes in the dark.
 - **Portuguese (pt-BR) in the UI, with no i18n layer.** The family does not speak English, and v1
   ships pt-BR only — put the strings in the components. Do not add a translation layer, locale
   files or a language switcher "for later": internationalizing is a separate, explicit decision.
@@ -52,6 +52,20 @@ Decided, not yet scaffolded — the first SPEC sets it up:
 - **No destructive action without a confirmation**, and no action that cannot be corrected —
   every entry must be editable and deletable.
 - Works offline on first load after install. No network request is ever required.
+- **Visual fidelity is a requirement.** The owner supplies a reference for a screen and the
+  implementation is expected to match it, not to approximate it with whatever CSS is cheapest.
+  Pure-CSS texture has already lost this argument once: gradients at an angle read as graph paper,
+  radial gradients read as vinyl, and SVG noise is too even to pass as leather.
+  **Use what it takes** — image assets, a CSS library, a new dependency — within these boundaries:
+  1. **Nothing from the network at runtime**, and nothing that breaks offline-first.
+  2. **No third-party asset vendored.** This repo is public, so decoration is either generated here
+     by a committed script (see `scripts/generate-textures.mjs`) or licence-clean and attributed.
+  3. **A dependency still has to earn its place** — the family installs this from a home-screen
+     shortcut, so watch the precache weight and say what it costs.
+  4. **Verify by rendering, not by reading CSS.** Screenshot the screen at a phone viewport, at
+     DPR 2, before claiming it matches.
+  5. If a SPEC forbids the technique that the look needs, **say so and get the SPEC amended**. Do
+     not silently cross the line, and do not ship something worse to stay inside it.
 
 ## Architecture principles
 
@@ -59,7 +73,7 @@ Derived from the game rules in `README.md` — these are not negotiable style pr
 
 1. **The entry log is the source of truth.** A match stores an ordered list of score entries;
    the displayed score is always *derived* from it. This is what makes edit and delete
-   consistent, and it is what makes padel (sets derived from games) work at all.
+   consistent, and it is what makes vôlei (sets derived from a log of points) work at all.
 2. **Game rules are data, not conditionals.** Each game is one definition object declaring its
    teams, target options, entry affordances and how to compute a scoreboard from the entry log.
    Adding a game means adding a definition — never adding an `if` to a screen.
@@ -82,5 +96,7 @@ Derived from the game rules in `README.md` — these are not negotiable style pr
 - `npm run lint` — run ESLint
 - `npm run format` — format repository files with Prettier
 - `npm run format:check` — verify formatting without changing files
+- `npm run textures` — regenerate the truco gaudério surface textures (seeded and deterministic;
+  commit the output)
 - `npm run test` — run the test suite once
 - `npm run check` — run typecheck, lint, format check and tests

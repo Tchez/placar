@@ -6,7 +6,7 @@ export function createDefaultMatchInput(
   game: RegisteredGame,
   createdAt = new Date().toISOString(),
 ): CreateMatchInput {
-  if (game.needsSetup || game.defaultTarget === null) {
+  if (game.needsSetup) {
     throw new Error(`Game requires setup: ${game.id}`);
   }
 
@@ -17,7 +17,7 @@ export function createDefaultMatchInput(
       id: createId('team'),
       name,
     })),
-    target: game.defaultTarget,
+    target: game.defaultTarget ?? null,
     allowNegativeEntries: false,
     createdAt,
   };
