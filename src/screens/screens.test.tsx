@@ -8,8 +8,8 @@ import {
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ROUTES } from '../app/routes';
-import { AppHeader } from '../components/AppHeader';
 import { addEntry, createMatch, finishMatch } from '../domain/match';
+import { InstallProvider } from '../install/InstallProvider';
 import type { Match } from '../domain/types';
 import type { MatchRepository } from '../storage/repository';
 import { MatchProvider } from '../store/MatchStore';
@@ -77,16 +77,17 @@ function renderApp(
   repository: MatchRepository = createFakeRepository(),
 ) {
   return render(
-    <MatchProvider repository={repository}>
-      <MemoryRouter initialEntries={[path]}>
-        <AppHeader />
-        <Routes>
-          <Route path={ROUTES.home} element={<HomeScreen />} />
-          <Route path={ROUTES.newMatch} element={<NewMatchScreen />} />
-          <Route path={ROUTES.match} element={<MatchScreen />} />
-        </Routes>
-      </MemoryRouter>
-    </MatchProvider>,
+    <InstallProvider>
+      <MatchProvider repository={repository}>
+        <MemoryRouter initialEntries={[path]}>
+          <Routes>
+            <Route path={ROUTES.home} element={<HomeScreen />} />
+            <Route path={ROUTES.newMatch} element={<NewMatchScreen />} />
+            <Route path={ROUTES.match} element={<MatchScreen />} />
+          </Routes>
+        </MemoryRouter>
+      </MatchProvider>
+    </InstallProvider>,
   );
 }
 
@@ -109,7 +110,7 @@ describe('canastra screens', () => {
     expect(screen.getByLabelText('Versão do aplicativo')).toHaveTextContent(
       `versão ${__BUILD_VERSION__}`,
     );
-    expect(screen.getByRole('link', { name: 'Canastra' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Canastra/ })).toHaveAttribute(
       'href',
       '/nova/canastra',
     );
@@ -138,7 +139,7 @@ describe('canastra screens', () => {
       name: 'Em andamento',
     });
     const link = screen.getByRole('link', {
-      name: /Nós × Eles 385 × 0 Meta: 3000 · Iniciada em/,
+      name: /Nós × Eles Canastra · Meta: 3.000 Iniciada em .* 385 × 0/,
     });
     expect(section).toBeInTheDocument();
     expect(link).toHaveAttribute('href', '/partida/match-1');
@@ -152,14 +153,14 @@ describe('canastra screens', () => {
     renderApp('/nova/canastra', repository);
 
     const target = screen.getByRole('textbox', {
-      name: 'Pontos para vencer',
+      name: /pontos para vencer/i,
     });
-    const start = screen.getByRole('button', { name: 'Começar partida' });
-    expect(target).toHaveValue('');
-    expect(start).toBeDisabled();
+    const start = screen.getByRole('button', { name: /começar partida/i });
+    expect(target).toHaveValue('3000');
+    expect(start).toBeEnabled();
     expect(
       screen.getByRole('switch', { name: 'Permitir pontos negativos' }),
-    ).not.toBeChecked();
+    ).toBeChecked();
     expect(screen.queryByLabelText('Nome do time')).not.toBeInTheDocument();
     expect(
       screen.queryByLabelText(/quantidade de times/i),
@@ -169,6 +170,15 @@ describe('canastra screens', () => {
     ).not.toBeInTheDocument();
     expect(screen.queryByText(/Os times começam como/)).not.toBeInTheDocument();
 
+    fireEvent.change(target, { target: { value: '3500' } });
+    expect(screen.getByRole('button', { name: '3000' })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    );
+    expect(screen.getByRole('button', { name: '4000' })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    );
     fireEvent.click(screen.getByRole('button', { name: '3000' }));
     expect(target).toHaveValue('3000');
     fireEvent.click(screen.getByRole('button', { name: '4000' }));
@@ -179,7 +189,7 @@ describe('canastra screens', () => {
     expect(repository.saved[0]).toMatchObject({
       gameId: 'canastra',
       target: 4000,
-      allowNegativeEntries: false,
+      allowNegativeEntries: true,
       teams: [{ name: 'Nós' }, { name: 'Eles' }],
     });
     expect(repository.saved[0]?.teams).toHaveLength(2);
@@ -202,19 +212,30 @@ describe('canastra screens', () => {
     renderApp('/nova/canastra', repository);
 
     fireEvent.click(screen.getByRole('button', { name: '3000' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Começar partida' }));
+    fireEvent.click(screen.getByRole('button', { name: 'COMEÇAR PARTIDA' }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent(
       'Não foi possível começar a partida. Tente novamente.',
     );
     expect(
-      screen.getByRole('button', { name: 'Começar partida' }),
+      screen.getByRole('button', { name: 'COMEÇAR PARTIDA' }),
     ).toBeEnabled();
   });
 
   it('shows the target validation message and unknown game message', async () => {
     const { unmount } = renderApp('/nova/canastra');
-    fireEvent.blur(screen.getByRole('textbox', { name: 'Pontos para vencer' }));
+    fireEvent.change(
+      screen.getByRole('textbox', { name: /pontos para vencer/i }),
+      {
+        target: { value: '' },
+      },
+    );
+    expect(
+      screen.getByRole('button', { name: /começar partida/i }),
+    ).toBeDisabled();
+    fireEvent.blur(
+      screen.getByRole('textbox', { name: /pontos para vencer/i }),
+    );
     expect(
       screen.getByText('Informe quantos pontos para vencer.'),
     ).toBeInTheDocument();

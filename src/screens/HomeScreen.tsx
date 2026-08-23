@@ -1,25 +1,71 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { matchPath, newMatchPath } from '../app/routes';
+import { formatNumber } from '../app/format';
+import { matchPath, newMatchPath, ROUTES } from '../app/routes';
+import { gameAccentStyle } from '../components/gameAccent';
+import { GameBadge } from '../components/GameBadge';
+import { HubHeader } from '../components/HubHeader';
+import { ChevronRightIcon, DieIcon, FlagIcon } from '../components/HubIcons';
+import { MatchRow } from '../components/MatchRow';
 import { GAMES, type RegisteredGame } from '../games';
 import { createDefaultMatchInput } from '../games/createDefaultMatchInput';
+import { useInstall } from '../install/InstallProvider';
 import { useMatches } from '../store/MatchStore';
 
-function formatStartedAt(value: string): string {
-  return new Intl.DateTimeFormat('pt-BR', {
-    day: '2-digit',
-    month: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(value));
+function GameCard({
+  disabled,
+  game,
+  isCreating,
+  onStart,
+}: {
+  disabled: boolean;
+  game: RegisteredGame;
+  isCreating: boolean;
+  onStart(game: RegisteredGame): void;
+}) {
+  const content = (
+    <>
+      <GameBadge game={game} size="large" />
+      <span className="hub-game-card__copy">
+        <strong>{isCreating ? 'Começando…' : game.label}</strong>
+        <span>{game.hub.description}</span>
+      </span>
+      <ChevronRightIcon className="hub-game-card__chevron" />
+    </>
+  );
+  const className = 'hub-game-card';
+  const style = gameAccentStyle(game);
+
+  return game.needsSetup ? (
+    <Link className={className} style={style} to={newMatchPath(game.id)}>
+      {content}
+    </Link>
+  ) : (
+    <button
+      className={className}
+      disabled={disabled}
+      style={style}
+      type="button"
+      onClick={() => onStart(game)}
+    >
+      {content}
+    </button>
+  );
 }
 
 export function HomeScreen() {
   const navigate = useNavigate();
+  const { isInstalled } = useInstall();
   const { createMatch, isLoading, matches } = useMatches();
   const [creatingGameId, setCreatingGameId] = useState<string | null>(null);
   const [creationError, setCreationError] = useState('');
-  const activeMatches = matches.filter((match) => match.finishedAt === null);
+  const activeMatches = matches
+    .filter((match) => match.finishedAt === null)
+    .sort(
+      (left, right) =>
+        new Date(right.createdAt).getTime() -
+        new Date(left.createdAt).getTime(),
+    );
 
   async function startGame(game: RegisteredGame) {
     if (game.needsSetup) {
@@ -39,81 +85,83 @@ export function HomeScreen() {
   }
 
   return (
-    <div className="screen home-screen">
-      <section aria-labelledby="games-title">
-        <header className="screen-heading">
-          <span className="eyebrow">Jogos</span>
+    <div className="hub-screen home-screen">
+      <HubHeader />
+
+      <section className="hub-games" aria-labelledby="games-title">
+        <header className="hub-section-intro">
+          <span className="hub-eyebrow">JOGOS</span>
           <h1 id="games-title">Novo placar</h1>
+          <p>Escolha um jogo para começar</p>
         </header>
-        <div className="game-grid">
+        <div className="hub-game-list">
           {GAMES.map((game) => (
-            <div key={game.id}>
-              {game.needsSetup ? (
-                <Link className="game-card" to={newMatchPath(game.id)}>
-                  <strong>{game.label}</strong>
-                </Link>
-              ) : (
-                <button
-                  className="game-card"
-                  disabled={creatingGameId !== null}
-                  type="button"
-                  onClick={() => void startGame(game)}
-                >
-                  <strong>
-                    {creatingGameId === game.id ? 'Começando…' : game.label}
-                  </strong>
-                </button>
-              )}
-            </div>
+            <GameCard
+              disabled={creatingGameId !== null}
+              game={game}
+              isCreating={creatingGameId === game.id}
+              key={game.id}
+              onStart={(selectedGame) => void startGame(selectedGame)}
+            />
           ))}
+          <div className="hub-game-card hub-game-card--soon">
+            <span className="game-badge game-badge--large" aria-hidden="true">
+              <DieIcon />
+            </span>
+            <span className="hub-game-card__copy">
+              <strong>Em breve</strong>
+              <span>Truco gaúcho</span>
+            </span>
+          </div>
         </div>
         {creationError ? (
           <p className="field-error" role="alert">
             {creationError}
           </p>
         ) : null}
+        <div className="hub-coming-ornament" aria-hidden="true">
+          <span />
+          <small>Mais jogos em breve</small>
+          <span />
+        </div>
       </section>
 
       {!isLoading && activeMatches.length > 0 ? (
         <section
-          className="active-matches"
+          className="hub-active-matches"
           aria-labelledby="active-matches-title"
         >
-          <div className="section-heading">
+          <div className="hub-section-heading">
             <h2 id="active-matches-title">Em andamento</h2>
-            <span className="section-count">{activeMatches.length}</span>
+            <div>
+              <span className="hub-section-count">
+                {formatNumber(activeMatches.length)}
+              </span>
+              <Link to={ROUTES.activeMatches}>Ver todos ›</Link>
+            </div>
           </div>
-          <div className="match-list">
-            {activeMatches.map((match) => {
+          <div className="hub-match-list">
+            {activeMatches.slice(0, 3).map((match) => {
               const game = GAMES.find(({ id }) => id === match.gameId);
-              if (!game) return null;
-              const scoreboard = game.scoreboard(match);
-
-              return (
-                <Link
-                  className="match-row"
-                  key={match.id}
-                  to={matchPath(match.id)}
-                >
-                  <span className="match-row__teams">
-                    {match.teams.map(({ name }) => name).join(' × ')}
-                  </span>
-                  <span className="match-row__score">
-                    {scoreboard.standings.map(({ score }) => score).join(' × ')}
-                  </span>
-                  <span className="match-row__meta">
-                    Meta: {match.target ?? 'sem meta'} · Iniciada em{' '}
-                    {formatStartedAt(match.createdAt)}
-                  </span>
-                </Link>
-              );
+              return game ? (
+                <MatchRow game={game} key={match.id} match={match} />
+              ) : null;
             })}
           </div>
         </section>
       ) : null}
 
-      <footer className="build-version" aria-label="Versão do aplicativo">
-        versão {__BUILD_VERSION__}
+      <footer className="hub-footer">
+        {!isInstalled ? (
+          <Link className="hub-install-strip" to={ROUTES.install}>
+            <FlagIcon />
+            <span>Instale o Placar neste aparelho</span>
+            <ChevronRightIcon />
+          </Link>
+        ) : null}
+        <span className="build-version" aria-label="Versão do aplicativo">
+          versão {__BUILD_VERSION__}
+        </span>
       </footer>
     </div>
   );

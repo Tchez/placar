@@ -2,6 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { createId } from '../app/createId';
 import { matchPath, ROUTES } from '../app/routes';
+import {
+  ArrowLeftIcon,
+  DiamondIcon,
+  PlayingCardsIcon,
+  TrophyIcon,
+} from '../components/HubIcons';
 import { validateTarget } from '../domain/match';
 import { GAMES } from '../games';
 import { createDefaultMatchInput } from '../games/createDefaultMatchInput';
@@ -12,12 +18,22 @@ export function NewMatchScreen() {
   const navigate = useNavigate();
   const { createMatch } = useMatches();
   const game = GAMES.find(({ id }) => id === gameId);
-  const [targetInput, setTargetInput] = useState('');
+  const [targetInput, setTargetInput] = useState(
+    game?.needsSetup ? String(game.targetSuggestions[0] ?? '') : '',
+  );
   const [targetTouched, setTargetTouched] = useState(false);
-  const [allowNegativeEntries, setAllowNegativeEntries] = useState(false);
+  const [allowNegativeEntries, setAllowNegativeEntries] = useState(
+    game?.supportsNegativeEntries ?? false,
+  );
   const [creationError, setCreationError] = useState('');
   const [isCreating, setIsCreating] = useState(game?.needsSetup === false);
   const directStartAttempted = useRef(false);
+
+  useEffect(() => {
+    if (game?.id !== 'canastra') return;
+    document.body.classList.add('canastra-setup-theme');
+    return () => document.body.classList.remove('canastra-setup-theme');
+  }, [game?.id]);
 
   useEffect(() => {
     if (!game || game.needsSetup || directStartAttempted.current) return;
@@ -93,31 +109,59 @@ export function NewMatchScreen() {
   }
 
   return (
-    <section className="screen setup-screen" aria-labelledby="new-match-title">
-      <header className="screen-heading">
-        <span className="eyebrow">{game.label}</span>
+    <section
+      className="game-match canastra-setup"
+      data-game={selectedGame.id}
+      aria-labelledby="new-match-title"
+    >
+      <Link
+        aria-label="Voltar ao início"
+        className="canastra-setup__back"
+        to={ROUTES.home}
+      >
+        <ArrowLeftIcon />
+      </Link>
+
+      <header className="canastra-setup__header">
+        <TrophyIcon className="canastra-setup__trophy" />
+        <div className="canastra-setup__game-name">
+          <span aria-hidden="true" />
+          <p>{selectedGame.label}</p>
+          <span aria-hidden="true" />
+        </div>
         <h1 id="new-match-title">Nova partida</h1>
       </header>
 
-      <form className="setup-card" noValidate onSubmit={handleSubmit}>
-        <div className="field-group">
-          <label htmlFor="target">Pontos para vencer</label>
-          <input
-            aria-describedby={targetTouched ? 'target-error' : undefined}
-            aria-invalid={targetTouched && !targetValidation.valid}
-            id="target"
-            inputMode="numeric"
-            onBlur={() => setTargetTouched(true)}
-            onChange={(event) => setTargetInput(event.target.value)}
-            className="target-input"
-            type="text"
-            value={targetInput}
-          />
-          <div className="suggestions" aria-label="Sugestões de pontuação">
-            {game.targetSuggestions.map((suggestion) => (
+      <form
+        className="canastra-setup__panel"
+        noValidate
+        onSubmit={handleSubmit}
+      >
+        <div className="canastra-setup__field-group">
+          <label className="canastra-setup__label" htmlFor="target">
+            <span aria-hidden="true" />
+            PONTOS PARA VENCER
+          </label>
+          <div className="canastra-setup__input-wrap">
+            <input
+              aria-describedby={targetTouched ? 'target-error' : undefined}
+              aria-invalid={targetTouched && !targetValidation.valid}
+              id="target"
+              inputMode="numeric"
+              onBlur={() => setTargetTouched(true)}
+              onChange={(event) => setTargetInput(event.target.value)}
+              type="text"
+              value={targetInput}
+            />
+            <DiamondIcon />
+          </div>
+          <div
+            className="canastra-setup__suggestions"
+            aria-label="Sugestões de pontuação"
+          >
+            {selectedGame.targetSuggestions.map((suggestion) => (
               <button
                 aria-pressed={targetInput === String(suggestion)}
-                className="suggestion-button"
                 key={suggestion}
                 onClick={() => {
                   setTargetInput(String(suggestion));
@@ -130,15 +174,20 @@ export function NewMatchScreen() {
             ))}
           </div>
           {targetTouched && !targetValidation.valid ? (
-            <span className="field-error" id="target-error">
+            <span className="canastra-setup__error" id="target-error">
               {targetValidation.message}
             </span>
           ) : null}
         </div>
 
-        {game.supportsNegativeEntries ? (
-          <label className="toggle-field" htmlFor="allow-negatives">
-            <span>Permitir pontos negativos</span>
+        <div className="canastra-setup__divider" />
+
+        {selectedGame.supportsNegativeEntries ? (
+          <label className="canastra-setup__toggle" htmlFor="allow-negatives">
+            <span className="canastra-setup__label">
+              <span aria-hidden="true" />
+              PERMITIR PONTOS NEGATIVOS
+            </span>
             <input
               aria-label="Permitir pontos negativos"
               checked={allowNegativeEntries}
@@ -152,17 +201,20 @@ export function NewMatchScreen() {
           </label>
         ) : null}
 
+        <div className="canastra-setup__divider" />
+
         {creationError ? (
-          <span className="field-error" role="alert">
+          <span className="canastra-setup__error" role="alert">
             {creationError}
           </span>
         ) : null}
         <button
-          className="primary-button"
+          className="canastra-setup__submit"
           disabled={!targetValidation.valid || isCreating}
           type="submit"
         >
-          {isCreating ? 'Começando…' : 'Começar partida'}
+          <PlayingCardsIcon />
+          {isCreating ? 'COMEÇANDO…' : 'COMEÇAR PARTIDA'}
         </button>
       </form>
     </section>

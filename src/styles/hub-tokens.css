@@ -1,0 +1,20 @@
+:root {
+  --hub-ground: #08110f;
+  --hub-surface: #0d1916;
+  --hub-surface-raised: #12221e;
+  --hub-line: rgb(154 181 171 / 18%);
+  --hub-text: #f3f1e9;
+  --hub-muted: #8f9d98;
+  --hub-green: #49c875;
+  --hub-gold: #d5a24f;
+  --hub-blue: #4d9dda;
+  --hub-danger: #ff9298;
+  --hub-display: 'Roboto Slab', Georgia, serif;
+  --hub-sans: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+  --color-background: var(--hub-ground);
+  --color-surface: var(--hub-surface);
+  --color-surface-raised: var(--hub-surface-raised);
+  --color-border: var(--hub-line);
+  --color-text: var(--hub-text);
+  --color-text-muted: var(--hub-muted);
+}

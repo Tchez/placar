@@ -2,9 +2,9 @@
 
 Score-keeping app for family card and racket games — canastra, truco, padel, and a generic fallback mode.
 
-**Status:** canastra and truco mineiro are implemented end to end. The app is deployed as an
-installable, offline-first PWA at **[placar.tchez.dev](https://placar.tchez.dev)**. The next deliveries
-are planned in `docs/specs/`.
+**Status:** canastra and truco mineiro are implemented end to end, with a game hub, local match
+history and an in-app installation guide. The app is deployed as an installable, offline-first PWA at
+**[placar.tchez.dev](https://placar.tchez.dev)**. The next deliveries are planned in `docs/specs/`.
 
 ## Run locally
 
@@ -32,6 +32,9 @@ local verification.
 
 ## Install
 
+- **First browser visit:** the app opens its installation guide before the first match. Choosing
+  **Continuar sem instalar** remembers that choice; the install guide remains available from the
+  home-screen footer.
 - **Android / Chrome:** open [placar.tchez.dev](https://placar.tchez.dev) and choose the install app
   action offered by Chrome.
 - **iPhone / Safari:** open the site, then choose *Compartilhar → Adicionar à Tela de Início*.

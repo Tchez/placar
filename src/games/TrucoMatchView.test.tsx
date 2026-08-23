@@ -8,9 +8,9 @@ import {
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { ROUTES } from '../app/routes';
-import { AppHeader } from '../components/AppHeader';
 import { addEntry, createMatch, finishMatch } from '../domain/match';
 import type { Entry, Match } from '../domain/types';
+import { InstallProvider } from '../install/InstallProvider';
 import { HomeScreen } from '../screens/HomeScreen';
 import { MatchScreen } from '../screens/MatchScreen';
 import { NewMatchScreen } from '../screens/NewMatchScreen';
@@ -83,16 +83,17 @@ function trucoMatch(options?: {
 
 function renderApp(path: string, repository: MatchRepository) {
   return render(
-    <MatchProvider repository={repository}>
-      <MemoryRouter initialEntries={[path]}>
-        <AppHeader />
-        <Routes>
-          <Route path={ROUTES.home} element={<HomeScreen />} />
-          <Route path={ROUTES.newMatch} element={<NewMatchScreen />} />
-          <Route path={ROUTES.match} element={<MatchScreen />} />
-        </Routes>
-      </MemoryRouter>
-    </MatchProvider>,
+    <InstallProvider>
+      <MatchProvider repository={repository}>
+        <MemoryRouter initialEntries={[path]}>
+          <Routes>
+            <Route path={ROUTES.home} element={<HomeScreen />} />
+            <Route path={ROUTES.newMatch} element={<NewMatchScreen />} />
+            <Route path={ROUTES.match} element={<MatchScreen />} />
+          </Routes>
+        </MemoryRouter>
+      </MatchProvider>
+    </InstallProvider>,
   );
 }
 
@@ -146,11 +147,11 @@ describe('truco screens', () => {
     const repository = createFakeRepository();
     renderApp('/', repository);
 
-    expect(screen.getByRole('link', { name: 'Canastra' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Canastra/ })).toHaveAttribute(
       'href',
       '/nova/canastra',
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Truco mineiro' }));
+    fireEvent.click(screen.getByRole('button', { name: /Truco mineiro/ }));
 
     expect(
       await screen.findByRole('heading', { name: 'Truco mineiro' }),

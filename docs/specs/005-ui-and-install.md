@@ -1,6 +1,6 @@
 # SPEC 005 — Home, match lists and the install flow
 
-- **Status:** ready
+- **Status:** done
 - **Created:** 2026-08-23
 - **Depends on:** SPEC 002 (canastra), SPEC 004 (deploy and PWA)
 
@@ -262,45 +262,45 @@ ad-hoc formatting in a component, and no second date helper — if one already e
 
 ## Acceptance criteria
 
-- [ ] `npm run check` and `npm run build` pass
-- [ ] No domain, repository, scoring or validation file was modified, and the canastra and truco match
+- [x] `npm run check` and `npm run build` pass
+- [x] No domain, repository, scoring or validation file was modified, and the canastra and truco match
       screens are unchanged — verified by the diff
-- [ ] Game cards render from the registry; adding a game to the registry adds a card with no screen edit
-- [ ] The **Em breve** card renders with the sub-line **Truco gaúcho**, has no chevron, is not a
+- [x] Game cards render from the registry; adding a game to the registry adds a card with no screen edit
+- [x] The **Em breve** card renders with the sub-line **Truco gaúcho**, has no chevron, is not a
       button or link, is not keyboard-focusable and produces no press feedback — asserted by a test
-- [ ] With no match in progress, the whole *Em andamento* section is absent — no heading, no badge, no
+- [x] With no match in progress, the whole *Em andamento* section is absent — no heading, no badge, no
       empty box
-- [ ] With more than three matches in progress, the home shows three rows and the badge shows the true
+- [x] With more than three matches in progress, the home shows three rows and the badge shows the true
       total, asserted by a test
-- [ ] *Ver todos* lists every in-progress match; the history screen lists finished and in-progress
+- [x] *Ver todos* lists every in-progress match; the history screen lists finished and in-progress
       matches for this device; both open a match on tap
-- [ ] Neither list screen offers delete, rename, finish, filter or search
-- [ ] The history screen states that the history is local to the device
-- [ ] The history empty state reads **Nenhuma partida ainda.**
-- [ ] Opening the app for the first time in a browser, not installed and not dismissed, lands on the
+- [x] Neither list screen offers delete, rename, finish, filter or search
+- [x] The history screen states that the history is local to the device
+- [x] The history empty state reads **Nenhuma partida ainda.**
+- [x] Opening the app for the first time in a browser, not installed and not dismissed, lands on the
       install screen
-- [ ] The install screen never appears in standalone mode, and the footer strip is absent there —
+- [x] The install screen never appears in standalone mode, and the footer strip is absent there —
       asserted by tests for both `display-mode: standalone` and `navigator.standalone`
-- [ ] **Instalar app** appears only when `beforeinstallprompt` was captured, and triggers the browser's
+- [x] **Instalar app** appears only when `beforeinstallprompt` was captured, and triggers the browser's
       dialog; with no event, the written instructions appear instead
-- [ ] iOS instructions name *Compartilhar*, *Adicionar à Tela de Início* and *Adicionar*, and tell the
+- [x] iOS instructions name *Compartilhar*, *Adicionar à Tela de Início* and *Adicionar*, and tell the
       person to use Safari
-- [ ] An unrecognised platform still gets usable instructions
-- [ ] No instruction is delivered as an image
-- [ ] **Continuar sem instalar** returns to the home, and reopening the app does not show the screen
+- [x] An unrecognised platform still gets usable instructions
+- [x] No instruction is delivered as an image
+- [x] **Continuar sem instalar** returns to the home, and reopening the app does not show the screen
       again; the footer strip still leads back to it
-- [ ] The dismissal flag is written by a dedicated module; `grep -rn localStorage src/` matches only the
+- [x] The dismissal flag is written by a dedicated module; `grep -rn localStorage src/` matches only the
       repository and that module
-- [ ] The canastra setup screen matches **Nova partida (canastra)**: centred trophy, `CANASTRA` rule,
+- [x] The canastra setup screen matches **Nova partida (canastra)**: centred trophy, `CANASTRA` rule,
       serif title, one panel, field with the diamond, two chips with the selected one marked, toggle,
       primary button — and **no hint text below the panel**
-- [ ] Tapping a suggestion chip fills the field; typing a value matching neither chip leaves both
+- [x] Tapping a suggestion chip fills the field; typing a value matching neither chip leaves both
       unselected without error
-- [ ] **COMEÇAR PARTIDA** is disabled while the limit is invalid, and SPEC 002's messages are unchanged
-- [ ] Dates read `Iniciada em DD/MM, HH:MM`, and every number goes through the existing pt-BR helper
-- [ ] Rows and cards are tappable across their full width and show a visible keyboard focus state
-- [ ] Every user-visible string is pt-BR; no i18n library or locale file was added
-- [ ] No image file was added to the repository by this SPEC
+- [x] **COMEÇAR PARTIDA** is disabled while the limit is invalid, and SPEC 002's messages are unchanged
+- [x] Dates read `Iniciada em DD/MM, HH:MM`, and every number goes through the existing pt-BR helper
+- [x] Rows and cards are tappable across their full width and show a visible keyboard focus state
+- [x] Every user-visible string is pt-BR; no i18n library or locale file was added
+- [x] No image file was added to the repository by this SPEC
 
 ## Open questions
 

@@ -2,9 +2,13 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { registerSW } from 'virtual:pwa-register';
 import { App } from './app/App';
+import { InstallProvider } from './install/InstallProvider';
 import { MatchProvider } from './store/MatchStore';
 import './styles/tokens.css';
+import './styles/hub-tokens.css';
 import './styles/base.css';
+import './styles/hub.css';
+import './styles/games/canastra-setup.css';
 
 registerSW({ immediate: true });
 
@@ -16,8 +20,10 @@ if (!root) {
 
 createRoot(root).render(
   <StrictMode>
-    <MatchProvider>
-      <App />
-    </MatchProvider>
+    <InstallProvider>
+      <MatchProvider>
+        <App />
+      </MatchProvider>
+    </InstallProvider>
   </StrictMode>,
 );

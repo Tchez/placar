@@ -13,6 +13,7 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 | [002](002-canastra.md) | Canastra, first game end to end | done |
 | [003](003-truco-mineiro.md) | Truco mineiro | done |
 | [004](004-deploy-and-install.md) | Deploy and installable PWA | implemented — live and device verification pending |
+| [005](005-ui-and-install.md) | Home, match lists and the install flow | done |
 
 ## Planned
 
@@ -27,8 +28,8 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 
 ## Ordering
 
-**The implemented order is 002 → 003 → 004; 005 is next.** Numbers are identity, not priority, and
-are never reused or renumbered.
+**The implemented order is 002 → 003 → 004 → 005; 006 is next.** Numbers are identity, not priority,
+and are never reused or renumbered.
 
 **004 remains ahead of every game after truco.** `localStorage` is scoped per origin, so every score
 recorded against the dev server is orphaned the moment the app moves to a real URL. Until the app is

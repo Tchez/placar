@@ -1,5 +1,8 @@
 export const ROUTES = {
   home: '/',
+  install: '/instalar',
+  activeMatches: '/em-andamento',
+  history: '/historico',
   newMatch: '/nova/:gameId',
   match: '/partida/:matchId',
 } as const;
