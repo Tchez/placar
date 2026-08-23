@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "@eslint/js": "latest",
-    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
