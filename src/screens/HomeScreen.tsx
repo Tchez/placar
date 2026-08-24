@@ -5,7 +5,7 @@ import { matchPath, newMatchPath, ROUTES } from '../app/routes';
 import { gameAccentStyle } from '../components/gameAccent';
 import { GameBadge } from '../components/GameBadge';
 import { HubHeader } from '../components/HubHeader';
-import { ChevronRightIcon, DieIcon, FlagIcon } from '../components/HubIcons';
+import { ChevronRightIcon, FlagIcon } from '../components/HubIcons';
 import { MatchRow } from '../components/MatchRow';
 import { GAMES, type RegisteredGame } from '../games';
 import { createDefaultMatchInput } from '../games/createDefaultMatchInput';
@@ -104,15 +104,6 @@ export function HomeScreen() {
               onStart={(selectedGame) => void startGame(selectedGame)}
             />
           ))}
-          <div className="hub-game-card hub-game-card--soon">
-            <span className="game-badge game-badge--large" aria-hidden="true">
-              <DieIcon />
-            </span>
-            <span className="hub-game-card__copy">
-              <strong>Em breve</strong>
-              <span>Truco gaúcho</span>
-            </span>
-          </div>
         </div>
         {creationError ? (
           <p className="field-error" role="alert">

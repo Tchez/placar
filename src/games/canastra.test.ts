@@ -40,9 +40,11 @@ describe('canastra', () => {
       id: 'canastra',
       teamCount: 2,
       defaultTeamNames: ['Nós', 'Eles'],
+      defaultTarget: 4000,
       targetSuggestions: [3000, 4000],
       targetRequired: true,
       supportsNegativeEntries: true,
+      defaultAllowNegativeEntries: false,
       entryAffordance: { type: 'numeric', shortcuts: [] },
     });
     expect(CANASTRA.defaultTeamNames).toHaveLength(CANASTRA.teamCount);

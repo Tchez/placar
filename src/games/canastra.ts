@@ -42,10 +42,11 @@ export const CANASTRA: GameDefinition = {
   teamCount: 2,
   defaultTeamNames: ['Nós', 'Eles'],
   needsSetup: true,
-  defaultTarget: null,
+  defaultTarget: 4000,
   targetSuggestions: [3000, 4000],
   targetRequired: true,
   supportsNegativeEntries: true,
+  defaultAllowNegativeEntries: false,
   entryAffordance: { type: 'numeric', shortcuts: [] },
   scoreboard: getCanastraScoreboard,
 };

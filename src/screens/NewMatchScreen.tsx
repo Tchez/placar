@@ -19,11 +19,15 @@ export function NewMatchScreen() {
   const { createMatch } = useMatches();
   const game = GAMES.find(({ id }) => id === gameId);
   const [targetInput, setTargetInput] = useState(
-    game?.needsSetup ? String(game.targetSuggestions?.[0] ?? '') : '',
+    game?.needsSetup
+      ? String(game.defaultTarget ?? game.targetSuggestions?.[0] ?? '')
+      : '',
   );
   const [targetTouched, setTargetTouched] = useState(false);
   const [allowNegativeEntries, setAllowNegativeEntries] = useState(
-    game?.supportsNegativeEntries ?? false,
+    game?.supportsNegativeEntries
+      ? (game.defaultAllowNegativeEntries ?? false)
+      : false,
   );
   const [creationError, setCreationError] = useState('');
   const [isCreating, setIsCreating] = useState(game?.needsSetup === false);

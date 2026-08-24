@@ -159,7 +159,7 @@
     transform 150ms ease;
 }
 
-.hub-game-card:not(.hub-game-card--soon):active,
+.hub-game-card:active,
 .hub-match-row:active {
   transform: translateY(1px);
 }
@@ -231,11 +231,6 @@
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 1.8;
-}
-
-.hub-game-card--soon {
-  grid-template-columns: 3.5rem minmax(0, 1fr);
-  user-select: none;
 }
 
 .hub-coming-ornament {
@@ -565,7 +560,7 @@
 }
 
 @media (hover: hover) {
-  .hub-game-card:not(.hub-game-card--soon):hover,
+  .hub-game-card:hover,
   .hub-match-row:hover {
     border-color: color-mix(in srgb, var(--game-accent) 65%, transparent);
   }
@@ -577,7 +572,7 @@
     transition: none;
   }
 
-  .hub-game-card:not(.hub-game-card--soon):active,
+  .hub-game-card:active,
   .hub-match-row:active {
     transform: none;
   }

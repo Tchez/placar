@@ -113,9 +113,9 @@ Cumulative score. Each round produces a balance per team and totals add up to a 
   on paper. Renaming is deferred for now. Only team names exist; individual player names are not
   modelled
 - **Target is typed in by the user**, not picked from a fixed list. The family plays to 3000 and to
-  4000 depending on the table
+  4000 depending on the table; the setup starts at **4000**
 - **Whether negative entries are allowed is also a per-match choice** — some house rules let a team
-  lose points, others only add
+  lose points, others only add; the setup starts with negatives **disabled**
 - Entry is a **free number** (e.g. 385), not a fixed value — numeric input is required
 - If two or more teams cross the target, the app does **not** pick a winner — the table decides
 

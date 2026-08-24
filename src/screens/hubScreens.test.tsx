@@ -90,7 +90,7 @@ function renderHub(path: string, matches: readonly Match[] = []) {
 }
 
 describe('hub screens', () => {
-  it('renders every registered game and keeps the coming-soon card inert', () => {
+  it('renders every registered game without the obsolete gaúcho placeholder', () => {
     const { container } = renderHub(ROUTES.home);
 
     for (const game of GAMES) {
@@ -99,21 +99,9 @@ describe('hub screens', () => {
       ).toBeInTheDocument();
     }
 
-    const comingSoon = screen
-      .getByText('Em breve')
-      .closest<HTMLElement>('.hub-game-card');
-    expect(comingSoon).not.toBeNull();
-    expect(comingSoon?.tagName).toBe('DIV');
-    expect(comingSoon).not.toHaveAttribute('tabindex');
-    expect(within(comingSoon!).getByText('Truco gaúcho')).toBeInTheDocument();
-    expect(comingSoon?.querySelector('a, button')).toBeNull();
-    expect(comingSoon?.querySelector('.hub-game-card__chevron')).toBeNull();
-
-    fireEvent.click(comingSoon!);
-    expect(container.querySelector('.hub-game-card--soon')).toBeInTheDocument();
-    expect(
-      screen.getByRole('heading', { name: 'Novo placar' }),
-    ).toBeInTheDocument();
+    expect(screen.queryByText('Truco gaúcho')).not.toBeInTheDocument();
+    expect(container.querySelector('.hub-game-card--soon')).toBeNull();
+    expect(screen.getByText('Mais jogos em breve')).toBeInTheDocument();
   });
 
   it('hides the complete in-progress section when it is empty', async () => {

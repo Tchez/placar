@@ -98,7 +98,7 @@ The UI is Portuguese, no i18n layer.
 - **A configurable target, and any setup screen.** The 24 ceiling covers the 12-point game
 - **Any mid-game announcement.** No special state, no winner banner during play, no status text
 - **Changing truco mineiro.** Its screen, its rules and its tokens are untouched
-- **Vôlei.** It is SPEC 007 and its set-closing rule is still an open product question
+- **Vôlei.** It is planned as SPEC 008 and its set-closing rule is still an open product question
 - Reproducing device chrome, phone frames or status bars
 - Third-party or network-fetched decoration. The surface textures are **generated in this repo** by
   `npm run textures` and committed: no stock image is vendored, nothing is downloaded at runtime, and

@@ -32,19 +32,6 @@ export function MateGourdIcon({ className }: IconProps) {
   );
 }
 
-export function DieIcon({ className }: IconProps) {
-  return (
-    <svg aria-hidden="true" className={className} viewBox="0 0 32 32">
-      <rect x="5" y="5" width="22" height="22" rx="4" />
-      <circle cx="11" cy="11" r="1.25" />
-      <circle cx="21" cy="11" r="1.25" />
-      <circle cx="16" cy="16" r="1.25" />
-      <circle cx="11" cy="21" r="1.25" />
-      <circle cx="21" cy="21" r="1.25" />
-    </svg>
-  );
-}
-
 export function HistoryIcon({ className }: IconProps) {
   return (
     <svg aria-hidden="true" className={className} viewBox="0 0 24 24">

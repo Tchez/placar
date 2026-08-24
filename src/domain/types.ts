@@ -52,6 +52,7 @@ export interface GameDefinition {
   targetRequired?: boolean;
   scoreCeiling?: number;
   supportsNegativeEntries: boolean;
+  defaultAllowNegativeEntries?: boolean;
   entryAffordance: EntryAffordance;
   scoreboard(match: Match): Scoreboard;
 }

@@ -156,11 +156,16 @@ describe('canastra screens', () => {
       name: /pontos para vencer/i,
     });
     const start = screen.getByRole('button', { name: /começar partida/i });
-    expect(target).toHaveValue('3000');
+    const negatives = screen.getByRole('switch', {
+      name: 'Permitir pontos negativos',
+    });
+    expect(target).toHaveValue('4000');
     expect(start).toBeEnabled();
-    expect(
-      screen.getByRole('switch', { name: 'Permitir pontos negativos' }),
-    ).toBeChecked();
+    expect(negatives).not.toBeChecked();
+    fireEvent.click(negatives);
+    expect(negatives).toBeChecked();
+    fireEvent.click(negatives);
+    expect(negatives).not.toBeChecked();
     expect(screen.queryByLabelText('Nome do time')).not.toBeInTheDocument();
     expect(
       screen.queryByLabelText(/quantidade de times/i),
@@ -189,7 +194,7 @@ describe('canastra screens', () => {
     expect(repository.saved[0]).toMatchObject({
       gameId: 'canastra',
       target: 4000,
-      allowNegativeEntries: true,
+      allowNegativeEntries: false,
       teams: [{ name: 'Nós' }, { name: 'Eles' }],
     });
     expect(repository.saved[0]?.teams).toHaveLength(2);
