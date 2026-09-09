@@ -171,11 +171,13 @@ different game, while a difference in *table agreement* is match configuration.
 
 ### Vôlei
 **Not cumulative.** Hierarchical: points → sets. This is the game that breaks the "sum of points" model and therefore shapes the architecture. It inherits that role from padel, which was dropped on 2026-08-23.
-- 2 teams · point-by-point entry
+- 2 teams · point-by-point entry · **no team name shown at all** — no "Nós"/"Eles", no rename
 - Displayed score: **sets won as the small number, points in the current set as the large number** — the layout of a courtside counter
 - **The app is the counter, not the referee.** The family plays indoor and beach, sometimes serious and sometimes casual, so the set target varies (25, 21, or whatever was agreed). A counter does not need to know the target; it counts
-- Sets are **derived** from the entry log, so editing or deleting an entry recomputes the whole match consistently
-- ⚠️ **Not yet specified.** How a set closes is an open product question — see `docs/specs/README.md`
+- **A set closes by tapping the sets counter itself.** That tap never resets either side's current-set points — a separate "zerar" control on each side does that, as its own undoable action
+- Sets are **derived** from the entry log, so editing or deleting an entry recomputes the whole match consistently. See [SPEC 008](docs/specs/008-volei.md) for the exact entry-log encoding
+- **No automatic winner, ever** — not of a set, not of the match. Ending a match is the "Encerrar partida" action, decided by the table
+- **History is opt-in, unlike every other game.** A vôlei match does not appear in the local history until the family explicitly saves it; declining when prompted deletes it outright. This exception is scoped to vôlei only — see [SPEC 008](docs/specs/008-volei.md)
 
 ### Generic
 Free teams and a plain sum, optional target. Exists so any other game fits.
