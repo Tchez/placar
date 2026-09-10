@@ -74,4 +74,29 @@ describe('localRepository', () => {
 
     await expect(repository.loadAll()).resolves.toEqual([]);
   });
+  it('loads version-2 history without the optional flag and keeps it through subsequent writes', async () => {
+    const legacy = { ...match };
+    delete legacy.savedToHistory;
+    window.localStorage.setItem(
+      key,
+      JSON.stringify({ version: 2, matches: [legacy] }),
+    );
+    const repository = createLocalRepository(window.localStorage);
+    await expect(repository.loadAll()).resolves.toEqual([
+      { ...match, savedToHistory: true },
+    ]);
+    await repository.save({
+      ...match,
+      id: 'unsaved',
+      gameId: 'volei',
+      savedToHistory: false,
+    });
+    expect(JSON.parse(window.localStorage.getItem(key) ?? '').version).toBe(2);
+    const reopened = createLocalRepository(window.localStorage);
+    expect(await reopened.loadAll()).toHaveLength(2);
+    await reopened.remove('unsaved');
+    await expect(reopened.loadAll()).resolves.toEqual([
+      { ...match, savedToHistory: true },
+    ]);
+  });
 });

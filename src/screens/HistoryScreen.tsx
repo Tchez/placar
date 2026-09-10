@@ -7,10 +7,17 @@ import { useMatches } from '../store/MatchStore';
 
 export function HistoryScreen() {
   const { isLoading, matches } = useMatches();
-  const orderedMatches = [...matches].sort(
-    (left, right) =>
-      new Date(right.createdAt).getTime() - new Date(left.createdAt).getTime(),
-  );
+  const orderedMatches = matches
+    .filter(
+      (match) =>
+        GAMES.find(({ id }) => id === match.gameId)?.defaultSavedToHistory !==
+          false || match.savedToHistory !== false,
+    )
+    .sort(
+      (left, right) =>
+        new Date(right.createdAt).getTime() -
+        new Date(left.createdAt).getTime(),
+    );
 
   return (
     <div className="hub-screen hub-list-screen">

@@ -7,6 +7,7 @@ describe('game registry', () => {
       'canastra',
       'truco',
       'truco-gauderio',
+      'volei',
     ]);
     expect(getGame('canastra')).toBe(GAMES[0]);
     expect(getGame('canastra').MatchView).toBeTypeOf('function');

@@ -1,4 +1,5 @@
-export type GameId = 'canastra' | 'truco' | 'truco-gauderio' | 'generico';
+export type GameId =
+  'canastra' | 'truco' | 'truco-gauderio' | 'generico' | 'volei';
 
 export interface Team {
   id: string;
@@ -22,6 +23,7 @@ export interface Match {
   allowNegativeEntries: boolean;
   createdAt: string;
   finishedAt: string | null;
+  savedToHistory?: boolean;
 }
 
 export interface Standing {
@@ -47,6 +49,7 @@ export interface GameDefinition {
   teamCount: number;
   defaultTeamNames: readonly string[];
   needsSetup: boolean;
+  defaultSavedToHistory?: boolean;
   defaultTarget?: number | null;
   targetSuggestions?: readonly number[];
   targetRequired?: boolean;

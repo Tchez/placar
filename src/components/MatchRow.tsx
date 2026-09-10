@@ -28,7 +28,11 @@ export function MatchRow({ game, match, showOutcome = false }: MatchRowProps) {
     showOutcome && match.finishedAt !== null
       ? getFinishedOutcome(game, match)
       : null;
-  const teamNames = match.teams.map(({ name }) => name).join(' × ');
+  const teamNames =
+    match.teams
+      .map(({ name }) => name)
+      .filter(Boolean)
+      .join(' × ') || game.label;
   const target =
     match.target === null ? '' : ` · Meta: ${formatNumber(match.target)}`;
   const startedAt = formatStartedAt(match.createdAt);

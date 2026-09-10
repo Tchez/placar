@@ -43,6 +43,8 @@ function isMatch(value: unknown): value is Match {
     Array.isArray(value.entries) &&
     value.entries.every(isEntry) &&
     (typeof value.target === 'number' || value.target === null) &&
+    (value.savedToHistory === undefined ||
+      typeof value.savedToHistory === 'boolean') &&
     typeof value.allowNegativeEntries === 'boolean' &&
     typeof value.createdAt === 'string' &&
     (typeof value.finishedAt === 'string' || value.finishedAt === null)
@@ -73,7 +75,12 @@ export function createLocalRepository(
 ): MatchRepository {
   const read = (): Match[] => {
     const payload = parsePayload(storage.getItem(STORAGE_KEY));
-    return payload ? payload.matches : [];
+    return payload
+      ? payload.matches.map((match) => ({
+          ...match,
+          savedToHistory: match.savedToHistory ?? true,
+        }))
+      : [];
   };
 
   const write = (matches: readonly Match[]): void => {

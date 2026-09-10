@@ -18,6 +18,7 @@ export function MatchScreen() {
     removeMatch,
     reopenMatch,
     updateEntry,
+    saveToHistory,
   } = useMatches();
   const match = matches.find(({ id }) => id === matchId);
   const game = GAMES.find(({ id }) => id === match?.gameId);
@@ -68,6 +69,13 @@ export function MatchScreen() {
       navigate(matchPath(created.id));
       return created;
     },
+    saveToHistory: (finish = false) =>
+      saveToHistory(match.id, finish ? new Date().toISOString() : undefined),
+    async discard() {
+      await removeMatch(match.id);
+      navigate(ROUTES.home);
+    },
+    goHistory: () => navigate(ROUTES.history),
     goHome: () => navigate(ROUTES.home),
   };
 

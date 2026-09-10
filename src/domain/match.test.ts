@@ -53,6 +53,7 @@ describe('match domain', () => {
       teams: input.teams,
       entries: [],
       finishedAt: null,
+      savedToHistory: true,
     });
     expect(result.teams).not.toBe(input.teams);
     assertInputUnchanged();

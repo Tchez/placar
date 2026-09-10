@@ -1,5 +1,5 @@
 /**
- * Generates the truco gaudério surface textures.
+ * Generates the truco gaudério and vôlei surface textures.
  *
  * Everything here is procedural and seeded, so the output is byte-stable and no
  * third-party image is vendored into a public repository. Run with
@@ -350,8 +350,30 @@ async function writePlank() {
   return 'plank.webp';
 }
 
+/** Subtle molded graphite with broad mottling and fine surface grain. */
+async function writeCounter() {
+  const size = 512;
+  const rand = mulberry32(808);
+  const noise = makeLattice(16, rand);
+  const raw = Buffer.alloc(size * size * 3);
+  for (let y = 0; y < size; y += 1) {
+    for (let x = 0; x < size; x += 1) {
+      const shade = 19 + fbm(noise, x / 32, y / 32, 5) * 13 + rand() * 3;
+      const offset = (y * size + x) * 3;
+      raw[offset] = shade;
+      raw[offset + 1] = shade + 1;
+      raw[offset + 2] = shade + 2;
+    }
+  }
+  await sharp(raw, { raw: { width: size, height: size, channels: 3 } })
+    .webp({ quality: 85, effort: 6 })
+    .toFile(join(OUT_DIR, 'counter.webp'));
+  return 'counter.webp';
+}
+
 mkdirSync(OUT_DIR, { recursive: true });
 const written = await Promise.all([
+  writeCounter(),
   writeGround(),
   writeLeather(),
   writeCrackle(),

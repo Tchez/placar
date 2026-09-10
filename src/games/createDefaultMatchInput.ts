@@ -20,5 +20,6 @@ export function createDefaultMatchInput(
     target: game.defaultTarget ?? null,
     allowNegativeEntries: false,
     createdAt,
+    savedToHistory: game.defaultSavedToHistory ?? true,
   };
 }

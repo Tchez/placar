@@ -7,6 +7,7 @@ export interface CreateMatchInput {
   target: number | null;
   allowNegativeEntries: boolean;
   createdAt: string;
+  savedToHistory?: boolean;
 }
 
 export type EntryValueValidation =
@@ -71,6 +72,7 @@ export function createMatch(input: CreateMatchInput): Match {
     allowNegativeEntries: input.allowNegativeEntries,
     createdAt: input.createdAt,
     finishedAt: null,
+    savedToHistory: input.savedToHistory ?? true,
   };
 }
 
