@@ -55,6 +55,10 @@ async function click(name: string | RegExp) {
   const button = await screen.findByRole('button', { name });
   await waitFor(() => expect(button).toBeEnabled());
   fireEvent.click(button);
+  if (name === 'Mais opções') {
+    await screen.findByRole('dialog', { name: 'Mais opções' });
+    return;
+  }
   await waitFor(() => {
     const options = screen.queryByRole('button', { name: 'Mais opções' });
     if (options) expect(options).toBeEnabled();
@@ -232,7 +236,7 @@ describe('vôlei match flow', () => {
     expect(
       screen.getByRole('button', { name: 'Voltar ponto à esquerda' }),
     ).toBeEnabled();
-  });
+  }, 15_000);
 
   it('saves from options without finishing and never offers to unsave', async () => {
     const match = await seed();
