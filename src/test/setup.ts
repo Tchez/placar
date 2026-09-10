@@ -17,4 +17,21 @@ Object.defineProperty(window, 'matchMedia', {
   writable: true,
 });
 
+if (typeof HTMLDialogElement !== 'undefined') {
+  Object.defineProperties(HTMLDialogElement.prototype, {
+    showModal: {
+      configurable: true,
+      value: function (this: HTMLDialogElement) {
+        this.open = true;
+      },
+    },
+    close: {
+      configurable: true,
+      value: function (this: HTMLDialogElement) {
+        this.open = false;
+      },
+    },
+  });
+}
+
 afterEach(cleanup);

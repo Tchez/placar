@@ -6,7 +6,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { beforeEach, afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ROUTES, matchPath } from '../app/routes';
 import { createMatch } from '../domain/match';
 import type { Match } from '../domain/types';
@@ -63,25 +63,10 @@ async function click(name: string | RegExp) {
 
 beforeEach(() => {
   window.localStorage.clear();
-  Object.defineProperties(HTMLDialogElement.prototype, {
-    showModal: {
-      configurable: true,
-      value: function (this: HTMLDialogElement) {
-        this.open = true;
-      },
-    },
-    close: {
-      configurable: true,
-      value: function (this: HTMLDialogElement) {
-        this.open = false;
-      },
-    },
-  });
 });
+
 afterEach(() => {
   vi.restoreAllMocks();
-  Reflect.deleteProperty(HTMLDialogElement.prototype, 'showModal');
-  Reflect.deleteProperty(HTMLDialogElement.prototype, 'close');
 });
 
 describe('vôlei match flow', () => {
