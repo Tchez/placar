@@ -1,11 +1,16 @@
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../app/routes';
+import { useDocumentMeta } from '../app/useDocumentMeta';
 import { HubHeader } from '../components/HubHeader';
 import { MatchRow } from '../components/MatchRow';
 import { GAMES } from '../games';
 import { useMatches } from '../store/MatchStore';
 
 export function HistoryScreen() {
+  useDocumentMeta(
+    'Histórico — Placar',
+    'Partidas salvas neste aparelho, com o placar final de cada uma.',
+  );
   const { isLoading, matches } = useMatches();
   const orderedMatches = matches
     .filter(

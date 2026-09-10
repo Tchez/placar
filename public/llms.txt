@@ -1,0 +1,13 @@
+# Placar
+
+> Aplicativo web para marcar pontos dos jogos de uma família: canastra, truco mineiro, truco
+> gaudério e vôlei. Instalável como PWA, funciona offline, sem cadastro e sem coleta de dados.
+
+## O que é
+- Contador de pontos por jogo, com a regra de contagem de cada um (canastra é cumulativa, truco
+  gaudério é incremento livre, vôlei conta pontos e sets separadamente).
+- Sem login, sem backend, sem anúncios. Os dados ficam só no aparelho de quem joga.
+
+## Onde
+- App: https://placar.tchez.dev/
+- Código-fonte (aberto): https://github.com/Tchez/placar

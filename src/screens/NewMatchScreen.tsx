@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { createId } from '../app/createId';
 import { matchPath, ROUTES } from '../app/routes';
+import { useDocumentMeta } from '../app/useDocumentMeta';
 import {
   ArrowLeftIcon,
   DiamondIcon,
@@ -18,6 +19,12 @@ export function NewMatchScreen() {
   const navigate = useNavigate();
   const { createMatch } = useMatches();
   const game = GAMES.find(({ id }) => id === gameId);
+  useDocumentMeta(
+    game ? `${game.label} — Placar` : 'Nova partida — Placar',
+    game
+      ? `Configure a partida de ${game.label.toLowerCase()}: ${game.hub.description.toLowerCase()}`
+      : 'Configure uma nova partida no Placar.',
+  );
   const [targetInput, setTargetInput] = useState(
     game?.needsSetup
       ? String(game.defaultTarget ?? game.targetSuggestions?.[0] ?? '')

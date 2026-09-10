@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { formatNumber } from '../app/format';
 import { matchPath, newMatchPath, ROUTES } from '../app/routes';
+import { useDocumentMeta } from '../app/useDocumentMeta';
 import { gameAccentStyle } from '../components/gameAccent';
 import { GameBadge } from '../components/GameBadge';
 import { HubHeader } from '../components/HubHeader';
@@ -54,6 +55,10 @@ function GameCard({
 }
 
 export function HomeScreen() {
+  useDocumentMeta(
+    'Placar',
+    'Placar para os jogos da família: canastra, truco mineiro, truco gaudério e vôlei. Instalável, funciona offline, sem cadastro.',
+  );
   const navigate = useNavigate();
   const { isInstalled } = useInstall();
   const { createMatch, isLoading, matches } = useMatches();

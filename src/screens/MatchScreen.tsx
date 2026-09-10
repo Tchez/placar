@@ -1,5 +1,6 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { matchPath, ROUTES } from '../app/routes';
+import { useDocumentMeta } from '../app/useDocumentMeta';
 import { GAMES } from '../games';
 import { createDefaultMatchInput } from '../games/createDefaultMatchInput';
 import { useMatches } from '../store/MatchStore';
@@ -22,6 +23,12 @@ export function MatchScreen() {
   } = useMatches();
   const match = matches.find(({ id }) => id === matchId);
   const game = GAMES.find(({ id }) => id === match?.gameId);
+  useDocumentMeta(
+    game ? `${game.label} — Placar` : 'Partida — Placar',
+    game
+      ? `Placar de ${game.label.toLowerCase()}: ${game.hub.description.toLowerCase()}`
+      : 'Acompanhe o placar de uma partida em andamento.',
+  );
 
   if (isLoading) {
     return <p>Carregando partida…</p>;

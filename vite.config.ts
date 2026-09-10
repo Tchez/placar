@@ -51,6 +51,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*'],
+        globIgnores: ['robots.txt', 'sitemap.xml', 'llms.txt'],
         navigateFallback: 'index.html',
       },
     }),
