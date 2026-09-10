@@ -218,11 +218,6 @@
   stroke-width: 1.55;
 }
 
-.game-badge svg circle {
-  fill: currentColor;
-  stroke: none;
-}
-
 .hub-game-card__chevron,
 .hub-match-row__chevron {
   width: 1.3rem;

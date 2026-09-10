@@ -35,6 +35,7 @@ interface MatchStoreValue {
   renameTeam(matchId: string, teamId: string, name: string): Promise<Match>;
   finishMatch(matchId: string, finishedAt: string): Promise<Match>;
   reopenMatch(matchId: string): Promise<Match>;
+  saveToHistory(matchId: string, finishedAt?: string): Promise<Match>;
   removeMatch(matchId: string): Promise<void>;
 }
 
@@ -113,6 +114,12 @@ export function MatchProvider({
         ),
       finishMatch: (matchId, finishedAt) =>
         persistChange(matchId, (match) => finishDomainMatch(match, finishedAt)),
+      saveToHistory: (matchId, finishedAt) =>
+        persistChange(matchId, (match) => ({
+          ...match,
+          savedToHistory: true,
+          finishedAt: finishedAt ?? match.finishedAt,
+        })),
       reopenMatch: (matchId) => persistChange(matchId, reopenDomainMatch),
       async removeMatch(matchId) {
         await repository.remove(matchId);

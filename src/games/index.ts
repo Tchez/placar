@@ -3,9 +3,12 @@ import {
   ClubIcon,
   MateGourdIcon,
   PlayingCardsIcon,
+  VolleyballIcon,
 } from '../components/HubIcons';
 import type { Entry, Match } from '../domain/types';
 import type { GameDefinition } from '../domain/types';
+import { VOLEI } from './volei';
+import { VoleiMatchView } from './VoleiMatchView';
 import { CANASTRA } from './canastra';
 import { CanastraMatchView } from './CanastraMatchView';
 import { TRUCO } from './truco';
@@ -29,6 +32,9 @@ export interface GameMatchActions {
   remove(): Promise<void>;
   createNew(): Promise<Match>;
   goHome(): void;
+  saveToHistory(finish?: boolean): Promise<Match>;
+  discard(): Promise<void>;
+  goHistory(): void;
 }
 
 export interface RegisteredGame extends GameDefinition {
@@ -76,6 +82,15 @@ export const GAMES: readonly RegisteredGame[] = [
   CANASTRA_GAME,
   TRUCO_GAME,
   TRUCO_GAUDERIO_GAME,
+  {
+    ...VOLEI,
+    MatchView: VoleiMatchView,
+    hub: {
+      accent: '#fff000',
+      description: 'Pontos e sets, no seu ritmo.',
+      Icon: VolleyballIcon,
+    },
+  },
 ];
 
 export function getGame(id: string): RegisteredGame {

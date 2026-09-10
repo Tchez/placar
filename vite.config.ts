@@ -23,7 +23,7 @@ export default defineConfig({
         description: 'Placar para os jogos da família.',
         lang: 'pt-BR',
         display: 'standalone',
-        orientation: 'portrait',
+        orientation: 'any',
         start_url: '.',
         scope: '.',
         theme_color: '#08110f',

@@ -81,3 +81,17 @@ export function DiamondIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function VolleyballIcon({ className }: IconProps) {
+  return (
+    <svg aria-hidden="true" className={className} viewBox="0 0 32 32">
+      <circle cx="16" cy="16" r="12" />
+      {[0, 120, 240].map((angle) => (
+        <g key={angle} transform={`rotate(${angle} 16 16)`}>
+          <path d="M16 16C20 13 20 8 16 4" />
+          <path d="M22 5.6c2.6 5.7 1.3 11.1-2.38 15.56" />
+        </g>
+      ))}
+    </svg>
+  );
+}

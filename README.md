@@ -2,7 +2,7 @@
 
 Score-keeping app for family card and court games — canastra, truco, vôlei, and a generic fallback mode.
 
-**Status:** canastra, truco mineiro and truco gaudério are implemented end to end, with a game hub,
+**Status:** canastra, truco mineiro, truco gaudério and vôlei are implemented end to end, with a game hub,
 local match history and an in-app installation guide. The app is deployed as an installable,
 offline-first PWA at **[placar.tchez.dev](https://placar.tchez.dev)**. The next deliveries are planned
 in `docs/specs/`.
@@ -40,7 +40,9 @@ local verification.
   action offered by Chrome.
 - **iPhone / Safari:** open the site, then choose *Compartilhar → Adicionar à Tela de Início*.
 
-The installed app launches standalone in portrait and caches its complete app shell. After the first
+The installed app launches standalone, allows device rotation and caches its complete app shell.
+Vôlei uses a single landscape courtside counter. In portrait, the complete match interface rotates
+90 degrees with CSS, including its menus, so it works with system auto-rotation disabled. After the first
 online load, it opens with no network. Matches remain in the browser's local storage and survive app
 updates.
 
@@ -174,7 +176,15 @@ different game, while a difference in *table agreement* is match configuration.
 - 2 teams · point-by-point entry · **no team name shown at all** — no "Nós"/"Eles", no rename
 - Displayed score: **sets won as the small number, points in the current set as the large number** — the layout of a courtside counter
 - **The app is the counter, not the referee.** The family plays indoor and beach, sometimes serious and sometimes casual, so the set target varies (25, 21, or whatever was agreed). A counter does not need to know the target; it counts
-- **A set closes by tapping the sets counter itself.** That tap never resets either side's current-set points — a separate "zerar" control on each side does that, as its own undoable action
+- **Sets are capped at three per side.** Tapping a sets counter adds one set without resetting either
+  side's current-set points; a "Voltar set" control under each counter removes that side's latest
+  set
+- **Points are added by tapping the points counter itself.** There is no separate `+1` button, so
+  points and sets use the same direct-tap interaction. Each point card accepts up to 50 points and
+  also has "Voltar ponto" and "Zerar pontos" controls beside each other.
+- **Point and set changes turn a paper sheet around the top rings.** Corrections turn it back; reduced
+  motion updates the number immediately. Correction buttons show **−1** for reducing a point or
+  set, and a restart arrow around **0** with **"Zerar"** for resetting points.
 - Sets are **derived** from the entry log, so editing or deleting an entry recomputes the whole match consistently. See [SPEC 008](docs/specs/008-volei.md) for the exact entry-log encoding
 - **No automatic winner, ever** — not of a set, not of the match. Ending a match is the "Encerrar partida" action, decided by the table
 - **History is opt-in, unlike every other game.** A vôlei match does not appear in the local history until the family explicitly saves it; declining when prompted deletes it outright. This exception is scoped to vôlei only — see [SPEC 008](docs/specs/008-volei.md)
@@ -212,7 +222,8 @@ CLAUDE.md            Working agreement and development commands
 ```
 
 Decoration is **generated in this repo, never downloaded**: the truco gaudério leather, craquelure
-and wood plank come from `scripts/generate-textures.mjs`, which is seeded and deterministic. The repo
+and wood plank, plus the vôlei graphite surface, come from `scripts/generate-textures.mjs`, which is
+seeded and deterministic. The repo
 is public, so no third-party image is vendored into it.
 
 ## Where the product docs live

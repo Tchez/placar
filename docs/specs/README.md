@@ -16,7 +16,7 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 | [005](005-ui-and-install.md) | Home, match lists and the install flow | done |
 | [006](006-truco-gauderio.md) | Truco gaudério | done |
 | [007](007-canastra-defaults-and-home-cleanup.md) | Canastra defaults and home cleanup | done |
-| [008](008-volei.md) | Vôlei | ready — implementation pending |
+| [008](008-volei.md) | Vôlei | done |
 
 ## Planned
 
@@ -60,10 +60,10 @@ repo: a SPEC that needs a picture to be understood is not finished.
 
 **Vôlei is the architecture test, and that is why it stays in the plan.** The SPEC 001 contract
 (`scoreboard(match)` derived from the entry log, `Standing.score` plus a free-text detail) was designed
-for a game whose score is not a sum. Padel used to be that game; vôlei now is. Its display — sets won as
-the main number, points in the current set as the detail — is that contract, stated in the language of
-the game. **If implementing it requires editing a screen, the contract was wrong; the signal is to fix
-the contract, not to special-case vôlei.**
+for a game whose score is not a sum. Padel used to be that game; vôlei now is. The shared scoreboard represents sets won as
+`Standing.score` and current-set points as its detail; the dedicated match view makes points the
+large number and sets the small number. The registry owns that view, as it does for both trucos.
+History opt-in is declared in the game definition, so shared screens do not branch on game IDs.
 
 Vôlei is a harder test than padel would have been: padel would have logged *games*, vôlei logs
 *points*. Far more entries, and the set boundary has to live in the log rather than being inferred from
