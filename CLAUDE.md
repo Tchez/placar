@@ -86,6 +86,10 @@ Derived from the game rules in `README.md` — these are not negotiable style pr
 - Don't commit or push unless asked
 - No `console.log` left in committed code
 - Small, focused changes over large refactors
+- Before declaring a substantial delivery complete, run the local quality gate and production
+  build (`npm run check` and `npm run build`). For larger deliveries, this validation may be
+  delegated to a low-cost background agent when practical; small isolated edits do not require a
+  full validation cycle.
 
 ## Commands
 
