@@ -1,5 +1,6 @@
 import { Navigate, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../app/routes';
+import { useDocumentMeta } from '../app/useDocumentMeta';
 import { FlagIcon } from '../components/HubIcons';
 import { getInstallPlatform } from '../install/installEnvironment';
 import { useInstall } from '../install/InstallProvider';
@@ -46,6 +47,10 @@ function WrittenInstructions() {
 }
 
 export function InstallScreen() {
+  useDocumentMeta(
+    'Instalar — Placar',
+    'Instale o Placar na tela inicial do celular para abrir mais rápido e usar offline, sem cadastro.',
+  );
   const navigate = useNavigate();
   const { canPromptInstall, isInstalled, promptInstall } = useInstall();
 

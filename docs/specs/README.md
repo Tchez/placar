@@ -17,12 +17,13 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 | [006](006-truco-gauderio.md) | Truco gaudério | done |
 | [007](007-canastra-defaults-and-home-cleanup.md) | Canastra defaults and home cleanup | done |
 | [008](008-volei.md) | Vôlei | done |
+| [009](009-seo-ai-discoverability.md) | SEO and AI discoverability | ready |
 
 ## Planned
 
 | # | Title | Why here |
 |---|---|---|
-| 009 | Generic game | Closes the MVP game scope in `README.md`. The history screen shipped in SPEC 005 |
+| 010 | Generic game | Closes the MVP game scope in `README.md`. The history screen shipped in SPEC 005 |
 | — | Round-based entry for canastra | One input per team saved as a round. Better fit for how canastra is actually scored; deferred out of SPEC 002 because it changes the entry log's shape |
 | — | Two-finger undo gesture | Deferred from SPEC 003: decide after the family has used the button |
 | — | Export / import of match history | A manual backup path, worth having before any sync exists. Gains value if the installed app turns out not to share storage with the browser |
@@ -36,15 +37,25 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 
 ## Ordering
 
-**The implemented order is 002 → 003 → 004 → 005 → 006 → 007 → 008.** Numbers are identity,
+**The implemented order is 002 → 003 → 004 → 005 → 006 → 007 → 008 → 009.** Numbers are identity,
 not priority, and are never reused or renumbered.
 
-**The queue changed on 2026-08-23, and again when 007 was assigned elsewhere.** It was `006 padel ·
-007 generic · 008 truco gaúcho`; it then became `006 truco gaudério · 007 vôlei · 008 generic` when
-padel was dropped (see *Dropped* above) and vôlei took over its architectural role. SPEC 007 was
-later assigned to the canastra-default change when that became the next written unit, so vôlei
-slid to **008** and generic to **009**. No rule was bent: planned numbers are queue positions until
-a file gives them identity. **Identity begins at the file.**
+**The queue changed on 2026-08-23, again when 007 was assigned elsewhere, and again on
+2026-09-10.** It was `006 padel · 007 generic · 008 truco gaúcho`; it then became `006 truco
+gaudério · 007 vôlei · 008 generic` when padel was dropped (see *Dropped* above) and vôlei took over
+its architectural role. SPEC 007 was later assigned to the canastra-default change when that became
+the next written unit, so vôlei slid to **008** and generic to **009**. On 2026-09-10 the owner
+asked for a SEO/AI-discoverability study to be the next unit written, ahead of the generic game, so
+it claimed **009** and generic slid to **010**. No rule was bent: planned numbers are queue
+positions until a file gives them identity. **Identity begins at the file.**
+
+**009 is a deliberate detour, not a course change.** It ships no game and touches no domain code —
+it makes the already-deployed app crawlable and legible to search engines and AI assistants
+(`robots.txt`, `sitemap.xml`, structured data, a static fallback description, `llms.txt`). Framed
+by the owner as a hands-on study whose real payoff lands on a separate freela project that actually
+needs to rank; Placar is the low-risk place to prove the techniques first. See the SPEC's *Context*
+section for why the app's `HashRouter` routing means only the home URL is indexable at all — the
+one finding worth carrying into that other project.
 
 **004 remains ahead of every game after truco.** `localStorage` is scoped per origin, so every score
 recorded against the dev server is orphaned the moment the app moves to a real URL. Until the app is

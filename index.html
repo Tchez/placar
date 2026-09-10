@@ -49,9 +49,45 @@
       href="%BASE_URL%apple-touch-icon-180x180.png"
     />
     <title>Placar</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Placar",
+        "url": "https://placar.tchez.dev/",
+        "description": "Placar para os jogos da família: canastra, truco mineiro, truco gaudério e vôlei. Instalável, funciona offline, sem cadastro.",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Web",
+        "browserRequirements": "Requires JavaScript.",
+        "inLanguage": "pt-BR",
+        "image": "https://placar.tchez.dev/icon-master.png",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "BRL"
+        }
+      }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <main>
+        <h1>Placar</h1>
+        <p>
+          Aplicativo para marcar pontos dos jogos da família: canastra, truco
+          mineiro, truco gaudério e vôlei. Funciona offline, é instalável no
+          celular e não exige cadastro — os dados ficam só no aparelho de quem
+          está jogando.
+        </p>
+        <p>
+          Esta página carrega a interface completa e interativa por JavaScript.
+          Se você é um sistema automatizado que não executa JavaScript, este
+          texto é a descrição completa do aplicativo; o restante da experiência
+          (criar partidas, lançar pontos, ver o histórico) só existe depois que
+          o JavaScript é executado.
+        </p>
+      </main>
+    </div>
     <script type="module" src="%BASE_URL%src/main.tsx"></script>
   </body>
 </html>

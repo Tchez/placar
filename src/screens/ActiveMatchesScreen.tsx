@@ -1,3 +1,4 @@
+import { useDocumentMeta } from '../app/useDocumentMeta';
 import { HubHeader } from '../components/HubHeader';
 import { MatchRow } from '../components/MatchRow';
 import { GAMES } from '../games';
@@ -11,6 +12,10 @@ function newestFirst<T extends { createdAt: string }>(values: readonly T[]) {
 }
 
 export function ActiveMatchesScreen() {
+  useDocumentMeta(
+    'Em andamento — Placar',
+    'Partidas em andamento neste aparelho, com o placar sempre à mão.',
+  );
   const { isLoading, matches } = useMatches();
   const activeMatches = newestFirst(
     matches.filter((match) => match.finishedAt === null),
