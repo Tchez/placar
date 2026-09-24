@@ -48,8 +48,8 @@ function WrittenInstructions() {
 
 export function InstallScreen() {
   useDocumentMeta(
-    'Instalar — Placar',
-    'Instale o Placar na tela inicial do celular para abrir mais rápido e usar offline, sem cadastro.',
+    'Placar — canastra, truco e vôlei',
+    'Marque pontos de canastra, truco mineiro, truco gaudério e vôlei. Abra no navegador ou instale o app; funciona offline e sem cadastro.',
   );
   const navigate = useNavigate();
   const { canPromptInstall, isInstalled, promptInstall } = useInstall();
@@ -64,7 +64,7 @@ export function InstallScreen() {
     }
   }
 
-  function continueWithoutInstalling() {
+  function openOnline() {
     dismissInstall();
     navigate(ROUTES.home, { replace: true });
   }
@@ -75,32 +75,35 @@ export function InstallScreen() {
         <span className="install-header__icon" aria-hidden="true">
           <FlagIcon />
         </span>
-        <span className="hub-eyebrow">LEVE O PLACAR COM VOCÊ</span>
-        <h1>Instale antes da primeira partida</h1>
+        <h1>Placar de Jogos</h1>
         <p>
-          Assim, seu histórico fica no app que você abre pela tela inicial e
-          continua disponível sem internet.
+          Marque pontos de canastra, truco mineiro, truco gaudério e vôlei. Abra
+          no navegador ou instale o app para continuar offline. Sem cadastro; as
+          partidas ficam neste aparelho.
         </p>
       </header>
 
-      <section className="install-card" aria-label="Como instalar">
+      <section className="install-card" aria-label="Escolha como usar o Placar">
         {canPromptInstall ? (
           <button
             className="hub-primary-button"
             type="button"
             onClick={() => void install()}
           >
-            Instalar app
+            Instalar o app
           </button>
         ) : (
-          <WrittenInstructions />
+          <div className="install-manual">
+            <h2>Instalar o app</h2>
+            <WrittenInstructions />
+          </div>
         )}
         <button
-          className="hub-text-button"
+          className="hub-online-button"
           type="button"
-          onClick={continueWithoutInstalling}
+          onClick={openOnline}
         >
-          Continuar sem instalar
+          Abrir o placar online
         </button>
       </section>
     </div>

@@ -17,7 +17,7 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 | [006](006-truco-gauderio.md) | Truco gaudério | done |
 | [007](007-canastra-defaults-and-home-cleanup.md) | Canastra defaults and home cleanup | done |
 | [008](008-volei.md) | Vôlei | done |
-| [009](009-seo-ai-discoverability.md) | SEO and AI discoverability | ready |
+| [009](009-seo-ai-discoverability.md) | SEO and AI discoverability | in progress — Search Console confirmed indexing; product-first landing follow-up underway |
 
 ## Planned
 
