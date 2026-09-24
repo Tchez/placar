@@ -7,15 +7,18 @@
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
     <meta name="theme-color" content="#08110f" />
-    <meta name="description" content="Placar para os jogos da família." />
+    <meta
+      name="description"
+      content="Marque pontos de canastra, truco mineiro, truco gaudério e vôlei. Abra no navegador ou instale o app; funciona offline e sem cadastro."
+    />
     <link rel="canonical" href="https://placar.tchez.dev/" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:site_name" content="Placar" />
-    <meta property="og:title" content="Placar" />
+    <meta property="og:title" content="Placar — canastra, truco e vôlei" />
     <meta
       property="og:description"
-      content="Placar para os jogos da família."
+      content="Marque pontos de canastra, truco mineiro, truco gaudério e vôlei. Abra no navegador ou instale o app; funciona offline e sem cadastro."
     />
     <meta property="og:url" content="https://placar.tchez.dev/" />
     <meta
@@ -27,10 +30,10 @@
     <meta property="og:image:height" content="1024" />
     <meta property="og:image:alt" content="Ícone do aplicativo Placar" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Placar" />
+    <meta name="twitter:title" content="Placar — canastra, truco e vôlei" />
     <meta
       name="twitter:description"
-      content="Placar para os jogos da família."
+      content="Marque pontos de canastra, truco mineiro, truco gaudério e vôlei. Abra no navegador ou instale o app; funciona offline e sem cadastro."
     />
     <meta
       name="twitter:image"
@@ -43,12 +46,64 @@
       content="black-translucent"
     />
     <meta name="apple-mobile-web-app-title" content="Placar" />
+    <style>
+      :root {
+        color-scheme: dark;
+        background: #08110f;
+        color: #f3f1e9;
+        font-family:
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+        line-height: 1.5;
+      }
+
+      body {
+        min-width: 20rem;
+        min-height: 100vh;
+        margin: 0;
+        background: #08110f;
+      }
+
+      .seo-fallback {
+        box-sizing: border-box;
+        display: grid;
+        width: min(100%, 36rem);
+        min-height: 100vh;
+        align-content: center;
+        gap: 1rem;
+        margin-inline: auto;
+        padding: max(1.5rem, env(safe-area-inset-top))
+          max(1rem, env(safe-area-inset-right))
+          max(2rem, env(safe-area-inset-bottom))
+          max(1rem, env(safe-area-inset-left));
+      }
+
+      .seo-fallback h1 {
+        max-width: 18ch;
+        margin: 0;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-size: clamp(2.15rem, 9vw, 3rem);
+        font-weight: 600;
+        letter-spacing: -0.045em;
+        line-height: 1.1;
+      }
+
+      .seo-fallback p {
+        margin: 0;
+        color: #a1aaa5;
+        font-size: 0.95rem;
+      }
+    </style>
     <link rel="icon" href="%BASE_URL%favicon.ico" sizes="48x48" />
     <link
       rel="apple-touch-icon"
       href="%BASE_URL%apple-touch-icon-180x180.png"
     />
-    <title>Placar</title>
+    <title>Placar — canastra, truco e vôlei</title>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -71,20 +126,17 @@
   </head>
   <body>
     <div id="root">
-      <main>
-        <h1>Placar</h1>
+      <main class="seo-fallback">
+        <h1>Placar de Jogos</h1>
         <p>
-          Aplicativo para marcar pontos dos jogos da família: canastra, truco
-          mineiro, truco gaudério e vôlei. Funciona offline, é instalável no
-          celular e não exige cadastro — os dados ficam só no aparelho de quem
+          Placar de Jogos é um aplicativo para marcar pontos de canastra, truco
+          mineiro, truco gaudério e vôlei. Funciona offline, pode ser instalado
+          no celular e não exige cadastro. As partidas ficam no aparelho de quem
           está jogando.
         </p>
         <p>
-          Esta página carrega a interface completa e interativa por JavaScript.
-          Se você é um sistema automatizado que não executa JavaScript, este
-          texto é a descrição completa do aplicativo; o restante da experiência
-          (criar partidas, lançar pontos, ver o histórico) só existe depois que
-          o JavaScript é executado.
+          Crie partidas, acompanhe a pontuação e consulte o histórico no mesmo
+          aparelho.
         </p>
       </main>
     </div>

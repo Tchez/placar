@@ -1,13 +1,16 @@
 # SPEC 009 — SEO and AI Discoverability
 
-- **Status:** implemented — code ships checklist done; owner Search Console / AI-assistant verification pending
+- **Status:** in progress — initial SEO implementation is live; Search Console verification on
+  2026-09-24 exposed an install-only rendered landing page, so this SPEC now includes the accepted
+  product-first landing follow-up
 - **Created:** 2026-09-10
 - **Depends on:** SPEC 004 (deploy and installable PWA) — builds on the existing GitHub Pages
   deployment and `vite-plugin-pwa` setup. No dependency on any game SPEC.
 
 ## Goal
 
-Today, `placar.tchez.dev` is invisible to search and to AI assistants: there is no `robots.txt`, no
+When this SPEC was drafted, `placar.tchez.dev` was invisible to search and to AI assistants: there
+was no `robots.txt`, no
 `sitemap.xml`, no structured data, and — as this SPEC explains in detail — the app's routing makes
 even the *idea* of "one page per game" not work the way it looks like it should. This SPEC makes the
 site technically legible to three audiences that read a site differently: a traditional search
@@ -87,6 +90,19 @@ any URL that needs to be independently indexed.
 meaningfully index — `https://placar.tchez.dev/`.** Not one per game, not one for the install guide.
 Whatever content lives behind `#/instalar` or `#/historico` might as well not have its own URL at
 all, as far as SEO/GEO is concerned.
+
+### Search Console render finding (2026-09-24)
+
+The owner confirmed in Search Console that the root URL is indexed. Google's rendered page has
+`<title>Instalar — Placar</title>`, an install-only meta description, and visible installation
+instructions. The fresh-visit `InstallGate` redirects the root route to `#/instalar`, whose content
+does not explain what the app scores. Google returns this result for `site:placar.tchez.dev instalar`
+but not for `site:placar.tchez.dev truco` or `site:placar.tchez.dev vôlei`.
+
+This is a content/relevance gap on the one indexable URL, not a crawl or index failure. The accepted
+follow-up keeps the install option but makes the first-visit page describe Placar and offers direct
+choices to install the PWA or open the score hub in the browser. The same visible description is
+served to people and crawlers; no bot-specific route or content is used.
 
 **This SPEC does not fix that by switching to `BrowserRouter`.** It's the correct long-term fix, and
 worth knowing for the freela project, but it is explicitly **out of scope here** — see *Scope*. It
@@ -194,13 +210,14 @@ so it should not be checked *before* the underlying index has had a chance to pi
 - `public/llms.txt` — a short, plain-Markdown summary of the app, explicitly labelled in this SPEC
   as experimental/unconfirmed
 - A `SoftwareApplication` JSON-LD block added to `index.html`
-- Real, static, descriptive content placed inside `index.html`'s `<div id="root">`, visible to any
+- Real, static, user-facing content placed inside `index.html`'s `<div id="root">`, visible to any
   crawler that does not execute JavaScript, and to any browser during the brief window before React
-  mounts and replaces it. The copy explicitly states that the interactive app requires JavaScript —
-  see *Behaviour* for the drafted text and why it says that
+  mounts and replaces it
 - A small, dependency-free hook that updates `document.title` and the meta description while
   navigating between screens client-side (framed correctly below as a UX/share-preview benefit —
   **not** an indexing mechanism, given the hash-routing constraint above)
+- A product-first first-visit landing screen that describes the supported games and offers the
+  existing PWA install flow or direct browser access to the score hub
 - Excluding `robots.txt`, `sitemap.xml` and `llms.txt` from the Workbox service-worker's precache/
   routing, so the PWA's offline behavior can never intercept a crawler's request for them
 - A manual checklist for setting up and verifying Google Search Console, Rich Results Test and the
@@ -222,8 +239,27 @@ so it should not be checked *before* the underlying index has had a chance to pi
 - Optimizing or indexing per-match URLs (`/#/partida/:matchId`) — meaningless, since match data is
   local-only and differs per device, and unreachable to a crawler regardless, since it is a hash
   route
+- User-agent-specific landing content, bot-only routing, or any other cloaking technique
 
 ## Behaviour
+
+### First-visit landing and install choice
+
+A first-time browser visit still opens the existing landing route before the match hub. The rendered
+page first explains that Placar keeps score for canastra, truco mineiro, truco gaudério and vôlei,
+and states that it works offline without an account. This description is visible before the install
+instructions and is part of the page's real content, not only metadata or JSON-LD.
+
+The page then offers two clear paths:
+
+- **Instalar o app:** use the browser's native PWA install prompt when available. If no native prompt
+  is available, show the existing platform-specific installation instructions.
+- **Abrir o placar online:** dismiss the first-visit gate, open the game hub in the browser, and
+  remember that choice so later visits go directly to the hub.
+
+The browser path does not require installing the PWA. Existing installed-app and previously
+dismissed flows continue to open the hub directly. The visible content and choices are identical for
+people and crawlers.
 
 ### `public/robots.txt`
 
@@ -322,41 +358,38 @@ done.
 
 ### Static fallback content inside `index.html`
 
-Today's `index.html` mounts straight into an empty `<div id="root">` (see `src/main.tsx`:
-`createRoot(root).render(...)` fully replaces whatever was already inside `root` — this is standard
-React behaviour, so putting real markup inside that `div` in the source `index.html` is safe: it
-displays until React takes over, then disappears without a trace for any browser that runs the
-app's JavaScript, and stays permanently visible to anything that does not.
+`index.html` places real descriptive markup inside `<div id="root">`. In `src/main.tsx`,
+`createRoot(root).render(...)` replaces those children — standard React behaviour — so the fallback
+serves crawlers and browsers until React takes over, then disappears from browsers that run the
+app's JavaScript and remains visible to anything that does not.
 
 ```html
 <div id="root">
-  <main>
-    <h1>Placar</h1>
+  <main class="seo-fallback">
+    <h1>Placar de Jogos</h1>
     <p>
-      Aplicativo para marcar pontos dos jogos da família: canastra, truco mineiro, truco gaudério
-      e vôlei. Funciona offline, é instalável no celular e não exige cadastro — os dados ficam só
-      no aparelho de quem está jogando.
+      Placar de Jogos é um aplicativo para marcar pontos de canastra, truco mineiro, truco gaudério
+      e vôlei. Funciona offline, pode ser instalado no celular e não exige cadastro. As partidas
+      ficam no aparelho de quem está jogando.
     </p>
     <p>
-      Esta página carrega a interface completa e interativa por JavaScript. Se você é um sistema
-      automatizado que não executa JavaScript, este texto é a descrição completa do aplicativo;
-      o restante da experiência (criar partidas, lançar pontos, ver o histórico) só existe depois
-      que o JavaScript é executado.
+      Crie partidas, acompanhe a pontuação e consulte o histórico no mesmo aparelho.
     </p>
   </main>
 </div>
 ```
 
-Approved by the owner as-is on 2026-09-10. The second paragraph exists specifically because the
-owner asked for it: a plain, explicit statement of why a non-JS reader is seeing a stripped-down
-version, aimed at any AI system parsing the raw HTML.
+`index.html` also contains small critical styles for `.seo-fallback` in its `<head>`. The stylesheet
+bundled with the React app loads later, so these styles keep the initial HTML readable while React
+starts and replaces the fallback.
 
-This SPEC deliberately does **not** additionally use a `<noscript>` tag for this content. A
-crawler that never executes JavaScript reads the raw document the same way regardless of whether
-the text sits inside `<noscript>` or inside `#root` — but content inside `<noscript>` is actively
-hidden from every browser and crawler that *does* run JavaScript (which includes Googlebot's
-render phase), while content inside `#root` is real, briefly-visible markup that a JS-executing
-renderer sees before the app mounts. One tag choice, not two, covers every reader.
+The fallback uses ordinary product copy instead of addressing bots directly. Google's guidance for
+generative search says to focus on human readability and not rewrite content just for AI; the same
+factual description still gives crawlers without JavaScript useful context.
+[Google's guide to generative AI search](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide).
+
+The same static content remains in `#root` for every reader. It is not duplicated in `<noscript>` or
+switched based on user-agent, so people and crawlers receive the same description.
 
 ### Per-route `document.title` and meta description
 
@@ -377,7 +410,10 @@ export function useDocumentMeta(title: string, description: string) {
 ```
 
 Called once per screen component with a title/description pair (e.g. `"Canastra — Placar"` /
-`"Contador de canastra para dois times, com meta de pontos e lançamentos editáveis."`). **Be exact
+`"Contador de canastra para dois times, com meta de pontos e lançamentos editáveis."`). The
+first-visit landing uses a product-first pair such as `"Placar — canastra, truco e vôlei"` /
+`"Marque pontos de canastra, truco mineiro, truco gaudério e vôlei. Use no navegador ou instale no
+celular; funciona offline e sem cadastro."` **Be exact
 about what this does and does not achieve:** because every route lives behind `#` (see Context), no
 search engine or AI crawler will ever see these per-screen values as separate indexed pages — this
 purely improves the browser tab, and anything that reads `document.title` live (a share sheet, a
@@ -440,7 +476,14 @@ explicit checklist in the repo for the owner to work through once the code above
       live deployed URL, left for the post-deploy checklist below
 - [x] Viewing the production build's raw HTML source (`curl` or "view source", not the rendered
       DOM) shows the real static description text inside `#root`
-- [x] With JavaScript enabled, the static content is replaced by the running app with no visible
+- [x] The first-visit rendered landing visibly describes Placar and names canastra, truco mineiro,
+      truco gaudério and vôlei before the install instructions
+- [x] The first-visit landing offers **Instalar o app** (native prompt or platform-specific
+      instructions) and **Abrir o placar online** (opens the hub and persists the dismissal)
+- [x] The landing page's live title and meta description describe scorekeeping and the supported
+      games instead of installation alone
+- [ ] After the landing update, with JavaScript enabled, the static content is replaced by the
+      running app with no additional visible
       flash-of-unstyled-content or layout shift beyond what already exists today
 - [x] Navigating between screens updates `document.title` and the meta description tag live, per
       the pairs defined for each screen
@@ -449,12 +492,17 @@ explicit checklist in the repo for the owner to work through once the code above
 - [x] `npm run check` and `npm run build` pass with no regressions
 
 **Verified after deploy, on the owner's timeline (see Context):**
-- [ ] Search Console property verified, sitemap submitted, indexing requested (Day 0)
-- [ ] Search Console's Coverage/Indexing report shows the root URL as indexed (~1 week)
+- [x] Search Console property verified, sitemap submitted, indexing requested (Day 0)
+- [x] Search Console URL Inspection confirms the root URL is indexed (2026-09-24)
+- [ ] After the landing update deploys, Search Console's rendered/crawled page shows the product
+      description and install/browser choices; request indexing for the updated root URL
+- [ ] After recrawl, repeat `site:placar.tchez.dev truco` and the non-branded query "app para marcar
+      placar de truco gaúcho"; record the result title, snippet and whether Placar appears. Search
+      placement is observed, not guaranteed by this SPEC.
 - [ ] Asking ChatGPT, Claude and Gemini (web search/browsing enabled) about a canastra/truco
-      gaudério score-keeping app is attempted and the verbatim responses are recorded, whatever
-      they are (~2–4 weeks) — a negative result is a valid, recorded outcome, not a failure of this
-      SPEC
+      gaudério score-keeping app is attempted after the updated page is indexed and the verbatim
+      responses are recorded, whatever they are (~2–4 weeks) — a negative result is a valid,
+      recorded outcome, not a failure of this SPEC
 
 ## Open questions
 

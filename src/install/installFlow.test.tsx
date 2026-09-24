@@ -86,11 +86,22 @@ describe('install flow', () => {
 
     expect(
       await screen.findByRole('heading', {
-        name: 'Instale antes da primeira partida',
+        name: 'Placar de Jogos',
       }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /Marque pontos de canastra, truco mineiro, truco gaudério e vôlei/,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Abrir o placar online' }),
+    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(document.title).toBe('Placar — canastra, truco e vôlei'),
+    );
     fireEvent.click(
-      screen.getByRole('button', { name: 'Continuar sem instalar' }),
+      screen.getByRole('button', { name: 'Abrir o placar online' }),
     );
     expect(
       await screen.findByRole('heading', { name: 'Novo placar' }),
@@ -107,7 +118,7 @@ describe('install flow', () => {
     ).toBeInTheDocument();
     expect(
       screen.queryByRole('heading', {
-        name: 'Instale antes da primeira partida',
+        name: 'Placar de Jogos',
       }),
     ).not.toBeInTheDocument();
   });
@@ -139,7 +150,7 @@ describe('install flow', () => {
   it('shows the native button only after capturing beforeinstallprompt', async () => {
     renderFlow(ROUTES.install);
     expect(
-      screen.queryByRole('button', { name: 'Instalar app' }),
+      screen.queryByRole('button', { name: 'Instalar o app' }),
     ).not.toBeInTheDocument();
 
     const prompt = vi.fn().mockResolvedValue(undefined);
@@ -156,12 +167,12 @@ describe('install flow', () => {
     window.dispatchEvent(event);
 
     fireEvent.click(
-      await screen.findByRole('button', { name: 'Instalar app' }),
+      await screen.findByRole('button', { name: 'Instalar o app' }),
     );
     await waitFor(() => expect(prompt).toHaveBeenCalledOnce());
     await waitFor(() =>
       expect(
-        screen.queryByRole('button', { name: 'Instalar app' }),
+        screen.queryByRole('button', { name: 'Instalar o app' }),
       ).not.toBeInTheDocument(),
     );
   });

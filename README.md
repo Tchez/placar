@@ -33,9 +33,9 @@ local verification.
 
 ## Install
 
-- **First browser visit:** the app opens its installation guide before the first match. Choosing
-  **Continuar sem instalar** remembers that choice; the install guide remains available from the
-  home-screen footer.
+- **First browser visit:** a short introduction explains which games Placar scores and offers
+  **Instalar o app** or **Abrir o placar online**. Opening the browser version remembers that choice;
+  installation remains available from the home-screen footer.
 - **Android / Chrome:** open [placar.tchez.dev](https://placar.tchez.dev) and choose the install app
   action offered by Chrome.
 - **iPhone / Safari:** open the site, then choose *Compartilhar → Adicionar à Tela de Início*.
@@ -101,7 +101,7 @@ These are settled. Do not relitigate them in a SPEC without saying so explicitly
 | **Four games in the MVP** — canastra, truco, vôlei, generic (padel dropped 2026-08-23) | The generic mode keeps the app from ever being a dead end (dominó, buraco, whatever) | Game rules are data/config, not scattered conditionals |
 | **Only what varies between tables is asked at match creation** — the target and whether negatives are allowed. Team count and default team names are declared by the game | House rules vary inside the same family, so freezing the target would force absurd variants like "canastra 3000" and "canastra 4000" as separate games. Team count does not vary, so asking for it would be a screen nobody needs | A game declares its team count, default names and which setup options it offers; the match stores the resolved values |
 | **UI in Portuguese (pt-BR) only** | The family does not speak English | No i18n layer in v1 — strings live in the components. Internationalizing is a deliberate later decision, not a default to prepare for |
-| **Picking the game is the first step of the flow** | The counting rule changes everything downstream: targets, entry values, what "score" even means | Home screen is the game picker |
+| **Picking the game starts each match flow** | The counting rule changes everything downstream: targets, entry values, what "score" even means | After choosing install or browser on a first visit, the home screen is the game picker |
 | **Each game owns its match visual design** | The games have different identities and scoring rhythms; forcing them through one project-wide screen makes every game feel generic | The registry associates each definition with its own match view; shared domain and persistence contracts do not imply shared match UI |
 | **Looking good is a requirement, not decoration** | This app competes with pen and paper at a family table; if it feels cheap nobody reaches for it. The owner supplies a visual reference per game and the screen is expected to match it | Whatever it takes to get there is allowed — texture assets, a CSS library, a dependency — inside the boundaries in `CLAUDE.md`. A SPEC that forbids a technique gets amended by the owner, not worked around |
 

@@ -56,8 +56,8 @@ function GameCard({
 
 export function HomeScreen() {
   useDocumentMeta(
-    'Placar',
-    'Placar para os jogos da família: canastra, truco mineiro, truco gaudério e vôlei. Instalável, funciona offline, sem cadastro.',
+    'Placar — canastra, truco e vôlei',
+    'Marque pontos de canastra, truco mineiro, truco gaudério e vôlei. Abra no navegador ou instale o app; funciona offline e sem cadastro.',
   );
   const navigate = useNavigate();
   const { isInstalled } = useInstall();

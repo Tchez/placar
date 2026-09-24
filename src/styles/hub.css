@@ -471,15 +471,15 @@
 
 .install-screen {
   justify-content: center;
-  gap: 1.5rem;
-  padding-block: 1rem;
+  gap: 1.4rem;
+  padding-block: clamp(1.25rem, 6vh, 3rem);
 }
 
 .install-header {
   display: grid;
-  justify-items: center;
-  gap: 0.6rem;
-  text-align: center;
+  justify-items: start;
+  gap: 0.85rem;
+  text-align: left;
 }
 
 .install-header__icon {
@@ -502,14 +502,18 @@
 }
 
 .install-header h1 {
-  max-width: 28rem;
+  max-width: 18ch;
+  margin: 0;
+  font-size: clamp(2.15rem, 9vw, 3rem);
+  line-height: 1.1;
 }
 
 .install-header p {
-  max-width: 29rem;
+  max-width: 34rem;
   margin: 0;
   color: var(--hub-muted);
   font-size: 0.9rem;
+  line-height: 1.6;
 }
 
 .install-card {
@@ -525,6 +529,19 @@
   margin: 0;
   color: var(--hub-text);
   font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.install-manual {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.install-manual h2 {
+  margin: 0;
+  font-family: var(--hub-sans);
+  font-size: 1rem;
+  font-weight: 750;
 }
 
 .install-instructions ol {
@@ -552,6 +569,28 @@
   color: var(--hub-muted);
   text-decoration: underline;
   text-underline-offset: 0.2em;
+}
+
+.hub-online-button {
+  min-height: 3.5rem;
+  border: 1px solid rgb(73 200 117 / 38%);
+  border-radius: 0.9rem;
+  background: rgb(73 200 117 / 5%);
+  color: var(--hub-text);
+  font: inherit;
+  font-weight: 750;
+}
+
+.hub-online-button:focus-visible {
+  outline: 2px solid var(--hub-gold);
+  outline-offset: 3px;
+}
+
+@media (hover: hover) {
+  .hub-online-button:hover {
+    border-color: var(--hub-green);
+    background: rgb(73 200 117 / 9%);
+  }
 }
 
 @media (hover: hover) {
