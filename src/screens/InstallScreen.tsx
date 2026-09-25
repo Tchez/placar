@@ -49,7 +49,7 @@ function WrittenInstructions() {
 export function InstallScreen() {
   useDocumentMeta(
     'Placar — canastra, truco e vôlei',
-    'Marque pontos de canastra, truco mineiro, truco gaudério e vôlei. Abra no navegador ou instale o app; funciona offline e sem cadastro.',
+    'Marque pontos de canastra, truco mineiro e truco gaudério (também conhecido como truco gaúcho), além de vôlei. Use no navegador ou instale; funciona offline e sem cadastro.',
   );
   const navigate = useNavigate();
   const { canPromptInstall, isInstalled, promptInstall } = useInstall();

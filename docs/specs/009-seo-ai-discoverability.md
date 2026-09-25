@@ -210,6 +210,9 @@ so it should not be checked *before* the underlying index has had a chance to pi
 - `public/llms.txt` — a short, plain-Markdown summary of the app, explicitly labelled in this SPEC
   as experimental/unconfirmed
 - A `SoftwareApplication` JSON-LD block added to `index.html`
+- Search-facing metadata descriptions may include a factual alternate name for a supported game
+  when users commonly search for it by that name; the running UI and static fallback keep the
+  product's canonical game name
 - Real, static, user-facing content placed inside `index.html`'s `<div id="root">`, visible to any
   crawler that does not execute JavaScript, and to any browser during the brief window before React
   mounts and replaces it
@@ -337,7 +340,7 @@ Markdown sections linking to further detail. A draft to adapt:
   "@type": "WebApplication",
   "name": "Placar",
   "url": "https://placar.tchez.dev/",
-  "description": "Placar para os jogos da família: canastra, truco mineiro, truco gaudério e vôlei. Instalável, funciona offline, sem cadastro.",
+  "description": "Placar para os jogos da família: canastra, truco mineiro, truco gaudério (também conhecido como truco gaúcho) e vôlei. Instalável, funciona offline, sem cadastro.",
   "applicationCategory": "GameApplication",
   "operatingSystem": "Web",
   "browserRequirements": "Requires JavaScript.",
@@ -412,13 +415,20 @@ export function useDocumentMeta(title: string, description: string) {
 Called once per screen component with a title/description pair (e.g. `"Canastra — Placar"` /
 `"Contador de canastra para dois times, com meta de pontos e lançamentos editáveis."`). The
 first-visit landing uses a product-first pair such as `"Placar — canastra, truco e vôlei"` /
-`"Marque pontos de canastra, truco mineiro, truco gaudério e vôlei. Use no navegador ou instale no
-celular; funciona offline e sem cadastro."` **Be exact
+`"Marque pontos de canastra, truco mineiro e truco gaudério (também conhecido como truco gaúcho),
+além de vôlei. Use no navegador ou instale no celular; funciona offline e sem cadastro."` **Be exact
 about what this does and does not achieve:** because every route lives behind `#` (see Context), no
 search engine or AI crawler will ever see these per-screen values as separate indexed pages — this
 purely improves the browser tab, and anything that reads `document.title` live (a share sheet, a
 bookmark) for the family member currently using the app. It is included because it is nearly free
 and is good practice regardless, not because it moves the needle on findability.
+
+The home-page meta description and JSON-LD description may use the search-facing phrase
+`"truco gaudério (também conhecido como truco gaúcho)"`. Keep the running landing UI and the
+static fallback on the canonical product wording, `"truco gaudério"`; do not add alternate-name
+copy to visible app text solely for search matching. This is ordinary page metadata, not hidden
+body text or user-agent-specific content. Google may choose this meta description for a result
+snippet, but it may instead generate a snippet from the page content.
 
 ### Excluding root files from the service worker
 
