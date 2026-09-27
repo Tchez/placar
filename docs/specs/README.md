@@ -12,12 +12,12 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 | [001](001-project-setup.md) | Project setup and architectural skeleton | done |
 | [002](002-canastra.md) | Canastra, first game end to end | done |
 | [003](003-truco-mineiro.md) | Truco mineiro | done |
-| [004](004-deploy-and-install.md) | Deploy and installable PWA | implemented — live and device verification pending |
+| [004](004-deploy-and-install.md) | Deploy and installable PWA | done |
 | [005](005-ui-and-install.md) | Home, match lists and the install flow | done |
 | [006](006-truco-gauderio.md) | Truco gaudério | done |
 | [007](007-canastra-defaults-and-home-cleanup.md) | Canastra defaults and home cleanup | done |
 | [008](008-volei.md) | Vôlei | done |
-| [009](009-seo-ai-discoverability.md) | SEO and AI discoverability | in progress — Search Console confirmed indexing; product-first landing follow-up underway |
+| [009](009-seo-ai-discoverability.md) | SEO and AI discoverability | in progress — live; waiting on Google to recrawl the updated landing |
 
 ## Planned
 
@@ -26,7 +26,7 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 | 010 | Generic game | Closes the MVP game scope in `README.md`. The history screen shipped in SPEC 005 |
 | — | Round-based entry for canastra | One input per team saved as a round. Better fit for how canastra is actually scored; deferred out of SPEC 002 because it changes the entry log's shape |
 | — | Two-finger undo gesture | Deferred from SPEC 003: decide after the family has used the button |
-| — | Export / import of match history | A manual backup path, worth having before any sync exists. Gains value if the installed app turns out not to share storage with the browser |
+| — | Export / import of match history | A manual backup path, worth having before any sync exists. The installed iPhone app shares storage with Safari (confirmed 2026-09-27), so this is not urgent |
 | — | Rules for truco gaudério (flor, envido) | **Conditional, not debt.** The owner's position is that counting alone may be the finished product. Do not treat this as missing |
 
 ## Dropped

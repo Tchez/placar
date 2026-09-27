@@ -1,6 +1,6 @@
 # SPEC 004 — Deploy and installable PWA
 
-- **Status:** implemented — live and device verification pending
+- **Status:** done
 - **Created:** 2026-08-22
 - **Depends on:** SPEC 002 — the canastra work must be committed before any of this can be published
 
@@ -221,8 +221,8 @@ These belong in the README so they are not rediscovered later.
 - [x] `public/CNAME` contains `placar.tchez.dev`, and the deployed site reports that custom domain
 - [x] `https://placar.tchez.dev` serves over HTTPS with a valid certificate and `https_enforced` true
 - [x] `npm run preview` serves the production build and the app works from it
-- [ ] Installing from `https://placar.tchez.dev` on Android gives a standalone app with the real icon
-- [ ] *Adicionar à Tela de Início* on iOS gives a standalone app with the real icon and no Safari bars
+- [x] Installing from `https://placar.tchez.dev` on Android gives a standalone app with the real icon
+- [x] *Adicionar à Tela de Início* on iOS gives a standalone app with the real icon and no Safari bars
 - [x] With the device offline, launching from the home screen loads the app and every saved match
 - [x] The registered service worker origin is `placar.tchez.dev` with scope `/`, and no stale
       registration from local testing survives — asserted by inspection and recorded in the PR
