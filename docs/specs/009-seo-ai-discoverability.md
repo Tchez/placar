@@ -1,7 +1,7 @@
 # SPEC 009 — SEO and AI Discoverability
 
 - **Status:** in progress — implementation is live and the product-first landing is verified on
-  devices; waiting on Google to recrawl the updated root and on the JSON-LD validator runs
+  devices, and the JSON-LD validators pass; waiting on Google to show the updated root in search
 - **Created:** 2026-09-10
 - **Depends on:** SPEC 004 (deploy and installable PWA) — builds on the existing GitHub Pages
   deployment and `vite-plugin-pwa` setup. No dependency on any game SPEC.
@@ -479,10 +479,11 @@ explicit checklist in the repo for the owner to work through once the code above
 - [x] `public/sitemap.xml` exists, is reachable at `/sitemap.xml`, contains exactly one `<url>`,
       and validates as well-formed XML
 - [x] `public/llms.txt` exists and is reachable at `/llms.txt`
-- [ ] The JSON-LD block is present in the built `index.html` (done), passes the schema.org
-      Validator with no errors, and passes the Rich Results Test with no errors (warnings
-      acceptable if explained) — the two validators require the owner to run them against the
-      live deployed URL, left for the post-deploy checklist below
+- [x] The JSON-LD block is present in the built `index.html`, passes the schema.org Validator
+      with no errors, and passes the Rich Results Test with no errors — verified by the owner
+      against the live URL on 2026-09-27: schema.org Validator 0 errors / 0 warnings; Rich Results
+      Test "1 valid item" (Software apps) with non-critical issues only, i.e. optional fields
+      that do not block eligibility
 - [x] Viewing the production build's raw HTML source (`curl` or "view source", not the rendered
       DOM) shows the real static description text inside `#root`
 - [x] The first-visit rendered landing visibly describes Placar and names canastra, truco mineiro,
