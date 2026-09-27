@@ -1,7 +1,7 @@
 # SPEC 009 — SEO and AI Discoverability
 
-- **Status:** in progress — implementation is live and the product-first landing is verified on
-  devices, and the JSON-LD validators pass; waiting on Google to show the updated root in search
+- **Status:** done — live, validated on devices and by the JSON-LD validators, and Google shows the
+  updated root in search (2026-09-27)
 - **Created:** 2026-09-10
 - **Depends on:** SPEC 004 (deploy and installable PWA) — builds on the existing GitHub Pages
   deployment and `vite-plugin-pwa` setup. No dependency on any game SPEC.
@@ -504,11 +504,16 @@ explicit checklist in the repo for the owner to work through once the code above
 **Verified after deploy, on the owner's timeline (see Context):**
 - [x] Search Console property verified, sitemap submitted, indexing requested (Day 0)
 - [x] Search Console URL Inspection confirms the root URL is indexed (2026-09-24)
-- [ ] After the landing update deploys, Search Console's rendered/crawled page shows the product
+- [x] After the landing update deploys, Search Console's rendered/crawled page shows the product
       description and install/browser choices; request indexing for the updated root URL
-- [ ] After recrawl, repeat `site:placar.tchez.dev truco` and the non-branded query "app para marcar
+      (owner, 2026-09-27)
+- [x] After recrawl, repeat `site:placar.tchez.dev truco` and the non-branded query "app para marcar
       placar de truco gaúcho"; record the result title, snippet and whether Placar appears. Search
-      placement is observed, not guaranteed by this SPEC.
+      placement is observed, not guaranteed by this SPEC. Recorded 2026-09-27: `site:placar.tchez.dev
+      truco` returns the root with title "Placar — canastra, truco e vôlei" and the new meta
+      description as snippet. The non-branded query "placar de canastra e truco" (a different wording
+      from the one above) shows Placar on the first results page, below a video and two news
+      results, in the owner's browser
 - [x] ~~A third AI-assistant round after the updated page is indexed~~ — scoped out by the owner
       on 2026-09-27 after the rounds of 2026-09-17 and 2026-09-24. Asked for *an app*, ChatGPT,
       Claude and Gemini search app stores (Play Store) and recommend listed apps; a PWA is not in that
