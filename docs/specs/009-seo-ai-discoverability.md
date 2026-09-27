@@ -1,8 +1,7 @@
 # SPEC 009 — SEO and AI Discoverability
 
-- **Status:** in progress — initial SEO implementation is live; Search Console verification on
-  2026-09-24 exposed an install-only rendered landing page, so this SPEC now includes the accepted
-  product-first landing follow-up
+- **Status:** in progress — implementation is live and the product-first landing is verified on
+  devices; waiting on Google to recrawl the updated root and on the JSON-LD validator runs
 - **Created:** 2026-09-10
 - **Depends on:** SPEC 004 (deploy and installable PWA) — builds on the existing GitHub Pages
   deployment and `vite-plugin-pwa` setup. No dependency on any game SPEC.
@@ -492,7 +491,7 @@ explicit checklist in the repo for the owner to work through once the code above
       instructions) and **Abrir o placar online** (opens the hub and persists the dismissal)
 - [x] The landing page's live title and meta description describe scorekeeping and the supported
       games instead of installation alone
-- [ ] After the landing update, with JavaScript enabled, the static content is replaced by the
+- [x] After the landing update, with JavaScript enabled, the static content is replaced by the
       running app with no additional visible
       flash-of-unstyled-content or layout shift beyond what already exists today
 - [x] Navigating between screens updates `document.title` and the meta description tag live, per
@@ -509,10 +508,11 @@ explicit checklist in the repo for the owner to work through once the code above
 - [ ] After recrawl, repeat `site:placar.tchez.dev truco` and the non-branded query "app para marcar
       placar de truco gaúcho"; record the result title, snippet and whether Placar appears. Search
       placement is observed, not guaranteed by this SPEC.
-- [ ] Asking ChatGPT, Claude and Gemini (web search/browsing enabled) about a canastra/truco
-      gaudério score-keeping app is attempted after the updated page is indexed and the verbatim
-      responses are recorded, whatever they are (~2–4 weeks) — a negative result is a valid,
-      recorded outcome, not a failure of this SPEC
+- [x] ~~A third AI-assistant round after the updated page is indexed~~ — scoped out by the owner
+      on 2026-09-27 after the rounds of 2026-09-17 and 2026-09-24. Asked for *an app*, ChatGPT,
+      Claude and Gemini search app stores (Play Store) and recommend listed apps; a PWA is not in that
+      catalog, so AI discovery of an app is not a meaningful test for a PWA. Google search presence
+      is the success signal for this SPEC
 
 ## Open questions
 

@@ -127,7 +127,7 @@ at DPR 2, both point cards, reverse set turns and reduced motion. A temporary is
 writes pending and compared the **entire set control**, not only its numeral, for each value 0–3.
 All comparisons passed the same subpixel tolerance above. At nonzero values correction opacity now
 stays at 1 during writes. The temporary harness was removed after verification.
-Phone confirmation of this final follow-up remains pending.
+The owner confirmed on a phone against production on 2026-09-27 that the set numbers no longer blink.
 
 - [Local point turn with resting set layers](008-volei-stable-sets-2d.png)
 - [Two sets during a held point write](008-volei-pending-point.png)
