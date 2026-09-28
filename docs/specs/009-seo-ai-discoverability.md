@@ -512,8 +512,7 @@ explicit checklist in the repo for the owner to work through once the code above
       placement is observed, not guaranteed by this SPEC. Recorded 2026-09-27: `site:placar.tchez.dev
       truco` returns the root with title "Placar — canastra, truco e vôlei" and the new meta
       description as snippet. The non-branded query "placar de canastra e truco" (a different wording
-      from the one above) shows Placar on the first results page, below a video and two news
-      results, in the owner's browser
+      from the one above) shows Placar on the sixth results page — indexed, but ranking low
 - [x] ~~A third AI-assistant round after the updated page is indexed~~ — scoped out by the owner
       on 2026-09-27 after the rounds of 2026-09-17 and 2026-09-24. Asked for *an app*, ChatGPT,
       Claude and Gemini search app stores (Play Store) and recommend listed apps; a PWA is not in that
