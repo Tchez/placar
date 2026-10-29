@@ -104,6 +104,19 @@ describe('hub screens', () => {
     expect(screen.getByText('Mais jogos em breve')).toBeInTheDocument();
   });
 
+  it('credits the author above the version line, linking to the portfolio', () => {
+    renderHub(ROUTES.home);
+
+    const credit = screen.getByRole('link', { name: 'Marco Netto' });
+    expect(credit).toHaveAttribute('href', 'https://tchez.dev/');
+    expect(credit).toHaveAttribute('rel', 'author');
+    expect(credit.closest('p')).toHaveTextContent('Criado por Marco Netto');
+    expect(
+      credit.compareDocumentPosition(screen.getByText(/^versão /)) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
   it('hides the complete in-progress section when it is empty', async () => {
     renderHub(ROUTES.home, [
       match('finished', '2026-08-20T12:00:00.000Z', true),

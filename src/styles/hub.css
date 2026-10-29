@@ -469,6 +469,23 @@
   color: var(--hub-muted);
 }
 
+.author-credit {
+  margin: 0;
+  color: var(--hub-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.author-credit a {
+  /* Inline padding widens the tap area without changing the line box */
+  padding-block: 0.75rem;
+  color: var(--hub-text);
+  font-weight: 700;
+  text-decoration-color: rgb(73 200 117 / 60%);
+  text-underline-offset: 0.2em;
+}
+
 .install-screen {
   justify-content: center;
   gap: 1.4rem;

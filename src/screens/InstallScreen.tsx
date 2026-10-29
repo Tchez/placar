@@ -1,6 +1,7 @@
 import { Navigate, useNavigate } from 'react-router-dom';
 import { ROUTES } from '../app/routes';
 import { useDocumentMeta } from '../app/useDocumentMeta';
+import { AuthorCredit } from '../components/AuthorCredit';
 import { FlagIcon } from '../components/HubIcons';
 import { getInstallPlatform } from '../install/installEnvironment';
 import { useInstall } from '../install/InstallProvider';
@@ -106,6 +107,8 @@ export function InstallScreen() {
           Abrir o placar online
         </button>
       </section>
+
+      <AuthorCredit />
     </div>
   );
 }
