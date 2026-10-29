@@ -11,3 +11,4 @@
 ## Onde
 - App: https://placar.tchez.dev/
 - Código-fonte (aberto): https://github.com/Tchez/placar
+- Autor: Marco Netto, https://tchez.dev/

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { formatNumber } from '../app/format';
 import { matchPath, newMatchPath, ROUTES } from '../app/routes';
 import { useDocumentMeta } from '../app/useDocumentMeta';
+import { AuthorCredit } from '../components/AuthorCredit';
 import { gameAccentStyle } from '../components/gameAccent';
 import { GameBadge } from '../components/GameBadge';
 import { HubHeader } from '../components/HubHeader';
@@ -155,6 +156,7 @@ export function HomeScreen() {
             <ChevronRightIcon />
           </Link>
         ) : null}
+        <AuthorCredit />
         <span className="build-version" aria-label="Versão do aplicativo">
           versão {__BUILD_VERSION__}
         </span>

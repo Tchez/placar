@@ -35,7 +35,8 @@ local verification.
 
 - **First browser visit:** a short introduction explains which games Placar scores and offers
   **Instalar o app** or **Abrir o placar online**. Opening the browser version remembers that choice;
-  installation remains available from the home-screen footer.
+  installation remains available from the home-screen footer. Both screens credit the author with a
+  link to [tchez.dev](https://tchez.dev/).
 - **Android / Chrome:** open [placar.tchez.dev](https://placar.tchez.dev) and choose the install app
   action offered by Chrome.
 - **iPhone / Safari:** open the site, then choose *Compartilhar → Adicionar à Tela de Início*.

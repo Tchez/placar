@@ -18,12 +18,13 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 | [007](007-canastra-defaults-and-home-cleanup.md) | Canastra defaults and home cleanup | done |
 | [008](008-volei.md) | Vôlei | done |
 | [009](009-seo-ai-discoverability.md) | SEO and AI discoverability | done |
+| [010](010-portfolio-backlink.md) | Author credit linking to the portfolio | in progress |
 
 ## Planned
 
 | # | Title | Why here |
 |---|---|---|
-| 010 | Generic game | Closes the MVP game scope in `README.md`. The history screen shipped in SPEC 005 |
+| 011 | Generic game | Closes the MVP game scope in `README.md`. The history screen shipped in SPEC 005 |
 | — | Round-based entry for canastra | One input per team saved as a round. Better fit for how canastra is actually scored; deferred out of SPEC 002 because it changes the entry log's shape |
 | — | Two-finger undo gesture | Deferred from SPEC 003: decide after the family has used the button |
 | — | Export / import of match history | A manual backup path, worth having before any sync exists. The installed iPhone app shares storage with Safari (confirmed 2026-09-27), so this is not urgent |
@@ -37,7 +38,7 @@ repo alone, with no access to the owner's private notes. Copy `000-template.md` 
 
 ## Ordering
 
-**The implemented order is 002 → 003 → 004 → 005 → 006 → 007 → 008 → 009.** Numbers are identity,
+**The implemented order is 002 → 003 → 004 → 005 → 006 → 007 → 008 → 009 → 010.** Numbers are identity,
 not priority, and are never reused or renumbered.
 
 **The queue changed on 2026-08-23, again when 007 was assigned elsewhere, and again on
@@ -46,7 +47,8 @@ gaudério · 007 vôlei · 008 generic` when padel was dropped (see *Dropped* ab
 its architectural role. SPEC 007 was later assigned to the canastra-default change when that became
 the next written unit, so vôlei slid to **008** and generic to **009**. On 2026-09-10 the owner
 asked for a SEO/AI-discoverability study to be the next unit written, ahead of the generic game, so
-it claimed **009** and generic slid to **010**. No rule was bent: planned numbers are queue
+it claimed **009** and generic slid to **010**. On 2026-10-29 a one-line author credit claimed
+**010** the same way, and generic slid to **011**. No rule was bent: planned numbers are queue
 positions until a file gives them identity. **Identity begins at the file.**
 
 **009 is a deliberate detour, not a course change.** It ships no game and touches no domain code —

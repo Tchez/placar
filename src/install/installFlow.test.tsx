@@ -94,6 +94,10 @@ describe('install flow', () => {
         /Marque pontos de canastra, truco mineiro, truco gaudério e vôlei/,
       ),
     ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Marco Netto' })).toHaveAttribute(
+      'href',
+      'https://tchez.dev/',
+    );
     expect(
       screen.getByRole('button', { name: 'Abrir o placar online' }),
     ).toBeInTheDocument();
